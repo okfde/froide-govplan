@@ -1,0 +1,3 @@
+include README.md LICENSE
+recursive-include froide_govplan/templates *
+recursive-include froide_govplan/static *

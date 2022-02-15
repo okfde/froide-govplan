@@ -1,0 +1,81 @@
+{% extends CMS_TEMPLATE %}
+
+{% load i18n %}
+{% load markup %}
+{% load cms_tags %}
+
+{% block title %}{{ object.title }}{% endblock %}
+
+
+{% block app_body %}
+  <div class="container mt-3 mb-5">
+
+    <div class="jumbotron">
+      <small class="badge badge-light">Vorhaben der {{ object.government.name }}</small>
+      <h1 class="display-4 mt-0">
+        {{ object.title }}
+      </h1>
+    </div>
+
+    {% if object.image %}
+      {# this should not be a dependency! #}
+      {% include "fds_blog/includes/_picture.html" with picture=object.image %}
+    {% endif %}
+
+    <p>Status: {{ object.get_status_display }}</p>
+    {% if object.rating %}
+      <p>Rating: {{ object.get_rating_display }}</p>
+    {% endif %}
+
+    {{ object.description | safe }}
+
+    <p>
+      <a href="{{ object.get_reference_link }}">Quelle</a>
+    </p>
+
+    {% if object.responsible_publicbody %}
+      <p>
+        Federführung:
+        <a href="{{ object.responsible_publicbody.get_absolute_url }}">
+          {{ object.responsible_publicbody.name }}
+        </a>
+      </p>
+    {% endif %}
+
+    {% if object.organization %}
+      <p>
+        Dieses Vorhaben wird beobachtet von 
+        <a href="{{ object.organization.website }}">
+          {{ object.organization.name }}
+        </a>
+      </p>
+    {% endif %}
+
+    <h3>Neueste Entwicklungen</h3>
+    {% for update in updates %}
+      <h4>{{ update.title }}</h4>
+
+      <time>{{ update.timestamp|date:"DATE_FORMAT" }}</time>
+
+      <small>von {% if update.user %}{{ update.user.get_full_name }}{% endif %}{% if update.organization %}({{ update.organization.name }}){% endif %}
+      </small>
+
+      {{ update.content|markdown }}
+
+      {% if update.url %}
+        <a href="{{ update.url }}">Mehr lesen</a>
+      {% endif %}
+
+      {% if update.foirequest %}
+        <p>
+          Relevante Anfrage:
+          <a href="{{ update.foirequest.get_absolute_url }}">
+            {{ update.foirequest.title }}
+          </a>
+        </p>
+      {% endif %}
+    {% empty %}
+      Keine Entwicklungen
+    {% endfor %}
+  </div>
+{% endblock %}
