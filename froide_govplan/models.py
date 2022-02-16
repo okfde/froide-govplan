@@ -109,13 +109,12 @@ class GovernmentPlan(models.Model):
         verbose_name_plural = _("Government plans")
 
     def __str__(self):
-        return 'GovernmentPlan "%s" (#%s)' % (self.title, self.pk)
+        return self.title
 
     def get_absolute_url(self):
-        return reverse("govplan:plan", kwargs={
-            "gov": self.government.slug,
-            "plan": self.slug
-        })
+        return reverse(
+            "govplan:plan", kwargs={"gov": self.government.slug, "plan": self.slug}
+        )
 
     def get_absolute_domain_url(self):
         return settings.SITE_URL + self.get_absolute_url()
@@ -123,10 +122,21 @@ class GovernmentPlan(models.Model):
     def get_reference_link(self):
         if self.reference.startswith("https://"):
             return self.reference
-        return "{}#{}".format(
-            self.government.planning_document,
-            self.reference
+        return "{}#{}".format(self.government.planning_document, self.reference)
+
+    def update_from_updates(self):
+        last_status_update = (
+            self.updates.all().filter(public=True).exclude(status="").first()
         )
+        if last_status_update:
+            self.status = last_status_update.status
+        last_rating_update = (
+            self.updates.all().filter(public=True).exclude(rating=None).first()
+        )
+        if last_rating_update:
+            self.rating = last_rating_update.rating
+        if last_status_update or last_rating_update:
+            self.save()
 
 
 class GovernmentPlanUpdate(models.Model):
@@ -161,7 +171,7 @@ class GovernmentPlanUpdate(models.Model):
         verbose_name_plural = _("Plan updates")
 
     def __str__(self):
-        return "Plan Update (%s)" % (self.pk,)
+        return "{} - {} ({})".format(self.title, self.timestamp, self.plan)
 
 
 if CMSPlugin:
@@ -175,7 +185,9 @@ if CMSPlugin:
         CMS Plugin for displaying latest articles
         """
 
-        government = models.ForeignKey(Government, null=True, blank=True, on_delete=models.SET_NULL)
+        government = models.ForeignKey(
+            Government, null=True, blank=True, on_delete=models.SET_NULL
+        )
         categories = models.ManyToManyField(
             Category, verbose_name=_("categories"), blank=True
         )
@@ -235,9 +247,7 @@ if CMSPlugin:
                 filters["categories__in"] = cat_list
 
             plans = plans.filter(**filters).distinct()
-            plans = plans.prefetch_related(
-                "categories", "government", "organization"
-            )
+            plans = plans.prefetch_related("categories", "government", "organization")
             if self.count == 0:
-                return plans[self.offset:]
+                return plans[self.offset :]
             return plans[self.offset : self.offset + self.count]
