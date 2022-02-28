@@ -28,10 +28,11 @@ class PlanImporter(object):
         plan = GovernmentPlan.objects.filter(
             government=self.government, title=title
         ).first()
-        if plan:
-            return
 
-        plan = GovernmentPlan(government=self.government)
+        if not plan:
+            plan = GovernmentPlan(government=self.government)
+
+        self.post_save_list = []
         for col, row_col in self.col_mapping.items():
             method_name = "handle_{}".format(col)
             if hasattr(self, method_name):
@@ -51,7 +52,7 @@ class PlanImporter(object):
             x.strip() for x in re.split(r" & | und ", categories) if x.strip()
         ]
         if categories:
-            self.post_save_list.append(lambda p: p.categories.add(*categories))
+            self.post_save_list.append(lambda p: p.categories.set(*categories))
 
     def handle_reference(self, plan, reference):
         plan.reference = ", ".join(re.split(r"\s*[,/]\s*", reference))
