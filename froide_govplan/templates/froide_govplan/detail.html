@@ -22,15 +22,48 @@
       {% include "fds_blog/includes/_picture.html" with picture=object.image %}
     {% endif %}
 
-    <p>Status: {{ object.get_status_display }}</p>
-    {% if object.rating %}
-      <p>Rating: {{ object.get_rating_display }}</p>
-    {% endif %}
+    <dl>
+      <dt>Status</dt>
+      <dd>{{ object.get_status_display }}</dd>
+      {% if object.rating %}
+        <dt>Rating</dt>
+        <dd>{{ object.get_rating_display }}</dd>
+      {% endif %}
+      {% if object.measure %}
+        <dt>Art der Umsetzung</dt>
+        <dd>{{ object.measure }}</dd>
+      {% endif %}
+      {% if object.due_date %}
+        <dt>Frist</dt>
+        <dd>{{ object.due_date|date:"SHORT_DATE_FORMAT" }}</dd>
+      {% endif %}
+    </dl>
+
+    <blockquote>
+      {{ object.quote | safe }}
+    </blockquote>
 
     {{ object.description | safe }}
 
+    {% with refs=object.get_reference_links %}
+      {% if refs %}
+        <p>
+          {% if refs|length > 1 %}
+            Quellen:
+          {% else %}
+            Quelle:
+          {% endif %}
+          {% for ref in refs %}
+            <a href="{{ ref }}" target="_blank">
+              {{ forloop.counter }}
+            </a>
+          {% endfor %}
+        </p>
+      {% endif %}
+    {% endwith %}
+
     <p>
-      <a href="{{ object.get_reference_link }}">Quelle</a>
+      {% for cat in object.categories.all %}<span class="badge badge-light mr-2">{{ cat.name }}</span>{% endfor %}
     </p>
 
     {% if object.responsible_publicbody %}
