@@ -1,0 +1,13 @@
+{% load govplan %}
+
+{% get_plan_progress object_list as progress %}
+
+<div>
+  <div class="progress" style="height: 25px;">
+    {% for section in progress.sections %}
+      <div class="progress-bar bg-{{ section.css_class }}" role="progressbar" style="width: {{ section.css_percentage }}%;" aria-valuenow="{{ section.css_percentage }}" aria-valuemin="0" aria-valuemax="100" title="{{ section.label }}: {{ section.percentage }}%" data-toggle="tooltip" data-placement="top">
+      </div>
+    {% endfor %}
+  </div>
+</div>
+

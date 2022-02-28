@@ -229,6 +229,7 @@ if CMSPlugin:
 
     PLUGIN_TEMPLATES = [
         ("froide_govplan/plugins/default.html", _("Normal")),
+        ("froide_govplan/plugins/progress.html", _("Progress")),
     ]
 
     class GovernmentPlansCMSPlugin(CMSPlugin):
