@@ -57,6 +57,8 @@ class PlanImporter(object):
         plan.reference = ", ".join(re.split(r"\s*[,/]\s*", reference))
 
     def handle_responsible_publicbody(self, plan, pb):
+        if not pb.strip():
+            return
         pb = PublicBody.objects.get(
             jurisdiction=self.government.jurisdiction,
             other_names__iregex=r"(\W|^){}(\W|$)".format(pb),
