@@ -39,11 +39,18 @@
       {% endif %}
     </dl>
 
-    <blockquote>
-      {{ object.quote | safe }}
-    </blockquote>
+    <div>
+      {{ object.description | safe }}
+    </div>
 
-    {{ object.description | safe }}
+    {% if object.quote %}
+      <details>
+        <summary>Zitat</summary>
+        <blockquote class="blockquote">
+          {{ object.quote | markdown }}
+        </blockquote>
+      </details>
+    {% endif %}
 
     {% with refs=object.get_reference_links %}
       {% if refs %}
