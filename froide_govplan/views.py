@@ -8,6 +8,8 @@ class GovPlanDetailView(DetailView):
     template_name = "froide_govplan/detail.html"
 
     def get_queryset(self):
+        if self.request.user.is_authenticated and self.request.user.is_staff:
+            return GovernmentPlan.objects.all()
         return GovernmentPlan.objects.filter(public=True)
 
     def get_context_data(self, **kwargs):
