@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib import admin, auth
 from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
 
 from tinymce.widgets import TinyMCE
 
@@ -46,8 +47,33 @@ class GovernmentPlanAdmin(admin.ModelAdmin):
         "public",
         "status",
         "rating",
+        "organization",
+        "get_categories",
     )
-    list_filter = ("status", "rating", "public", "government")
+    list_filter = (
+        "status",
+        "rating",
+        "public",
+        "government",
+        "categories",
+    )
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        qs = qs.prefetch_related(
+            "categories",
+            "organization",
+        )
+        return qs
+
+    def get_categories(self, obj):
+        """
+        Return the categories linked in HTML.
+        """
+        categories = [category.name for category in obj.categories.all()]
+        return ", ".join(categories)
+
+    get_categories.short_description = _("category(s)")
 
 
 class GovernmentPlanUpdateAdmin(admin.ModelAdmin):
@@ -65,6 +91,7 @@ class GovernmentPlanUpdateAdmin(admin.ModelAdmin):
     list_filter = (
         "status",
         "public",
+        "organization",
     )
     search_fields = (
         "title",
