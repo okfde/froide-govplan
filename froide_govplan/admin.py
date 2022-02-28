@@ -52,6 +52,7 @@ class GovernmentPlanAdmin(admin.ModelAdmin):
 
     save_on_top = True
     prepopulated_fields = {"slug": ("title",)}
+    search_fields = ("title",)
     raw_id_fields = ("responsible_publicbody",)
     list_display = (
         "title",
@@ -111,7 +112,10 @@ class GovernmentPlanAdmin(admin.ModelAdmin):
 
 class GovernmentPlanUpdateAdmin(admin.ModelAdmin):
     form = GovernmentPlanUpdateAdminForm
+    save_on_top = True
     raw_id_fields = ("user", "foirequest")
+    date_hierarchy = "timestamp"
+    search_fields = ("title", "content")
     list_display = (
         "title",
         "timestamp",
