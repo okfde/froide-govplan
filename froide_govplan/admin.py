@@ -36,6 +36,17 @@ class GovernmentAdmin(admin.ModelAdmin):
     list_filter = ("public",)
 
 
+def has_limited_access(user):
+    return not user.has_perm("froide_gov.change_governmentplanupdate")
+
+
+def get_allowed_plans(request):
+    if not has_limited_access(request.user):
+        return GovernmentPlan.objects.all()
+    groups = request.user.groups.all()
+    return GovernmentPlan.objects.filter(group__in=groups).distinct()
+
+
 class GovernmentPlanAdmin(admin.ModelAdmin):
     form = GovernmentPlanAdminForm
 
@@ -58,13 +69,30 @@ class GovernmentPlanAdmin(admin.ModelAdmin):
         "categories",
     )
 
+    actions = ["make_public"]
+
     def get_queryset(self, request):
-        qs = super().get_queryset(request)
+        qs = get_allowed_plans(request)
         qs = qs.prefetch_related(
             "categories",
             "organization",
         )
         return qs
+
+    def get_fields(self, request, obj=None):
+        if has_limited_access(request.user):
+            return (
+                "title",
+                "description",
+                "quote",
+                "public",
+                "due_date",
+                "measure",
+                "status",
+                "rating",
+                "reference",
+            )
+        return super().get_fields(request, obj=obj)
 
     def get_categories(self, obj):
         """
@@ -74,6 +102,11 @@ class GovernmentPlanAdmin(admin.ModelAdmin):
         return ", ".join(categories)
 
     get_categories.short_description = _("category(s)")
+
+    def make_public(self, request, queryset):
+        queryset.update(public=True)
+
+    make_public.short_description = _("Make public")
 
 
 class GovernmentPlanUpdateAdmin(admin.ModelAdmin):
@@ -105,12 +138,12 @@ class GovernmentPlanUpdateAdmin(admin.ModelAdmin):
             "plan",
             "user",
         )
-        if self.has_limited_access(request.user):
-            qs = qs.filter(plan__in=self.get_allowed_plans(request))
+        if has_limited_access(request.user):
+            qs = qs.filter(plan__in=get_allowed_plans(request))
         return qs
 
     def save_model(self, request, obj, form, change):
-        limited = self.has_limited_access(request.user)
+        limited = has_limited_access(request.user)
         if not change and limited:
             # When added by a limited user,
             # autofill user and organization
@@ -126,17 +159,8 @@ class GovernmentPlanUpdateAdmin(admin.ModelAdmin):
 
         return res
 
-    def has_limited_access(self, user):
-        return not user.has_perm("froide_gov.change_governmentplanupdate")
-
-    def get_allowed_plans(self, request):
-        if not self.has_limited_access(request.user):
-            return GovernmentPlan.objects.all()
-        groups = request.user.groups.all()
-        return GovernmentPlan.objects.filter(group__in=groups).distinct()
-
     def get_fields(self, request, obj=None):
-        if self.has_limited_access(request.user):
+        if has_limited_access(request.user):
             return (
                 "plan",
                 "title",
@@ -152,7 +176,7 @@ class GovernmentPlanUpdateAdmin(admin.ModelAdmin):
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "plan":
             if self.has_limited_access(request.user):
-                kwargs["queryset"] = self.get_allowed_plans(request)
+                kwargs["queryset"] = get_allowed_plans(request)
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
     def user_in_obj_group(self, request, obj):
