@@ -146,10 +146,13 @@ class GovernmentPlan(models.Model):
     def get_absolute_domain_url(self):
         return settings.SITE_URL + self.get_absolute_url()
 
-    def get_reference_link(self):
+    def get_reference_links(self):
         if self.reference.startswith("https://"):
-            return self.reference
-        return "{}#{}".format(self.government.planning_document, self.reference)
+            return [self.reference]
+        refs = [x.strip() for x in self.reference.split(",")]
+        return [
+            "{}#p-{}".format(self.government.planning_document, ref) for ref in refs
+        ]
 
     def update_from_updates(self):
         last_status_update = (
