@@ -36,17 +36,22 @@ class PlanRating(models.IntegerChoices):
 
 
 class Government(models.Model):
-    name = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=255, unique=True)
+    name = models.CharField(max_length=255, verbose_name=_("name"))
+    slug = models.SlugField(max_length=255, unique=True, verbose_name=_("slug"))
 
-    public = models.BooleanField(default=False)
-    jurisdiction = models.ForeignKey(Jurisdiction, null=True, on_delete=models.SET_NULL)
-    description = models.TextField(blank=True)
+    public = models.BooleanField(default=False, verbose_name=_("is public?"))
+    jurisdiction = models.ForeignKey(
+        Jurisdiction,
+        null=True,
+        on_delete=models.SET_NULL,
+        verbose_name=_("jurisdiction"),
+    )
+    description = models.TextField(blank=True, verbose_name=_("description"))
 
-    start_date = models.DateField(null=True, blank=True)
-    end_date = models.DateField(null=True, blank=True)
+    start_date = models.DateField(null=True, blank=True, verbose_name=_("start date"))
+    end_date = models.DateField(null=True, blank=True, verbose_name=_("end date"))
 
-    planning_document = models.URLField(blank=True)
+    planning_document = models.URLField(blank=True, verbose_name=_("planning document"))
 
     class Meta:
         verbose_name = _("Government")
@@ -68,9 +73,11 @@ class CategorizedGovernmentPlan(TaggedItemBase):
 
 
 class GovernmentPlan(models.Model):
-    government = models.ForeignKey(Government, on_delete=models.CASCADE)
-    title = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=255, unique=True)
+    government = models.ForeignKey(
+        Government, on_delete=models.CASCADE, verbose_name=_("government")
+    )
+    title = models.CharField(max_length=255, verbose_name=_("title"))
+    slug = models.SlugField(max_length=255, unique=True, verbose_name=_("slug"))
 
     image = FilerImageField(
         null=True,
@@ -80,28 +87,48 @@ class GovernmentPlan(models.Model):
         on_delete=models.SET_NULL,
     )
 
-    description = models.TextField(blank=True)
-    public = models.BooleanField(default=False)
+    description = models.TextField(blank=True, verbose_name=_("description"))
+    quote = models.TextField(blank=True, verbose_name=_("quote"))
+    public = models.BooleanField(default=False, verbose_name=_("is public?"))
+    due_date = models.DateField(null=True, blank=True, verbose_name=_("due date"))
+    measure = models.CharField(max_length=255, blank=True, verbose_name=_("measure"))
 
     status = models.CharField(
-        max_length=25, choices=PlanStatus.choices, default="needs_approval"
+        max_length=25,
+        choices=PlanStatus.choices,
+        default="not_started",
+        verbose_name=_("status"),
     )
-    rating = models.IntegerField(choices=PlanRating.choices, null=True, blank=True)
+    rating = models.IntegerField(
+        choices=PlanRating.choices, null=True, blank=True, verbose_name=_("rating")
+    )
 
-    reference = models.CharField(max_length=255, blank=True)
+    reference = models.CharField(
+        max_length=255, blank=True, verbose_name=_("reference")
+    )
 
     categories = TaggableManager(
         through=CategorizedGovernmentPlan, verbose_name=_("categories"), blank=True
     )
     responsible_publicbody = models.ForeignKey(
-        PublicBody, null=True, blank=True, on_delete=models.SET_NULL
+        PublicBody,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        verbose_name=_("responsible public body"),
     )
 
     organization = models.ForeignKey(
-        Organization, null=True, blank=True, on_delete=models.SET_NULL
+        Organization,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        verbose_name=_("organization"),
     )
 
-    group = models.ForeignKey(Group, null=True, blank=True, on_delete=models.SET_NULL)
+    group = models.ForeignKey(
+        Group, null=True, blank=True, on_delete=models.SET_NULL, verbose_name=_("group")
+    )
 
     class Meta:
         ordering = ("reference", "title")
@@ -141,27 +168,48 @@ class GovernmentPlan(models.Model):
 
 class GovernmentPlanUpdate(models.Model):
     plan = models.ForeignKey(
-        GovernmentPlan, on_delete=models.CASCADE, related_name="updates"
+        GovernmentPlan,
+        on_delete=models.CASCADE,
+        related_name="updates",
+        verbose_name=_("plan"),
     )
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        verbose_name=_("user"),
     )
     organization = models.ForeignKey(
-        Organization, null=True, blank=True, on_delete=models.SET_NULL
+        Organization,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        verbose_name=_("organization"),
     )
-    timestamp = models.DateTimeField(default=timezone.now)
-    title = models.CharField(max_length=1024, blank=True)
-    content = models.TextField(blank=True)
-    url = models.URLField(blank=True)
+    timestamp = models.DateTimeField(default=timezone.now, verbose_name=_("timestamp"))
+    title = models.CharField(max_length=1024, blank=True, verbose_name=_("title"))
+    content = models.TextField(blank=True, verbose_name=_("content"))
+    url = models.URLField(blank=True, verbose_name=_("URL"))
 
     status = models.CharField(
-        max_length=25, choices=PlanStatus.choices, default="", blank=True
+        max_length=25,
+        choices=PlanStatus.choices,
+        default="",
+        blank=True,
+        verbose_name=_("status"),
     )
-    rating = models.IntegerField(choices=PlanRating.choices, null=True, blank=True)
-    public = models.BooleanField(default=False)
+    rating = models.IntegerField(
+        choices=PlanRating.choices, null=True, blank=True, verbose_name=_("rating")
+    )
+    public = models.BooleanField(default=False, verbose_name=_("is public?"))
 
     foirequest = models.ForeignKey(
-        FoiRequest, null=True, blank=True, on_delete=models.SET_NULL
+        FoiRequest,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        verbose_name=_("FOI request"),
     )
 
     class Meta:
