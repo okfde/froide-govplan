@@ -1,0 +1,42 @@
+{% load thumbnail %}
+
+<div class="card-columns">
+  {% for object in object_list %}
+    <div class="card">
+      {% if object.image %}
+        <a href="{{ object.get_absolute_url }}">
+          {% with picture=object.image %}
+            <picture>
+              {% thumbnail picture 540x0 crop=smart subject_location=picture.subject_location as thumb%}
+              <source
+                srcset="{{ thumb.url }}.avif"
+                type="image/avif"
+              />
+              <img class="card-img-top" loading="lazy" src="{{ thumb.url }}"
+                {% if picture.default_alt_text %} alt="{{ picture.default_alt_text }}"{% else %} alt=""{% endif %}
+              >
+            </picture>
+          {% endwith %}
+        </a>
+      {% endif %}
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="{{ object.get_absolute_url }}">
+            {{ object.title }}
+          </a>
+        </h5>
+        <p class="card-text">
+          {{ object.description|striptags|truncatewords:30 }}
+        </p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <strong>Status:</strong>
+          <span class="badge badge-{{ object.get_status_css }}">
+            {{ object.get_status_display }}
+          </span>
+        </li>
+      </ul>
+    </div>
+  {% endfor %}
+</div>

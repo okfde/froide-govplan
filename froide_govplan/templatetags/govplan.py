@@ -1,16 +1,8 @@
 from django import template
 
-from froide_govplan.models import PlanStatus
+from froide_govplan.models import STATUS_CSS, PlanStatus
 
 register = template.Library()
-
-STATUS_CSS = {
-    PlanStatus.NOT_STARTED: "secondary",
-    PlanStatus.STARTED: "primary",
-    PlanStatus.PARTIALLY_IMPLEMENTED: "warning",
-    PlanStatus.IMPLEMENTED: "success",
-    PlanStatus.DEFERRED: "danger",
-}
 
 
 @register.simple_tag

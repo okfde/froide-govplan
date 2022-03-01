@@ -27,6 +27,15 @@ class PlanStatus(models.TextChoices):
     DEFERRED = ("deferred", _("deferred"))
 
 
+STATUS_CSS = {
+    PlanStatus.NOT_STARTED: "secondary",
+    PlanStatus.STARTED: "primary",
+    PlanStatus.PARTIALLY_IMPLEMENTED: "warning",
+    PlanStatus.IMPLEMENTED: "success",
+    PlanStatus.DEFERRED: "danger",
+}
+
+
 class PlanRating(models.IntegerChoices):
     TERRIBLE = 1, _("terrible")
     BAD = 2, _("bad")
@@ -168,6 +177,9 @@ class GovernmentPlan(models.Model):
         if last_status_update or last_rating_update:
             self.save()
 
+    def get_status_css(self):
+        return STATUS_CSS.get(self.status, "")
+
 
 class GovernmentPlanUpdate(models.Model):
     plan = models.ForeignKey(
@@ -230,6 +242,7 @@ if CMSPlugin:
     PLUGIN_TEMPLATES = [
         ("froide_govplan/plugins/default.html", _("Normal")),
         ("froide_govplan/plugins/progress.html", _("Progress")),
+        ("froide_govplan/plugins/card_cols.html", _("Card columns")),
     ]
 
     class GovernmentPlansCMSPlugin(CMSPlugin):
