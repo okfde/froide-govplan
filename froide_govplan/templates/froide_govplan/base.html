@@ -1,0 +1,13 @@
+{% extends "cms/page.html" %}
+
+{% load cms_tags %}
+
+{% block navbar %}{% endblock %}
+
+{% block body %}
+  {% static_placeholder "govplan_header" %}
+  {% block app_body %}
+    {% placeholder "content" %}
+  {% endblock %}
+  {% static_placeholder "govplan_footer" %}
+{% endblock %}
