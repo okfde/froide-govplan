@@ -179,7 +179,7 @@ class GovernmentPlanUpdateAdmin(admin.ModelAdmin):
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "plan":
-            if self.has_limited_access(request.user):
+            if has_limited_access(request.user):
                 kwargs["queryset"] = get_allowed_plans(request)
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
