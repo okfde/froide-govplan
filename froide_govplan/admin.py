@@ -84,6 +84,7 @@ class GovernmentPlanAdmin(admin.ModelAdmin):
         if has_limited_access(request.user):
             return (
                 "title",
+                "slug",
                 "description",
                 "quote",
                 "public",
