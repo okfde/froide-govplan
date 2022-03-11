@@ -3,6 +3,7 @@
 {% load i18n %}
 {% load markup %}
 {% load cms_tags %}
+{% load follow_tags %}
 
 {% block title %}{{ object.title }}{% endblock %}
 
@@ -68,6 +69,8 @@
         </p>
       {% endif %}
     {% endwith %}
+
+    {% show_follow "govplan" object %}
 
     <p>
       {% for cat in object.categories.all %}<span class="badge badge-light mr-2">{{ cat.name }}</span>{% endfor %}
