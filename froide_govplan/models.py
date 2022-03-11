@@ -10,6 +10,7 @@ from taggit.managers import TaggableManager
 from taggit.models import TaggedItemBase
 
 from froide.foirequest.models import FoiRequest
+from froide.follow.models import Follower
 from froide.organization.models import Organization
 from froide.publicbody.models import Category, Jurisdiction, PublicBody
 
@@ -235,6 +236,19 @@ class GovernmentPlanUpdate(models.Model):
 
     def __str__(self):
         return "{} - {} ({})".format(self.title, self.timestamp, self.plan)
+
+
+class GovernmentPlanFollower(Follower):
+    content_object = models.ForeignKey(
+        GovernmentPlan,
+        on_delete=models.CASCADE,
+        related_name="followers",
+        verbose_name=_("Government plan"),
+    )
+
+    class Meta(Follower.Meta):
+        verbose_name = _("Government plan follower")
+        verbose_name_plural = _("Government plan followers")
 
 
 if CMSPlugin:
