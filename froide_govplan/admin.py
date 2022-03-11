@@ -37,7 +37,7 @@ class GovernmentAdmin(admin.ModelAdmin):
 
 
 def has_limited_access(user):
-    return not user.has_perm("froide_gov.change_governmentplanupdate")
+    return not user.has_perm("froide_govplan.change_governmentplanupdate")
 
 
 def get_allowed_plans(request):
