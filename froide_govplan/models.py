@@ -28,7 +28,7 @@ class PlanStatus(models.TextChoices):
 
 
 STATUS_CSS = {
-    PlanStatus.NOT_STARTED: "secondary",
+    PlanStatus.NOT_STARTED: "light",
     PlanStatus.STARTED: "primary",
     PlanStatus.PARTIALLY_IMPLEMENTED: "warning",
     PlanStatus.IMPLEMENTED: "success",
