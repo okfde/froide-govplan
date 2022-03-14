@@ -3,9 +3,9 @@ import re
 
 from django.template.defaultfilters import slugify
 
-from froide.publicbody.models import PublicBody
+from froide.publicbody.models import Category, PublicBody
 
-from .models import GovernmentPlan
+from .models import GovernmentPlan, GovernmentPlanSection
 
 
 class PlanImporter(object):
@@ -47,12 +47,27 @@ class PlanImporter(object):
         plan.title = title
         plan.slug = slugify(title)
 
-    def handle_categories(self, plan, categories):
+    def handle_categories(self, plan, category_name):
         categories = [
-            x.strip() for x in re.split(r" & | und ", categories) if x.strip()
+            x.strip() for x in re.split(r" & | und ", category_name) if x.strip()
         ]
+        self.make_section(category_name, "-".join(categories), categories)
         if categories:
             self.post_save_list.append(lambda p: p.categories.set(*categories))
+
+    def make_section(self, section_name, section_slug, categories):
+        slug = slugify(section_slug)
+        section, _created = GovernmentPlanSection.objects.get_or_create(
+            slug=slug,
+            defaults={
+                "government": self.government,
+                "title": section_name,
+            },
+        )
+        section.categories.set([self.get_category(c) for c in categories])
+
+    def get_category(self, cat_name):
+        return Category.objects.get(name=cat_name)
 
     def handle_reference(self, plan, reference):
         plan.reference = ", ".join(re.split(r"\s*[,/]\s*", reference))

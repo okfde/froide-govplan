@@ -15,9 +15,11 @@ from froide.organization.models import Organization
 from froide.publicbody.models import Category, Jurisdiction, PublicBody
 
 try:
+    from cms.models.fields import PlaceholderField
     from cms.models.pluginmodel import CMSPlugin
 except ImportError:
     CMSPlugin = None
+    PlaceholderField = None
 
 
 class PlanStatus(models.TextChoices):
@@ -249,6 +251,60 @@ class GovernmentPlanFollower(Follower):
     class Meta(Follower.Meta):
         verbose_name = _("Government plan follower")
         verbose_name_plural = _("Government plan followers")
+
+
+class GovernmentPlanSection(models.Model):
+    government = models.ForeignKey(
+        Government, on_delete=models.CASCADE, verbose_name=_("government")
+    )
+
+    title = models.CharField(max_length=255, verbose_name=_("title"))
+    slug = models.SlugField(max_length=255, unique=True, verbose_name=_("slug"))
+
+    categories = models.ManyToManyField(Category, blank=True)
+
+    description = models.TextField(blank=True, verbose_name=_("description"))
+    image = FilerImageField(
+        null=True,
+        blank=True,
+        default=None,
+        verbose_name=_("image"),
+        on_delete=models.SET_NULL,
+    )
+
+    icon = models.CharField(
+        _("Icon"),
+        max_length=50,
+        blank=True,
+        help_text=_(
+            """Enter an icon name from the <a href="https://fontawesome.com/v4.7.0/icons/" target="_blank">FontAwesome 4 icon set</a>"""
+        ),
+    )
+    order = models.PositiveIntegerField(default=0)
+    featured = models.DateTimeField(null=True, blank=True)
+
+    if PlaceholderField:
+        content_placeholder = PlaceholderField("content")
+
+    class Meta:
+        verbose_name = _("Government plan section")
+        verbose_name_plural = _("Government plan sections")
+        ordering = (
+            "order",
+            "title",
+        )
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse(
+            "govplan:section",
+            kwargs={"gov": self.government.slug, "section": self.slug},
+        )
+
+    def get_absolute_domain_url(self):
+        return settings.SITE_URL + self.get_absolute_url()
 
 
 if CMSPlugin:

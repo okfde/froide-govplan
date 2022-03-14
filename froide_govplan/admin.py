@@ -3,11 +3,17 @@ from django.contrib import admin, auth
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
+from adminsortable2.admin import SortableAdminMixin
 from tinymce.widgets import TinyMCE
 
 from froide.helper.widgets import TagAutocompleteWidget
 
-from .models import Government, GovernmentPlan, GovernmentPlanUpdate
+from .models import (
+    Government,
+    GovernmentPlan,
+    GovernmentPlanSection,
+    GovernmentPlanUpdate,
+)
 
 User = auth.get_user_model()
 
@@ -208,9 +214,26 @@ class GovernmentPlanUpdateAdmin(admin.ModelAdmin):
         return super().has_change_permission(request, obj=obj)
 
 
+class GovernmentPlanSectionAdmin(SortableAdminMixin, admin.ModelAdmin):
+    save_on_top = True
+    prepopulated_fields = {"slug": ("title",)}
+    search_fields = ("title",)
+    raw_id_fields = ("categories",)
+    list_display = (
+        "title",
+        "featured",
+    )
+    list_filter = (
+        "featured",
+        "categories",
+        "government",
+    )
+
+
 admin.site.register(Government, GovernmentAdmin)
 admin.site.register(GovernmentPlan, GovernmentPlanAdmin)
 admin.site.register(GovernmentPlanUpdate, GovernmentPlanUpdateAdmin)
+admin.site.register(GovernmentPlanSection, GovernmentPlanSectionAdmin)
 
 govplan_admin_site = GovPlanAdminSite(name="govplan")
 govplan_admin_site.register(GovernmentPlan, GovernmentPlanAdmin)

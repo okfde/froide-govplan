@@ -1,0 +1,29 @@
+{% extends CMS_TEMPLATE %}
+
+{% load i18n %}
+{% load markup %}
+{% load cms_tags %}
+{% load follow_tags %}
+
+{% block title %}{{ object.title }}{% endblock %}
+
+
+{% block app_body %}
+  <div class="container mt-3 mb-5">
+
+    <div class="jumbotron">
+      <small class="badge badge-light">{{ object.government.name }}</small>
+      <h1 class="display-4 mt-0">
+        {{ object.title }}
+      </h1>
+    </div>
+
+    {% if object.image %}
+      {# this should not be a dependency! #}
+      {% include "fds_blog/includes/_picture.html" with picture=object.image %}
+    {% endif %}
+
+    {% render_placeholder object.content_placeholder %}
+
+  </div>
+{% endblock %}

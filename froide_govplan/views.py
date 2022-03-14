@@ -1,16 +1,51 @@
+from django.shortcuts import get_object_or_404
 from django.views.generic import DetailView
 
-from .models import GovernmentPlan
+from .models import Government, GovernmentPlan, GovernmentPlanSection
 
 
-class GovPlanDetailView(DetailView):
+class GovernmentMixin:
+    def get(self, *args, **kwargs):
+        self.get_government()
+        return super().get(*args, **kwargs)
+
+    def get_government(self):
+        filter_kwarg = {}
+        if not self.request.user.is_authenticated or not self.request.user.is_staff:
+            filter_kwarg["public"] = True
+        self.government = get_object_or_404(
+            Government, slug=self.kwargs["gov"], **filter_kwarg
+        )
+
+
+class GovPlanSectionDetailView(GovernmentMixin, DetailView):
+    slug_url_kwarg = "section"
+    template_name = "froide_govplan/section.html"
+
+    def get_queryset(self):
+        return GovernmentPlanSection.objects.filter(government=self.government)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["plans"] = (
+            GovernmentPlan.objects.filter(
+                categories__in=self.object.categories.all(), government=self.government
+            )
+            .distinct()
+            .order_by("order", "title")
+        )
+        return context
+
+
+class GovPlanDetailView(GovernmentMixin, DetailView):
     slug_url_kwarg = "plan"
     template_name = "froide_govplan/detail.html"
 
     def get_queryset(self):
+        qs = GovernmentPlan.objects.filter(government=self.government)
         if self.request.user.is_authenticated and self.request.user.is_staff:
-            return GovernmentPlan.objects.all()
-        return GovernmentPlan.objects.filter(public=True)
+            return qs
+        return qs.filter(public=True)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
