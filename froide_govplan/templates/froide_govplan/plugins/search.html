@@ -1,5 +1,5 @@
 {% load i18n %}
-<form method="get" action="{% url 'govplan:search' %}" class="ajaxified" data-container="#govplan-searchresult-{{ instance.id }}">
+<form method="get" action="{% url 'govplan:search' %}" class="ajaxified" data-container="#govplan-searchresult-{{ instance.id }}" data-modalcontainer="#govplan-searchmodal-{{ instance.id }}">
   <div class="input-group mb-3">
     <input type="text" name="q" class="form-control" aria-label="{% translate 'search query' %}">
     <div class="input-group-append">
@@ -12,6 +12,19 @@
     <input type="hidden" name="government" value="{{ instance.government_id }}"/>
   {% endif %}
 </form>
-<div id="govplan-searchresult-{{ instance.id }}">
 
+<div class="modal fade" id="govplan-searchmodal-{{ instance.id }}">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{% trans "Search results" %}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="govplan-searchresult-{{ instance.id }}"></div>
+      </div>
+    </div>
+  </div>
 </div>
