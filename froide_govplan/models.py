@@ -435,3 +435,12 @@ if CMSPlugin:
             if self.count == 0:
                 return plans[self.offset :]
             return plans[self.offset : self.offset + self.count]
+
+    class GovernmentPlanSectionsCMSPlugin(CMSPlugin):
+        """
+        CMS Plugin for displaying plan sections
+        """
+
+        government = models.ForeignKey(
+            Government, null=True, blank=True, on_delete=models.SET_NULL
+        )
