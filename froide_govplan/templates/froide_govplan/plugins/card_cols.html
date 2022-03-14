@@ -22,7 +22,7 @@
               „{{ object.quote|striptags|truncatewords:20 }}“
             </blockquote>
             {% endif %}
-            <span class="badge badge-{{ object.get_status_css }}">
+            <span class="badge badge-{{ object.get_status_css }} mt-auto">
               {{ object.get_status_display }}
             </span>
           </div>
