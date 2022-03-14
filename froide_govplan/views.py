@@ -27,13 +27,7 @@ class GovPlanSectionDetailView(GovernmentMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["plans"] = (
-            GovernmentPlan.objects.filter(
-                categories__in=self.object.categories.all(), government=self.government
-            )
-            .distinct()
-            .order_by("title")
-        )
+        context["plans"] = self.context["object"].get_plans()
         return context
 
 

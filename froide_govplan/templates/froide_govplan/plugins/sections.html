@@ -1,4 +1,5 @@
 {% load thumbnail %}
+{% load govplan %}
 
 <style>
   {% for section in sections %}
@@ -27,7 +28,7 @@
             {% endif %}
           </div>
           <div class="flex-grow-1 tight-margin p-3 p-md-4 cms-plugin cms-plugin-87888">
-            progress bar
+            {% get_section_progress section %}
           </div>
         </div>
       </div>
