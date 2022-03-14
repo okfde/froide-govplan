@@ -1,42 +1,27 @@
 {% load thumbnail %}
 
-<div class="card-columns">
+<div class="row">
   {% for object in object_list %}
-    <div class="card">
-      {% if object.image %}
-        <a href="{{ object.get_absolute_url }}">
-          {% with picture=object.image %}
-            <picture>
-              {% thumbnail picture 540x0 crop=smart subject_location=picture.subject_location as thumb%}
-              <source
-                srcset="{{ thumb.url }}.avif"
-                type="image/avif"
-              />
-              <img class="card-img-top" loading="lazy" src="{{ thumb.url }}"
-                {% if picture.default_alt_text %} alt="{{ picture.default_alt_text }}"{% else %} alt=""{% endif %}
-              >
-            </picture>
-          {% endwith %}
-        </a>
-      {% endif %}
-      <div class="card-body">
-        <h5 class="card-title">
-          <a href="{{ object.get_absolute_url }}">
-            {{ object.title }}
-          </a>
-        </h5>
-        <p class="card-text">
-          {{ object.description|striptags|truncatewords:30 }}
-        </p>
-      </div>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item">
-          <strong>Status:</strong>
-          <span class="badge badge-{{ object.get_status_css }}">
-            {{ object.get_status_display }}
-          </span>
-        </li>
-      </ul>
+    <div class="col col-12 col-md-4 d-flex mb-3">
+      <a href="{{ object.get_absolute_url }}" class="d-flex w-100 text-body text-decoration-none">
+        <div class="box-card border-blue w-100 shadow-blue">
+          <div class="box-card-header p-3 bg-blue-20">
+            <h3 class="h6 m-0">
+              {{ object.title }}
+            </h3>
+          </div>
+          <div class="p-3 tight-margin">
+            {% if object.quote %}
+            <blockquote>
+              „{{ object.quote|striptags|truncatewords:20 }}“
+            </blockquote>
+            {% endif %}
+            <span class="badge badge-{{ object.get_status_css }}">
+              {{ object.get_status_display }}
+            </span>
+          </div>
+        </div>
+      </a>
     </div>
   {% endfor %}
 </div>
