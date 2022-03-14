@@ -27,7 +27,7 @@ class GovPlanSectionDetailView(GovernmentMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["plans"] = self.context["object"].get_plans()
+        context["plans"] = context["object"].get_plans()
         return context
 
 
