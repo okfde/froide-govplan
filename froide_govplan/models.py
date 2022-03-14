@@ -256,7 +256,7 @@ class GovernmentPlanUpdate(models.Model):
     timestamp = models.DateTimeField(default=timezone.now, verbose_name=_("timestamp"))
     title = models.CharField(max_length=1024, blank=True, verbose_name=_("title"))
     content = models.TextField(blank=True, verbose_name=_("content"))
-    url = models.URLField(blank=True, verbose_name=_("URL"))
+    url = models.URLField(blank=True, max_length=1024, verbose_name=_("URL"))
 
     status = models.CharField(
         max_length=25,
