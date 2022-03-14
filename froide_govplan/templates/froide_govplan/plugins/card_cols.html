@@ -1,5 +1,11 @@
 {% load thumbnail %}
+{% load i18n %}
 
+{% if object_list|length == 0 %}
+  <p>
+    {% trans "Could not find any results. Try different keywords or browse the categories." %}
+  </p>
+{% else %}
 <div class="row">
   {% for object in object_list %}
     <div class="col col-12 col-md-6 col-lg-4 d-flex mb-3">
@@ -25,3 +31,4 @@
     </div>
   {% endfor %}
 </div>
+{% endif %}

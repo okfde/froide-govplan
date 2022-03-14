@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-14 15:24+0100\n"
+"POT-Creation-Date: 2022-03-14 16:24+0100\n"
 "PO-Revision-Date: 2022-03-11 23:37+0100\n"
 "Last-Translator: Stefan Wehrmeyer <stefan.wehrmeyer@okfn.de>\n"
 "Language-Team: \n"
@@ -356,6 +356,11 @@ msgstr "Alle zutreffenden Vorhaben"
 #, python-format
 msgid "%s matching plans"
 msgstr "%s zutreffenden Vorhaben"
+
+#: froide_govplan/templates/froide_govplan/plugins/card_cols.html:6
+msgid ""
+"Could not find any results. Try different keywords or browse the categories."
+msgstr "Keine Ergebnisse gefunden. Versuchen Sie es mit anderen Stichworten oder durchsuchen Sie passende Kategorien."
 
 #: froide_govplan/templates/froide_govplan/plugins/search.html:4
 #, fuzzy
