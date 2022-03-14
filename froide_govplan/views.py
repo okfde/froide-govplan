@@ -32,7 +32,7 @@ class GovPlanSectionDetailView(GovernmentMixin, DetailView):
                 categories__in=self.object.categories.all(), government=self.government
             )
             .distinct()
-            .order_by("order", "title")
+            .order_by("title")
         )
         return context
 
