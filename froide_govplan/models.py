@@ -287,6 +287,18 @@ class GovernmentPlanUpdate(models.Model):
     def __str__(self):
         return "{} - {} ({})".format(self.title, self.timestamp, self.plan)
 
+    def get_absolute_url(self):
+        return "{}#update-{}".format(
+            reverse(
+                "govplan:plan",
+                kwargs={"gov": self.government.slug, "plan": self.plan.slug},
+            ),
+            self.id,
+        )
+
+    def get_absolute_domain_url(self):
+        return settings.SITE_URL + self.get_absolute_url()
+
 
 class GovernmentPlanFollower(Follower):
     content_object = models.ForeignKey(

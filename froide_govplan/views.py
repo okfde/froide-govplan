@@ -41,11 +41,17 @@ class GovPlanDetailView(GovernmentMixin, DetailView):
             return qs
         return qs.filter(public=True)
 
+    def get_section(self):
+        return GovernmentPlanSection.objects.filter(
+            categories__in=self.object.categories.all()
+        ).first()
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["updates"] = self.object.updates.filter(public=True).order_by(
             "-timestamp"
         )
+        context["section"] = self.get_section()
         return context
 
 
