@@ -49,7 +49,7 @@ class PlanImporter(object):
 
     def handle_categories(self, plan, category_name):
         categories = [
-            x.strip() for x in re.split(r" & | und ", category_name) if x.strip()
+            x.strip() for x in re.split(r", | & | und ", category_name) if x.strip()
         ]
         self.make_section(category_name, "-".join(categories), categories)
         if categories:
