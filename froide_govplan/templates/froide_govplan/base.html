@@ -1,10 +1,21 @@
 {% extends "cms/page.html" %}
 
 {% load cms_tags %}
+{% load menu_tags %}
 
 {% block navbar %}{% endblock %}
 
 {% block body %}
+  <nav class="breadcrumb-container" aria-label="breadcrumb">
+    <div class="container">
+      <ol class="breadcrumb">
+        {# TODO: make this dynamic #}
+        <li class="breadcrumb-item"><a href="/koalitionstracker/">Koalitionstracker</a></li>
+        {% block govplan_breadcrumbs %}{% endblock %}
+      </ol>
+    </div>
+  </nav>
+
   {% static_placeholder "govplan_header" %}
   {% block app_body %}
     {% placeholder "content" %}

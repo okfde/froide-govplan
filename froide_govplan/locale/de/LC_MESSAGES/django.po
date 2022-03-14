@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-14 16:24+0100\n"
+"POT-Creation-Date: 2022-03-14 16:55+0100\n"
 "PO-Revision-Date: 2022-03-11 23:37+0100\n"
 "Last-Translator: Stefan Wehrmeyer <stefan.wehrmeyer@okfn.de>\n"
 "Language-Team: \n"
@@ -360,7 +360,9 @@ msgstr "%s zutreffenden Vorhaben"
 #: froide_govplan/templates/froide_govplan/plugins/card_cols.html:6
 msgid ""
 "Could not find any results. Try different keywords or browse the categories."
-msgstr "Keine Ergebnisse gefunden. Versuchen Sie es mit anderen Stichworten oder durchsuchen Sie passende Kategorien."
+msgstr ""
+"Keine Ergebnisse gefunden. Versuchen Sie es mit anderen Stichworten oder "
+"durchsuchen Sie passende Kategorien."
 
 #: froide_govplan/templates/froide_govplan/plugins/search.html:4
 #, fuzzy
@@ -371,6 +373,21 @@ msgstr "Durchsuche alle Vorhaben"
 #: froide_govplan/templates/froide_govplan/plugins/search.html:20
 msgid "Search results"
 msgstr "Suchergebnisse"
+
+#: froide_govplan/templates/froide_govplan/section.html:18
+#, python-format
+msgid ""
+"\n"
+"      Here you can find all plans of the section \"%(section)s\", which the "
+"coalition constituted in their agreement. On the curresponding detail pages, "
+"you'll get more information, stay up to date with news or submit changes.\n"
+"      "
+msgstr ""
+"\n"
+"     Hier finden Sie alle Vorhaben aus dem Bereich „%(section)s“, welche die "
+"Ampelkoalition im Koalitionsvertrag festgelegt hat. Auf den jeweiligen Detailseiten "
+"erhalten Sie mehr Informationen, können Neuigkeiten abonnieren oder Änderungen einreichen."
+"      "
 
 #: froide_govplan/urls.py:13
 msgctxt "url part"

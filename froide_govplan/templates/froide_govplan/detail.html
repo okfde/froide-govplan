@@ -7,25 +7,85 @@
 
 {% block title %}{{ object.title }}{% endblock %}
 
+{% block govplan_breadcrumbs %}
+<li class="breadcrumb-item active" aria-current="page">
+  <a href="{{ object.get_absolute_url }}">{{ object.title }}</a>
+</li>
+{% endblock %}
 
 {% block app_body %}
-  <div class="container mt-3 mb-5">
+<div class="container mb-5">
+  <div class="row justify-content-center mb-5">  
+    <div class="col col-lg-8 mt-md-n5">
+      <div class="box-card border-yellow md:shadow-yellow bg-white">
+        <div>
+          <div class="flex-grow-1 tight-margin p-3 p-md-4 p-lg-5">
+            <h1 class="mt-0 h3">
+              {{ object.title }}
+            </h1>
 
-    <div class="jumbotron">
-      <small class="badge badge-light">Vorhaben der {{ object.government.name }}</small>
-      <h1 class="display-4 mt-0">
-        {{ object.title }}
-      </h1>
+            <div class="d-md-flex my-3 align-items-center">
+              <ul class="list-unstyled d-flex m-0">
+                <li>
+                  <span class="badge badge-{{ object.get_status_css }} mr-2">
+                    {{ object.get_status_display }}
+                  </span>
+                </li>
+                {% for cat in object.categories.all %}
+                <li>
+                  <a href="{% comment %} TODO: link to category {% endcomment %}">
+                    <span class="badge badge-light mr-2">{{ cat.name }}</span>
+                  </a>
+                </li>
+                {% endfor %}
+              </ul>
+
+              <div class="ml-auto">
+                {% show_follow "govplan" object %}
+              </div>
+            </div>
+
+            {% if object.quote %}
+              <blockquote> 
+                {{ object.quote | markdown }}
+              </blockquote>
+            {% endif %}
+
+            {% with refs=object.get_reference_links %}
+              {% if refs %}
+                <p class="small">
+                  {% if refs|length > 1 %}
+                    Quellen:
+                  {% else %}
+                    Quelle:
+                  {% endif %}
+                  {% for ref in refs %}
+                    <a href="{{ ref }}" target="_blank">
+                      {{ forloop.counter }}
+                    </a>
+                  {% endfor %}
+                </p>
+              {% endif %}
+            {% endwith %}
+
+            {% if object.organization %}
+              <p>
+                Dieses Vorhaben wird beobachtet von 
+                <a href="{{ object.organization.website }}">
+                  {{ object.organization.name }}
+                </a>
+              </p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
+</div>
 
-    {% if object.image %}
-      {# this should not be a dependency! #}
-      {% include "fds_blog/includes/_picture.html" with picture=object.image %}
-    {% endif %}
 
+<div class="container">
     <dl>
-      <dt>Status</dt>
-      <dd>{{ object.get_status_display }}</dd>
       {% if object.rating %}
         <dt>Bewertung</dt>
         <dd>{{ object.get_rating_display }}</dd>
@@ -44,52 +104,15 @@
       {{ object.description | safe }}
     </div>
 
-    {% if object.quote %}
-      <details>
-        <summary>Zitat</summary>
-        <blockquote class="blockquote">
-          {{ object.quote | markdown }}
-        </blockquote>
-      </details>
-    {% endif %}
+    
 
-    {% with refs=object.get_reference_links %}
-      {% if refs %}
-        <p>
-          {% if refs|length > 1 %}
-            Quellen:
-          {% else %}
-            Quelle:
-          {% endif %}
-          {% for ref in refs %}
-            <a href="{{ ref }}" target="_blank">
-              {{ forloop.counter }}
-            </a>
-          {% endfor %}
-        </p>
-      {% endif %}
-    {% endwith %}
-
-    {% show_follow "govplan" object %}
-
-    <p>
-      {% for cat in object.categories.all %}<span class="badge badge-light mr-2">{{ cat.name }}</span>{% endfor %}
-    </p>
+    
 
     {% if object.responsible_publicbody %}
       <p>
         Federführung:
         <a href="{{ object.responsible_publicbody.get_absolute_url }}">
           {{ object.responsible_publicbody.name }}
-        </a>
-      </p>
-    {% endif %}
-
-    {% if object.organization %}
-      <p>
-        Dieses Vorhaben wird beobachtet von 
-        <a href="{{ object.organization.website }}">
-          {{ object.organization.name }}
         </a>
       </p>
     {% endif %}

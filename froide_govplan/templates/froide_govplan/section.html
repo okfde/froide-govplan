@@ -4,26 +4,69 @@
 {% load markup %}
 {% load cms_tags %}
 {% load follow_tags %}
+{% load thumbnail %}
 
 {% block title %}{{ object.title }}{% endblock %}
 
+{% block govplan_breadcrumbs %}
+<li class="breadcrumb-item active" aria-current="page">
+  <a href="{{ object.get_absolute_url }}">{{ object.title }}</a>
+</li>
+{% endblock %}
 
 {% block app_body %}
-  <div class="container mt-3 mb-5">
+<div class="container mb-5">
+  <div class="row justify-content-center mb-5">  
+    <div class="col col-lg-8 mt-md-n5">
+      <div class="box-card {% comment %} box-card-has-image-lg {% endcomment %} border-yellow md:shadow-yellow bg-white">
+        <div>
+          {% comment %} <div class="box-card-image overlap-right text-center">
+            {% with picture=object.image %}
+              <picture>
+                {% if ".svg" not in picture.url %}
+                  {% thumbnail picture 280x0 crop=smart subject_location=picture.subject_location as thumb %}
+                  <source
+                    media="(min-width: 992px)"
+                    srcset="{{ thumb.url }}"
+                  />
+                  <source
+                    media="(min-width: 992px)"
+                    srcset="{{ thumb.url }}.avif"
+                    type="image/avif"
+                  />
+                  {% thumbnail picture 200x0 crop=smart subject_location=picture.subject_location as thumb %}
+                  <source
+                    srcset="{{ thumb.url }}.avif"
+                    type="image/avif"
+                  />
+                {% endif %}
+                <img class="img-lg z-index-10" width="{{ thumb.width }}" height="{{ thumb.height }}" src="{{ thumb.url }}"
+                    {% if picture.default_alt_text and not attributes.alt %} alt="{{ picture.default_alt_text }}"{% endif %}>
+              </picture>
+            {% endwith %}
+          </div> {% endcomment %}
 
-    <div class="jumbotron">
-      <small class="badge badge-light">{{ object.government.name }}</small>
-      <h1 class="display-4 mt-0">
-        {{ object.title }}
-      </h1>
+          <div class="flex-grow-1 tight-margin p-3 p-md-4 p-lg-5">
+            <h1 class="mt-0">
+              {{ object.title }}
+            </h1>
+
+            <p>
+              {% blocktranslate with section=object.title %}
+              Here you can find all plans of the section "{{section}}", which the coalition constituted in their agreement. On the curresponding detail pages, you'll get more information, stay up to date with news or submit changes.
+              {% endblocktranslate %}
+            </p>
+
+            {# TODO: make this dynamic #}
+            <a href="/koalitionstracker/" class="action-link">zurück zu allen Kategorien</a>
+          </div>
+        </div>
+      </div>
     </div>
-
-    {% if object.image %}
-      {# this should not be a dependency! #}
-      {% include "fds_blog/includes/_picture.html" with picture=object.image %}
-    {% endif %}
-
-    {% render_placeholder object.content_placeholder %}
-
   </div>
+</div>
+
+<div class="container">
+  {% include "froide_govplan/plugins/card_cols.html" with object_list=plans %}
+</div>
 {% endblock %}
