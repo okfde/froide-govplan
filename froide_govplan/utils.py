@@ -98,11 +98,18 @@ class PlanImporter(object):
                 return datetime.date(year, 3, 1)
             if "Innerhalb" in date_descr:
                 return datetime.date(year, 12, 31)
+            if "Juni" in date_descr:
+                return datetime.date(year, 6, 1)
             return datetime.date(year, 1, 1)
 
         plan.due_date = parse_date(date_descr)
 
     def handle_status(self, plan, status):
-        if not status.strip() or status == "noch nicht umgesetzt":
+        status = status.strip()
+        if not status or status == "noch nicht umgesetzt":
             status = "not_started"
+        if status == "umgesetzt":
+            status = "implemented"
+        if status == "begonnen":
+            status = "started"
         plan.status = status
