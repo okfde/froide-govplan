@@ -1,0 +1,17 @@
+{% load i18n %}
+<form method="get" action="{% url 'govplan:search' %}" class="ajaxified" data-container="#govplan-searchresult-{{ instance.id }}">
+  <div class="input-group mb-3">
+    <input type="text" name="q" class="form-control" aria-label="{% translate 'search query' %}">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" type="submit">
+        {% translate "Search" %}
+      </button>
+    </div>
+  </div>
+  {% if instance.government_id %}
+    <input type="hidden" name="government" value="{{ instance.government_id }}"/>
+  {% endif %}
+</form>
+<div id="govplan-searchresult-{{ instance.id }}">
+
+</div>

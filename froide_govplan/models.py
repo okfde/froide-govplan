@@ -1,5 +1,9 @@
+import functools
+import re
+
 from django.conf import settings
 from django.contrib.auth.models import Group
+from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
@@ -84,6 +88,48 @@ class CategorizedGovernmentPlan(TaggedItemBase):
         verbose_name_plural = _("Categorized Government Plans")
 
 
+WORD_RE = re.compile(r"^\w+$", re.IGNORECASE)
+
+
+class GovernmentPlanManager(models.Manager):
+    SEARCH_LANG = "german"
+
+    def get_search_vector(self):
+        fields = [
+            ("title", "A"),
+            ("description", "B"),
+            ("quote", "B"),
+        ]
+        return functools.reduce(
+            lambda a, b: a + b,
+            [SearchVector(f, weight=w, config=self.SEARCH_LANG) for f, w in fields],
+        )
+
+    def search(self, query, qs=None):
+        if not qs:
+            qs = self.get_queryset()
+        if not query:
+            return qs
+        search_queries = []
+        for q in query.split():
+            if WORD_RE.match(q):
+                sq = SearchQuery(
+                    "{}:*".format(q), search_type="raw", config=self.SEARCH_LANG
+                )
+            else:
+                sq = SearchQuery(q, search_type="plain", config=self.SEARCH_LANG)
+            search_queries.append(sq)
+
+        search_query = functools.reduce(lambda a, b: a & b, search_queries)
+        search_vector = self.get_search_vector()
+        qs = (
+            qs.annotate(rank=SearchRank(search_vector, search_query))
+            .filter(rank__gte=0.3)
+            .order_by("-rank")
+        )
+        return qs
+
+
 class GovernmentPlan(models.Model):
     government = models.ForeignKey(
         Government, on_delete=models.CASCADE, verbose_name=_("government")
@@ -141,6 +187,8 @@ class GovernmentPlan(models.Model):
     group = models.ForeignKey(
         Group, null=True, blank=True, on_delete=models.SET_NULL, verbose_name=_("group")
     )
+
+    objects = GovernmentPlanManager()
 
     class Meta:
         ordering = ("reference", "title")
@@ -313,6 +361,7 @@ if CMSPlugin:
         ("froide_govplan/plugins/default.html", _("Normal")),
         ("froide_govplan/plugins/progress.html", _("Progress")),
         ("froide_govplan/plugins/card_cols.html", _("Card columns")),
+        ("froide_govplan/plugins/search.html", _("Search")),
     ]
 
     class GovernmentPlansCMSPlugin(CMSPlugin):

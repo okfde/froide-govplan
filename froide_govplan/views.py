@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.views.generic import DetailView
 
 from .models import Government, GovernmentPlan, GovernmentPlanSection
@@ -53,3 +53,19 @@ class GovPlanDetailView(GovernmentMixin, DetailView):
             "-timestamp"
         )
         return context
+
+
+def search(request):
+    plans = GovernmentPlan.objects.search(request.GET.get("q", ""))
+
+    if request.GET.get("government"):
+        try:
+            gov_id = int(request.GET["government"])
+            plans = plans.filter(government_id=gov_id)
+        except ValueError:
+            pass
+
+    plans = plans[:20]
+    return render(
+        request, "froide_govplan/plugins/card_cols.html", {"object_list": plans}
+    )
