@@ -107,7 +107,11 @@
                 <dt>Beobachtet von</dt>
                 <dd>
                   <a href="{{ object.organization.website }}">
+                    {% if object.organization.logo %}
                     <img src="{{ object.organization.logo.url }}" class="img-sm" alt="{{ object.organization.name }}">
+                    {% else %}
+                    {{ object.organization.name }}
+                    {% endif %}
                   </a>
                 </dd>
               {% endif %}
