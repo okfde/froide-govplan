@@ -291,7 +291,7 @@ class GovernmentPlanUpdate(models.Model):
         return "{}#update-{}".format(
             reverse(
                 "govplan:plan",
-                kwargs={"gov": self.government.slug, "plan": self.plan.slug},
+                kwargs={"gov": self.plan.government.slug, "plan": self.plan.slug},
             ),
             self.id,
         )
