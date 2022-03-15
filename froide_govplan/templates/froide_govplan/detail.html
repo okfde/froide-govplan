@@ -49,37 +49,41 @@
 
         <div class="row">
           <div class="col col-12 col-md-7 col-lg-8 order-md-2 offset-lg-1">
-            {% if object.quote %}
-              <h2 class="h6">Ausschnitt aus dem Koalitionsvertrag</h2>
-              <blockquote>
-                {{ object.quote | addquotes | markdown }}
-              </blockquote>
-            {% endif %}
-            {% with refs=object.get_reference_links %}
-              {% if refs %}
-                <p>
-                  <span class="small">
-                  {% if refs|length > 1 %}
-                    Quellen:
-                  {% else %}
-                    Quelle:
+            <dl>
+              {% if object.quote %}
+                <dt>Ausschnitt aus dem Koalitionsvertrag</dt>
+                <dd>
+                  <blockquote>
+                    {{ object.quote | addquotes | markdown }}
+                  </blockquote>
+                {% with refs=object.get_reference_links %}
+                  {% if refs %}
+                    <p>
+                      <span class="small">
+                      {% if refs|length > 1 %}
+                        Quellen:
+                      {% else %}
+                        Quelle:
+                      {% endif %}
+                      </span>
+                      {% for ref in refs %}
+                        <a href="{{ ref }}" class="badge badge-light mr-2" target="_blank">
+                          {{ forloop.counter }}
+                        </a>
+                      {% endfor %}
+                    </p>
                   {% endif %}
-                  </span>
-                  {% for ref in refs %}
-                    <a href="{{ ref }}" class="badge badge-light mr-2" target="_blank">
-                      {{ forloop.counter }}
-                    </a>
-                  {% endfor %}
-                </p>
-              {% endif %}
-            {% endwith %}
+                {% endwith %}
+                {% endif %}
+              </dd>
 
-            {% if object.description %}
-              <div class="mt-5">
-                <h2 class="h6">Unsere Einschätzung</h2>
-                {{ object.description | safe }}
-              </div>
-            {% endif %}
+              {% if object.description %}
+                <div class="mt-5">
+                  <dt>Unsere Einschätzung</dt>
+                  <dd>{{ object.description | safe }}</dd>
+                </div>
+              {% endif %}
+            </dl>
           </div>
           <div class="col col-12 col-md-5 col-lg-3 mt-5 mt-md-0">
             <dl>
