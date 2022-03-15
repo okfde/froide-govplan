@@ -1,13 +1,12 @@
-from django import forms
 from django.contrib import admin, auth
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 from adminsortable2.admin import SortableAdminMixin
-from tinymce.widgets import TinyMCE
 
 from froide.helper.widgets import TagAutocompleteWidget
 
+from .forms import GovernmentPlanForm, GovernmentPlanUpdateForm
 from .models import (
     Government,
     GovernmentPlan,
@@ -22,7 +21,7 @@ class GovPlanAdminSite(admin.AdminSite):
     site_header = "Regierungsvorhaben"
 
 
-class GovernmentPlanAdminForm(forms.ModelForm):
+class GovernmentPlanAdminForm(GovernmentPlanForm):
     class Meta:
         model = GovernmentPlan
         fields = "__all__"
@@ -31,13 +30,6 @@ class GovernmentPlanAdminForm(forms.ModelForm):
                 autocomplete_url=reverse_lazy("api:category-autocomplete")
             ),
         }
-
-
-class GovernmentPlanUpdateAdminForm(forms.ModelForm):
-    class Meta:
-        model = GovernmentPlanUpdate
-        fields = "__all__"
-        widgets = {"content": TinyMCE(attrs={"cols": 80, "rows": 30})}
 
 
 class GovernmentAdmin(admin.ModelAdmin):
@@ -58,7 +50,7 @@ def get_allowed_plans(request):
 
 
 class GovernmentPlanAdmin(admin.ModelAdmin):
-    form = GovernmentPlanAdminForm
+    form = GovernmentPlanForm
 
     save_on_top = True
     prepopulated_fields = {"slug": ("title",)}
@@ -122,7 +114,7 @@ class GovernmentPlanAdmin(admin.ModelAdmin):
 
 
 class GovernmentPlanUpdateAdmin(admin.ModelAdmin):
-    form = GovernmentPlanUpdateAdminForm
+    form = GovernmentPlanUpdateForm
     save_on_top = True
     raw_id_fields = ("user", "foirequest")
     date_hierarchy = "timestamp"
