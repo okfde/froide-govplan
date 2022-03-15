@@ -41,3 +41,8 @@ def get_plan_progress(object_list):
 @register.inclusion_tag("froide_govplan/plugins/progress.html")
 def get_section_progress(section):
     return {"object_list": section.get_plans()}
+
+
+@register.filter
+def addquotes(text):
+    return f"„{str.strip(text)}“"

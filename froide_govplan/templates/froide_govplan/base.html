@@ -3,7 +3,9 @@
 {% load cms_tags %}
 {% load menu_tags %}
 
-{% block navbar %}{% endblock %}
+{% block navbar %}
+  {% include "header_reduced.html" %}
+{% endblock %}
 
 {% block body %}
   <nav class="breadcrumb-container" aria-label="breadcrumb">

@@ -1,9 +1,10 @@
-{% extends CMS_TEMPLATE %}
+{% extends "froide_govplan/base.html" %}
 
 {% load i18n %}
 {% load markup %}
 {% load cms_tags %}
 {% load follow_tags %}
+{% load govplan %}
 
 {% block title %}{{ object.title }}{% endblock %}
 
@@ -14,53 +15,54 @@
 {% endblock %}
 
 {% block app_body %}
-<div class="container mb-5">
-  <div class="row justify-content-center mb-5">  
-    <div class="col col-lg-8 mt-md-n5">
-      <div class="box-card border-yellow md:shadow-yellow bg-white">
-        <div>
-          <div class="flex-grow-1 tight-margin p-3 p-md-4 p-lg-5">
-            <h1 class="mt-0 h3">
-              {{ object.title }}
-            </h1>
+<div class="container">
+  <div class="box-card border-yellow md:shadow-yellow bg-white mb-5">
+    <div>
+      <div class="flex-grow-1 tight-margin p-3 p-md-4 p-lg-5">
+        <h1 class="mt-0 h3">
+          {{ object.title }}
+        </h1>
 
-            <div class="d-md-flex my-3 align-items-center">
-              <ul class="list-unstyled d-flex m-0">
-                <li>
-                  <span class="badge badge-{{ object.get_status_css }} mr-2">
-                    {{ object.get_status_display }}
-                  </span>
-                </li>
-                {% for cat in object.categories.all %}
-                <li>
-                  <a href="{{ section.get_absolute_url }}">
-                    <span class="badge badge-light mr-2">{{ cat.name }}</span>
-                  </a>
-                </li>
-                {% endfor %}
-              </ul>
+        <div class="d-md-flex my-4 align-items-center">
+          <ul class="list-unstyled d-flex m-0">
+            <li>
+              <span class="badge badge-{{ object.get_status_css }} mr-2">
+                {{ object.get_status_display }}
+              </span>
+            </li>
+            {% for cat in object.categories.all %}
+            <li>
+              <a href="{{ section.get_absolute_url }}" class="badge badge-light mr-2">
+                {{ cat.name }}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
 
-              <div class="ml-auto">
-                {% show_follow "govplan" object %}
-              </div>
-            </div>
+          <div class="ml-auto">
+            {% show_follow "govplan" object %}
+          </div>
+        </div>
 
+        <div class="row">
+          <div class="col col-12 col-md-7 col-lg-8 order-md-2 offset-lg-1">
             {% if object.quote %}
-              <blockquote> 
-                {{ object.quote | markdown }}
+              <blockquote>
+                {{ object.quote | addquotes | markdown }}
               </blockquote>
             {% endif %}
-
             {% with refs=object.get_reference_links %}
               {% if refs %}
-                <p class="small">
+                <p>
+                  <span class="small">
                   {% if refs|length > 1 %}
                     Quellen:
                   {% else %}
                     Quelle:
                   {% endif %}
+                  </span>
                   {% for ref in refs %}
-                    <a href="{{ ref }}" target="_blank">
+                    <a href="{{ ref }}" class="badge badge-light mr-2" target="_blank">
                       {{ forloop.counter }}
                     </a>
                   {% endfor %}
@@ -68,80 +70,71 @@
               {% endif %}
             {% endwith %}
 
-            {% if object.organization %}
-              <p>
-                Dieses Vorhaben wird beobachtet von 
-                <a href="{{ object.organization.website }}">
-                  {{ object.organization.name }}
-                </a>
-              </p>
+            {% if object.description %}
+              <div class="mt-5">
+                {{ object.description | safe }}
+              </div>
             {% endif %}
+          </div>
+          <div class="col col-12 col-md-5 col-lg-3 mt-5 mt-md-0">
+            <dl>
+              {% if object.rating %}
+                <dt>Bewertung</dt>
+                <dd>{{ object.get_rating_display }}</dd>
+              {% endif %}
+              {% if object.measure %}
+                <dt>Art der Umsetzung</dt>
+                <dd>{{ object.measure }}</dd>
+              {% endif %}
+              {% if object.due_date %}
+                <dt>Frist</dt>
+                <dd>{{ object.due_date|date:"SHORT_DATE_FORMAT" }}</dd>
+              {% endif %}
+              {% if object.responsible_publicbody %}
+                <dt>Federführung</dt>
+                <dd>
+                  <a href="{{ object.responsible_publicbody.get_absolute_url }}">
+                    {{ object.responsible_publicbody.name }}
+                  </a>
+                </dd>
+              {% endif %}
+              {% if object.organization %}
+                <dt>Beobachtet von</dt>
+                <dd>
+                  <a href="{{ object.organization.website }}">
+                    <img src="{{ object.organization.logo.url }}" class="img-sm" alt="{{ object.organization.name }}">
+                  </a>
+                </dd>
+              {% endif %}
+            </dl>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
+  {% for update in updates %}
+    <h4>{{ update.title }}</h4>
 
-<div class="container">
-    <dl>
-      {% if object.rating %}
-        <dt>Bewertung</dt>
-        <dd>{{ object.get_rating_display }}</dd>
-      {% endif %}
-      {% if object.measure %}
-        <dt>Art der Umsetzung</dt>
-        <dd>{{ object.measure }}</dd>
-      {% endif %}
-      {% if object.due_date %}
-        <dt>Frist</dt>
-        <dd>{{ object.due_date|date:"SHORT_DATE_FORMAT" }}</dd>
-      {% endif %}
-    </dl>
+    <time>{{ update.timestamp|date:"DATE_FORMAT" }}</time>
 
-    <div>
-      {{ object.description | safe }}
-    </div>
+    <small>von {% if update.user %}{{ update.user.get_full_name }}{% endif %}{% if update.organization %}({{ update.organization.name }}){% endif %}
+    </small>
 
-    
+    {{ update.content|markdown }}
 
-    
+    {% if update.url %}
+      <a href="{{ update.url }}">Mehr lesen</a>
+    {% endif %}
 
-    {% if object.responsible_publicbody %}
+    {% if update.foirequest %}
       <p>
-        Federführung:
-        <a href="{{ object.responsible_publicbody.get_absolute_url }}">
-          {{ object.responsible_publicbody.name }}
+        Relevante Anfrage:
+        <a href="{{ update.foirequest.get_absolute_url }}">
+          {{ update.foirequest.title }}
         </a>
       </p>
     {% endif %}
-
-    <h3>Neueste Entwicklungen</h3>
-    {% for update in updates %}
-      <h4>{{ update.title }}</h4>
-
-      <time>{{ update.timestamp|date:"DATE_FORMAT" }}</time>
-
-      <small>von {% if update.user %}{{ update.user.get_full_name }}{% endif %}{% if update.organization %}({{ update.organization.name }}){% endif %}
-      </small>
-
-      {{ update.content|markdown }}
-
-      {% if update.url %}
-        <a href="{{ update.url }}">Mehr lesen</a>
-      {% endif %}
-
-      {% if update.foirequest %}
-        <p>
-          Relevante Anfrage:
-          <a href="{{ update.foirequest.get_absolute_url }}">
-            {{ update.foirequest.title }}
-          </a>
-        </p>
-      {% endif %}
-    {% empty %}
-      Keine Entwicklungen
-    {% endfor %}
-  </div>
+  {% endfor %}
+</div>
 {% endblock %}
