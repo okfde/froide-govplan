@@ -39,7 +39,9 @@ class GovPlanDetailView(GovernmentMixin, DetailView):
         qs = GovernmentPlan.objects.filter(government=self.government)
         if self.request.user.is_authenticated and self.request.user.is_staff:
             return qs
-        return qs.filter(public=True)
+        return qs.filter(public=True).select_related(
+            "responsible_publicbody", "organization"
+        )
 
     def get_section(self):
         return GovernmentPlanSection.objects.filter(
