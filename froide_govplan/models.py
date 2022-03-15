@@ -1,5 +1,6 @@
 import functools
 import re
+from datetime import timedelta
 from urllib.parse import urlparse
 
 from django.conf import settings
@@ -18,6 +19,8 @@ from froide.foirequest.models import FoiRequest
 from froide.follow.models import Follower
 from froide.organization.models import Organization
 from froide.publicbody.models import Category, Jurisdiction, PublicBody
+
+from .utils import PLAN_TAG_PREFIX, TAG_NAME, make_request_url
 
 try:
     from cms.models.fields import PlaceholderField
@@ -231,6 +234,35 @@ class GovernmentPlan(models.Model):
 
     def get_status_css(self):
         return STATUS_CSS.get(self.status, "")
+
+    def make_request_url(self):
+        if not self.responsible_publicbody:
+            return []
+        return make_request_url(self, self.responsible_publicbody)
+
+    def has_recent_foirequest(self):
+        frs = self.get_related_foirequests()
+        ago = timezone.now() - timedelta(days=90)
+        return any(fr.first_message > ago for fr in frs)
+
+    def get_recent_foirequest(self):
+        return self.get_related_foirequests()[0]
+
+    def get_related_foirequests(self):
+        if not self.responsible_publicbody:
+            return []
+        if hasattr(self, "_related_foirequests"):
+            return self._related_foirequests
+        self._related_foirequests = (
+            FoiRequest.objects.filter(
+                visibility=FoiRequest.VISIBILITY.VISIBLE_TO_PUBLIC,
+                public_body=self.responsible_publicbody,
+            )
+            .filter(tags__name=TAG_NAME)
+            .filter(tags__name="{}{}".format(PLAN_TAG_PREFIX, self.slug))
+            .order_by("-first_message")
+        )
+        return self._related_foirequests
 
 
 class GovernmentPlanUpdate(models.Model):

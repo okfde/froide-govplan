@@ -4,7 +4,7 @@ import json
 from django.core.management.base import BaseCommand
 
 from ...models import Government
-from ...utils import PlanImporter
+from ...plan_importer import PlanImporter
 
 
 class Command(BaseCommand):
