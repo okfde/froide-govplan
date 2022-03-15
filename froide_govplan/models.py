@@ -17,6 +17,7 @@ from taggit.models import TaggedItemBase
 
 from froide.foirequest.models import FoiRequest
 from froide.follow.models import Follower
+from froide.helper.forms import TAG_NAME_MAX_CHARS
 from froide.organization.models import Organization
 from froide.publicbody.models import Category, Jurisdiction, PublicBody
 
@@ -248,18 +249,23 @@ class GovernmentPlan(models.Model):
     def get_recent_foirequest(self):
         return self.get_related_foirequests()[0]
 
+    def get_plan_tag(self):
+        plan_tag = "{}{}".format(PLAN_TAG_PREFIX, self.slug)
+        return plan_tag[:TAG_NAME_MAX_CHARS]
+
     def get_related_foirequests(self):
         if not self.responsible_publicbody:
             return []
         if hasattr(self, "_related_foirequests"):
             return self._related_foirequests
+
         self._related_foirequests = (
             FoiRequest.objects.filter(
                 visibility=FoiRequest.VISIBILITY.VISIBLE_TO_PUBLIC,
                 public_body=self.responsible_publicbody,
             )
             .filter(tags__name=TAG_NAME)
-            .filter(tags__name="{}{}".format(PLAN_TAG_PREFIX, self.slug))
+            .filter(tags__name=self.get_plan_tag())
             .order_by("-first_message")
         )
         return self._related_foirequests
