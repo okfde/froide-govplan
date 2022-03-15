@@ -5,7 +5,7 @@
   {% for section in sections %}
   {% if section.image %}
   #govsection-{{ section.pk }}::after {
-    background-image: url('{% thumbnail section.image 350x150 crop subject_location=instance.picture.subject_location %}');
+    background-image: url('{% thumbnail section.image 350x150 crop subject_location=section.image.subject_location %}');
   }
   {% endif %}
   {% endfor %}
