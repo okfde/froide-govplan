@@ -52,6 +52,8 @@ class GovPlanDetailView(GovernmentMixin, DetailView):
             "-timestamp"
         )
         context["section"] = self.get_section()
+        # For CMS toolbar
+        self.request.govplan = self.object
         return context
 
 
