@@ -9,6 +9,9 @@
 {% block title %}{{ object.title }}{% endblock %}
 
 {% block govplan_breadcrumbs %}
+<li class="breadcrumb-item">
+  <a href="{{ object.categories.first.get_absolute_url }}">{{ object.categories.first.name }}</a>
+</li>
 <li class="breadcrumb-item active" aria-current="page">
   <a href="{{ object.get_absolute_url }}">{{ object.title }}</a>
 </li>
