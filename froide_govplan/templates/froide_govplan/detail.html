@@ -82,34 +82,22 @@
             {% endif %}
           </div>
           <div class="col col-12 col-md-5 col-lg-3 mt-5 mt-md-0">
-
-            {% if object.responsible_publicbody %}
-              <div class="mb-3">
-                {% if not object.has_recent_foirequest %}
-                  <a href="{{ object.make_request_url }}" target="_blank" class="btn btn-primary">
-                    Anfrage zum Vorhaben stellen
-                  </a>
-                {% else %}
-                  {% with foirequest=object.get_recent_foirequest %}
-                    {% include "foirequest/snippets/request_item.html" with object=foirequest %}
-                  {% endwith %}
-                {% endif %}
-              </div>
-            {% endif %}
-
             <dl>
               {% if object.rating %}
                 <dt>Bewertung</dt>
                 <dd>{{ object.get_rating_display }}</dd>
               {% endif %}
+
               {% if object.measure %}
                 <dt>Art der Umsetzung</dt>
                 <dd>{{ object.measure }}</dd>
               {% endif %}
+
               {% if object.due_date %}
                 <dt>Frist</dt>
                 <dd>{{ object.due_date|date:"SHORT_DATE_FORMAT" }}</dd>
               {% endif %}
+
               {% if object.responsible_publicbody %}
                 <dt>Federführung</dt>
                 <dd>
@@ -118,6 +106,23 @@
                   </a>
                 </dd>
               {% endif %}
+
+              {% if object.responsible_publicbody %}
+                {% if not object.has_recent_foirequest %}
+                  <a href="{{ object.make_request_url }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                    Anfrage zum Vorhaben stellen
+                  </a>
+                {% else %}
+                  {% with foirequest=object.get_recent_foirequest %}
+                  <dt>Anfrage</dt>
+                  <dd>
+                    
+                    {% include "foirequest/snippets/request_item_mini.html" with object=foirequest %}
+                  </dd>
+                  {% endwith %}
+                {% endif %}
+              {% endif %}
+
               {% if object.organization %}
                 <dt>Beobachtet von</dt>
                 <dd>
