@@ -39,6 +39,8 @@ class GovernmentAdmin(admin.ModelAdmin):
 
 
 def has_limited_access(user):
+    if not user.is_authenticated:
+        return True
     return not user.has_perm("froide_govplan.change_governmentplanupdate")
 
 
