@@ -129,7 +129,7 @@ class GovernmentPlanManager(models.Manager):
         search_vector = self.get_search_vector()
         qs = (
             qs.annotate(rank=SearchRank(search_vector, search_query))
-            .filter(rank__gte=0.3)
+            .filter(rank__gte=0.1)
             .order_by("-rank")
         )
         return qs
