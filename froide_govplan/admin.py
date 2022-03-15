@@ -58,21 +58,6 @@ class GovernmentPlanAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
     search_fields = ("title",)
     raw_id_fields = ("responsible_publicbody",)
-    list_display = (
-        "title",
-        "public",
-        "status",
-        "rating",
-        "organization",
-        "get_categories",
-    )
-    list_filter = (
-        "status",
-        "rating",
-        "public",
-        "government",
-        "categories",
-    )
 
     actions = ["make_public"]
 
@@ -81,8 +66,39 @@ class GovernmentPlanAdmin(admin.ModelAdmin):
         qs = qs.prefetch_related(
             "categories",
             "organization",
+            "group",
         )
         return qs
+
+    def get_list_display(self, request):
+        list_display = [
+            "title",
+            "public",
+            "status",
+            "rating",
+            "organization",
+            "get_categories",
+        ]
+        if not has_limited_access(request.user):
+            list_display.append("group")
+        return list_display
+
+    def get_list_filter(self, request):
+        list_filter = [
+            "status",
+            "rating",
+            "public",
+        ]
+        if not has_limited_access(request.user):
+            list_filter.extend(
+                [
+                    "organization",
+                    "group",
+                    "government",
+                    "categories",
+                ]
+            )
+        return list_filter
 
     def get_fields(self, request, obj=None):
         if has_limited_access(request.user):
