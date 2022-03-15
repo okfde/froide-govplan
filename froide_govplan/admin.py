@@ -1,10 +1,13 @@
 from django.contrib import admin, auth
+from django.contrib.auth.models import Group
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 from adminsortable2.admin import SortableAdminMixin
 
+from froide.helper.admin_utils import make_choose_object_action
 from froide.helper.widgets import TagAutocompleteWidget
+from froide.organization.models import Organization
 
 from .forms import GovernmentPlanForm, GovernmentPlanUpdateForm
 from .models import (
@@ -51,6 +54,24 @@ def get_allowed_plans(request):
     return GovernmentPlan.objects.filter(group__in=groups).distinct()
 
 
+def execute_assign_organization(admin, request, queryset, action_obj):
+    queryset.update(organization=action_obj)
+
+
+def execute_assign_group(admin, request, queryset, action_obj):
+    queryset.update(group=action_obj)
+
+
+PLAN_ACTIONS = {
+    "assign_organization": make_choose_object_action(
+        Organization, execute_assign_organization, _("Assign organization...")
+    ),
+    "assign_group": make_choose_object_action(
+        Group, execute_assign_group, _("Assign permission group...")
+    ),
+}
+
+
 class GovernmentPlanAdmin(admin.ModelAdmin):
     form = GovernmentPlanForm
 
@@ -69,6 +90,20 @@ class GovernmentPlanAdmin(admin.ModelAdmin):
             "group",
         )
         return qs
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if not has_limited_access(request.user):
+            admin_actions = {
+                action: (
+                    func,
+                    action,
+                    func.short_description,
+                )
+                for action, func in PLAN_ACTIONS.items()
+            }
+        actions.update(admin_actions)
+        return actions
 
     def get_list_display(self, request):
         list_display = [
