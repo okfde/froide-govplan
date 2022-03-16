@@ -47,7 +47,7 @@ class BleachField(forms.CharField):
 
 
 class GovernmentPlanForm(forms.ModelForm):
-    description = BleachField(widget=TinyMCE(attrs={"cols": 80, "rows": 30}))
+    description = BleachField(required=False, widget=TinyMCE(attrs={"cols": 80, "rows": 30}))
 
     class Meta:
         model = GovernmentPlan
@@ -55,7 +55,7 @@ class GovernmentPlanForm(forms.ModelForm):
 
 
 class GovernmentPlanUpdateForm(forms.ModelForm):
-    content = BleachField(widget=TinyMCE(attrs={"cols": 80, "rows": 30}))
+    content = BleachField(required=False, widget=TinyMCE(attrs={"cols": 80, "rows": 30}))
 
     class Meta:
         model = GovernmentPlanUpdate
