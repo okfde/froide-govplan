@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-16 09:49+0100\n"
-"PO-Revision-Date: 2022-03-16 09:49+0100\n"
+"POT-Creation-Date: 2022-03-16 12:14+0100\n"
+"PO-Revision-Date: 2022-03-16 12:17+0100\n"
 "Last-Translator: Stefan Wehrmeyer <stefan.wehrmeyer@okfn.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -18,19 +18,19 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.0.1\n"
 
-#: froide_govplan/admin.py:67
+#: froide_govplan/admin.py:68
 msgid "Assign organization..."
 msgstr "Organisation zuweisen..."
 
-#: froide_govplan/admin.py:70
+#: froide_govplan/admin.py:71
 msgid "Assign permission group..."
 msgstr "Berechtigungsgruppe zuweisen..."
 
-#: froide_govplan/admin.py:161
+#: froide_govplan/admin.py:162
 msgid "category(s)"
 msgstr "Kategorie(n)"
 
-#: froide_govplan/admin.py:166
+#: froide_govplan/admin.py:167
 msgid "Make public"
 msgstr "Veröffentlichen"
 
@@ -43,11 +43,11 @@ msgid "GovPlan CMS App"
 msgstr "Regierungsvorhaben-CMS-App"
 
 #: froide_govplan/cms_plugins.py:16 froide_govplan/configuration.py:15
-#: froide_govplan/models.py:200
+#: froide_govplan/models.py:202
 msgid "Government plans"
 msgstr "Regierungsvorhaben"
 
-#: froide_govplan/cms_plugins.py:35 froide_govplan/models.py:391
+#: froide_govplan/cms_plugins.py:35 froide_govplan/models.py:393
 msgid "Government plan sections"
 msgstr "Regierungsvorhaben-Themenbereiche"
 
@@ -121,6 +121,49 @@ msgstr "Regierungsvorhaben"
 msgid "An update was posted for the government plan “{title}”."
 msgstr "Es gibt Neuigkeiten zum Regierungsvorhaben „{title}”."
 
+#: froide_govplan/forms.py:73 froide_govplan/models.py:141
+#: froide_govplan/models.py:296 froide_govplan/models.py:363
+msgid "title"
+msgstr "Titel"
+
+#: froide_govplan/forms.py:74
+msgid "Summarize the update in a title."
+msgstr "Fasse die Entwicklung in einem Titel zusammen."
+
+#: froide_govplan/forms.py:83
+msgid "details"
+msgstr "Details"
+
+#: froide_govplan/forms.py:84
+msgid "Optionally give more details."
+msgstr "Optional kannst du noch mehr Details angeben."
+
+#: froide_govplan/forms.py:88
+msgid "source URL"
+msgstr "Beleg-URL"
+
+#: froide_govplan/forms.py:89
+msgid "Please give provide a link."
+msgstr "Bitte gib einen Link an."
+
+#: froide_govplan/forms.py:95 froide_govplan/models.py:162
+#: froide_govplan/models.py:305
+msgid "status"
+msgstr "Status"
+
+#: froide_govplan/forms.py:96
+msgid "Has the status of the plan changed?"
+msgstr "Hat sich der Status des Vorhabens geändert?"
+
+#: froide_govplan/forms.py:101 froide_govplan/models.py:165
+#: froide_govplan/models.py:308
+msgid "rating"
+msgstr "Bewertung"
+
+#: froide_govplan/forms.py:102
+msgid "What's your rating of the current implementation?"
+msgstr "Wie würdest du die aktuelle Umsetzung bewerten?"
+
 #: froide_govplan/models.py:34
 msgid "not started"
 msgstr "nicht begonnen"
@@ -166,12 +209,12 @@ msgid "name"
 msgstr "Name"
 
 #: froide_govplan/models.py:60 froide_govplan/models.py:142
-#: froide_govplan/models.py:362
+#: froide_govplan/models.py:364
 msgid "slug"
 msgstr "URL-Kürzel"
 
 #: froide_govplan/models.py:62 froide_govplan/models.py:154
-#: froide_govplan/models.py:308
+#: froide_govplan/models.py:310
 msgid "is public?"
 msgstr "Ist öffentlich?"
 
@@ -180,7 +223,7 @@ msgid "jurisdiction"
 msgstr "Zuständigkeit"
 
 #: froide_govplan/models.py:69 froide_govplan/models.py:152
-#: froide_govplan/models.py:366
+#: froide_govplan/models.py:368
 msgid "description"
 msgstr "Beschreibung"
 
@@ -212,16 +255,11 @@ msgstr "Kategorisiertes Regierungsvorhaben"
 msgid "Categorized Government Plans"
 msgstr "Kategorisierte Regierungsvorhaben"
 
-#: froide_govplan/models.py:139 froide_govplan/models.py:358
+#: froide_govplan/models.py:139 froide_govplan/models.py:360
 msgid "government"
 msgstr "Regierung"
 
-#: froide_govplan/models.py:141 froide_govplan/models.py:294
-#: froide_govplan/models.py:361
-msgid "title"
-msgstr "Titel"
-
-#: froide_govplan/models.py:148 froide_govplan/models.py:371
+#: froide_govplan/models.py:148 froide_govplan/models.py:373
 msgid "image"
 msgstr "Bild"
 
@@ -237,19 +275,11 @@ msgstr "Frist"
 msgid "measure"
 msgstr "Art des Vorhabens"
 
-#: froide_govplan/models.py:162 froide_govplan/models.py:303
-msgid "status"
-msgstr "Status"
-
-#: froide_govplan/models.py:165 froide_govplan/models.py:306
-msgid "rating"
-msgstr "Bewertung"
-
 #: froide_govplan/models.py:169
 msgid "reference"
 msgstr "Fundstelle"
 
-#: froide_govplan/models.py:173 froide_govplan/models.py:437
+#: froide_govplan/models.py:173 froide_govplan/models.py:439
 msgid "categories"
 msgstr "Kategorien"
 
@@ -257,7 +287,7 @@ msgstr "Kategorien"
 msgid "responsible public body"
 msgstr "verantwortliche Behörde"
 
-#: froide_govplan/models.py:188 froide_govplan/models.py:291
+#: froide_govplan/models.py:188 froide_govplan/models.py:293
 msgid "organization"
 msgstr "Organisation"
 
@@ -265,55 +295,55 @@ msgstr "Organisation"
 msgid "group"
 msgstr "Gruppe"
 
-#: froide_govplan/models.py:199 froide_govplan/models.py:348
+#: froide_govplan/models.py:201 froide_govplan/models.py:350
 msgid "Government plan"
 msgstr "Regierungsvorhaben"
 
-#: froide_govplan/models.py:277
+#: froide_govplan/models.py:279
 msgid "plan"
 msgstr "Vorhaben"
 
-#: froide_govplan/models.py:284
+#: froide_govplan/models.py:286
 msgid "user"
 msgstr "Nutzer/in"
 
-#: froide_govplan/models.py:293
+#: froide_govplan/models.py:295
 msgid "timestamp"
 msgstr "Zeitpunkt"
 
-#: froide_govplan/models.py:295
+#: froide_govplan/models.py:297
 msgid "content"
 msgstr "Inhalt"
 
-#: froide_govplan/models.py:296
+#: froide_govplan/models.py:298
 msgid "URL"
 msgstr "URL"
 
-#: froide_govplan/models.py:315
+#: froide_govplan/models.py:317
 msgid "FOI request"
 msgstr "IFG-Anfrage"
 
-#: froide_govplan/models.py:321
+#: froide_govplan/models.py:323
 msgid "Plan update"
 msgstr "Entwicklung bei Vorhaben"
 
-#: froide_govplan/models.py:322
+#: froide_govplan/models.py:324
 msgid "Plan updates"
 msgstr "Entwicklungen bei Vorhaben"
 
-#: froide_govplan/models.py:352
+#: froide_govplan/models.py:354
 msgid "Government plan follower"
 msgstr "Regierungsvorhaben-Follower"
 
-#: froide_govplan/models.py:353
+#: froide_govplan/models.py:355
 msgid "Government plan followers"
 msgstr "Regierungsvorhaben-Follower"
 
-#: froide_govplan/models.py:376
+#: froide_govplan/models.py:378
 msgid "Icon"
 msgstr "Icon"
 
-#: froide_govplan/models.py:380
+#: froide_govplan/models.py:382
 msgid ""
 "Enter an icon name from the <a href=\"https://fontawesome.com/v4.7.0/icons/"
 "\" target=\"_blank\">FontAwesome 4 icon set</a>"
@@ -321,56 +351,56 @@ msgstr ""
 "Gib ein Icon-Namen aus dem <a href=\"https://fontawesome.com/v4.7.0/icons/\" "
 "target=\"_blank\">FontAwesome 4 Icon-Set</a> an"
 
-#: froide_govplan/models.py:390
+#: froide_govplan/models.py:392
 msgid "Government plan section"
 msgstr "Regierungsvorhaben-Themenbereich"
 
-#: froide_govplan/models.py:422
+#: froide_govplan/models.py:424
 msgid "Normal"
 msgstr "Standard"
 
-#: froide_govplan/models.py:423
+#: froide_govplan/models.py:425
 msgid "Progress"
 msgstr "Fortschritt"
 
-#: froide_govplan/models.py:424
+#: froide_govplan/models.py:426
 msgid "Card columns"
 msgstr "Karten-Spalten"
 
-#: froide_govplan/models.py:425
+#: froide_govplan/models.py:427
 #: froide_govplan/templates/froide_govplan/plugins/search.html:7
 msgid "Search"
 msgstr "Suchen"
 
-#: froide_govplan/models.py:441
+#: froide_govplan/models.py:443
 msgid "number of plans"
 msgstr "Anzahl der Vorhaben"
 
-#: froide_govplan/models.py:441
+#: froide_govplan/models.py:443
 msgid "0 means all the plans"
 msgstr "0 heißt all Vorhaben"
 
-#: froide_govplan/models.py:444
+#: froide_govplan/models.py:446
 msgid "offset"
 msgstr "Start"
 
-#: froide_govplan/models.py:446
+#: froide_govplan/models.py:448
 msgid "number of plans to skip from top of list"
 msgstr "Anzahl der Vorhaben, die ausgelassen werden"
 
-#: froide_govplan/models.py:449
+#: froide_govplan/models.py:451
 msgid "template"
 msgstr "Template"
 
-#: froide_govplan/models.py:453
+#: froide_govplan/models.py:455
 msgid "template used to display the plugin"
 msgstr "Template, mit dem das Plugin angezeigt wird"
 
-#: froide_govplan/models.py:472
+#: froide_govplan/models.py:474
 msgid "All matching plans"
 msgstr "Alle zutreffenden Vorhaben"
 
-#: froide_govplan/models.py:473
+#: froide_govplan/models.py:475
 #, python-format
 msgid "%s matching plans"
 msgstr "%s zutreffenden Vorhaben"
@@ -390,7 +420,7 @@ msgstr "Durchsuche alle Regierungsvorhaben…"
 msgid "Search results"
 msgstr "Suchergebnisse"
 
-#: froide_govplan/templates/froide_govplan/section.html:57
+#: froide_govplan/templates/froide_govplan/section.html:29
 #, python-format
 msgid ""
 "\n"
@@ -406,17 +436,30 @@ msgstr ""
 "Detailseiten erhalten Sie mehr Informationen, können Neuigkeiten abonnieren "
 "oder Änderungen einreichen.      "
 
-#: froide_govplan/urls.py:18
+#: froide_govplan/urls.py:17
 msgctxt "url part"
 msgid "<slug:gov>/plan/<slug:plan>/"
 msgstr "<slug:gov>/vorhaben/<slug:plan>/"
 
-#: froide_govplan/urls.py:23
+#: froide_govplan/urls.py:22
 msgctxt "url part"
 msgid "<slug:gov>/plan/<slug:plan>/_og/"
 msgstr "<slug:gov>/vorhaben/<slug:plan>/_og/"
 
-#: froide_govplan/urls.py:28
+#: froide_govplan/urls.py:27
+msgctxt "url part"
+msgid "<slug:gov>/plan/<slug:plan>/propose-update/"
+msgstr "<slug:gov>/vorhaben/<slug:plan>/entwicklung-melden/"
+
+#: froide_govplan/urls.py:32
 msgctxt "url part"
 msgid "<slug:gov>/<slug:section>/"
 msgstr "<slug:gov>/<slug:section>/"
+
+#: froide_govplan/views.py:89
+msgid ""
+"Thank you for your proposal. We will send you an email when it has been "
+"approved."
+msgstr ""
+"Danke für Deinen Vorschlag. Wir senden Dir eine E-Mail, sobald dein Eintrag "
+"veröffentlicht wird."
