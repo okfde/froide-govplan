@@ -5,8 +5,8 @@ from cms.plugin_pool import plugin_pool
 
 from .models import (
     PLUGIN_TEMPLATES,
-    GovernmentPlanSection,
     GovernmentPlansCMSPlugin,
+    GovernmentPlanSection,
     GovernmentPlanSectionsCMSPlugin,
 )
 
@@ -39,12 +39,14 @@ class GovernmentPlanSectionsPlugin(CMSPluginBase):
     def render(self, context, instance, placeholder):
         context = super().render(context, instance, placeholder)
 
-        if instance.government:
+        if instance.government_id:
             sections = GovernmentPlanSection.objects.filter(
-                government=instance.government
+                government_id=instance.government_id
             )
         else:
             sections = GovernmentPlanSection.objects.all()
+
+        sections = sections.select_related("government")
 
         context["sections"] = sections
 

@@ -27,7 +27,9 @@ class GovPlanSectionDetailView(GovernmentMixin, DetailView):
     template_name = "froide_govplan/section.html"
 
     def get_queryset(self):
-        return GovernmentPlanSection.objects.filter(government=self.government)
+        return GovernmentPlanSection.objects.filter(
+            government=self.government
+        ).select_related("government")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

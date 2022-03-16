@@ -411,7 +411,7 @@ class GovernmentPlanSection(models.Model):
     def get_plans(self):
         return (
             GovernmentPlan.objects.filter(
-                categories__in=self.categories.all(), government=self.government
+                categories__in=self.categories.all(), government_id=self.government_id
             )
             .distinct()
             .order_by("title")
@@ -486,8 +486,8 @@ if CMSPlugin:
                 plans = GovernmentPlan.objects.all()
 
             filters = {}
-            if self.government:
-                filters["government"] = self.government
+            if self.government_id:
+                filters["government_id"] = self.government_id
 
             cat_list = self.categories.all().values_list("id", flat=True)
             if cat_list:
