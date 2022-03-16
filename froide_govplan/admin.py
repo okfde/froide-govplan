@@ -103,7 +103,7 @@ class GovernmentPlanAdmin(admin.ModelAdmin):
                 )
                 for action, func in PLAN_ACTIONS.items()
             }
-        actions.update(admin_actions)
+            actions.update(admin_actions)
         return actions
 
     def get_list_display(self, request):
