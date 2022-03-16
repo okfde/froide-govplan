@@ -192,6 +192,8 @@ class GovernmentPlan(models.Model):
         Group, null=True, blank=True, on_delete=models.SET_NULL, verbose_name=_("group")
     )
 
+    proposals = models.JSONField(blank=True, null=True)
+
     objects = GovernmentPlanManager()
 
     class Meta:
