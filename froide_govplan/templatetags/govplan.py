@@ -27,6 +27,7 @@ def get_plan_progress(object_list):
         sections.append(
             {
                 "count": status_count,
+                "name": str(value),
                 "label": label,
                 "css_class": STATUS_CSS[value],
                 "percentage": round(percentage),

@@ -5,6 +5,7 @@ from .views import (
     GovPlanDetailOGView,
     GovPlanDetailView,
     GovPlanProposeUpdateView,
+    GovPlanSectionDetailOGView,
     GovPlanSectionDetailView,
     search,
 )
@@ -32,5 +33,10 @@ urlpatterns = [
         pgettext_lazy("url part", "<slug:gov>/<slug:section>/"),
         GovPlanSectionDetailView.as_view(),
         name="section",
+    ),
+    path(
+        pgettext_lazy("url part", "<slug:gov>/<slug:section>/_og/"),
+        GovPlanSectionDetailOGView.as_view(),
+        name="section_og",
     ),
 ]

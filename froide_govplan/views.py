@@ -37,6 +37,10 @@ class GovPlanSectionDetailView(GovernmentMixin, DetailView):
         return context
 
 
+class GovPlanSectionDetailOGView(GovPlanSectionDetailView):
+    template_name = "froide_govplan/section_og.html"
+
+
 class GovPlanDetailView(GovernmentMixin, DetailView):
     slug_url_kwarg = "plan"
     template_name = "froide_govplan/detail.html"

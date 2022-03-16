@@ -5,8 +5,17 @@
 {% load cms_tags %}
 {% load follow_tags %}
 {% load thumbnail %}
+{% load fds_ogimage %}
 
 {% block title %}{{ object.title }}{% endblock %}
+
+{% block meta %}
+  {% include "snippets/meta.html" %}
+
+  {% url 'govplan:section_og' gov=object.government.slug section=object.slug as section_og_path %}
+  {% ogimage_url path=section_og_path template="froide_govplan/section_og.html" as og_image_url %}
+  {% include "fds_cms/social_meta.html" with object=object title=object.title description=object.description image_url=og_image_url %}
+{% endblock %}
 
 {% block govplan_breadcrumbs %}
 <li class="breadcrumb-item active" aria-current="page">

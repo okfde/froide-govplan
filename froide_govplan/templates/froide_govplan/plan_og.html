@@ -26,11 +26,14 @@ body {
   <div class="d-flex flex-column flex-grow-1 bg-translucent">
     <div class="p-5 d-flex align-items-center flex-1 h-100">
       <h3>
+        {% block tagline %}
         {{ object.title|truncatechars:100 }}
+        {% endblock %}
       </h3>
     </div>
     <div class="pb-5 px-5 mt-auto">
       <div class="row justify-content-between align-items-center">
+        {% block bottom_row %}
         <div class="col-4">
           <div class="badge badge-{{ object.get_status_css }} p-3 d-inline-flex">
             <i class="fa fa-circle mr-3"></i>
@@ -51,6 +54,7 @@ body {
             </div>
           {% endif %}
         </div>
+        {% endblock bottom_row %}
         <div class="col-auto ml-auto">
           <img height="80" src="https://static.frag-den-staat.de/static/img/header_logo.580ed694906e.svg" alt="FragDenStaat.de"/>
         </div>
