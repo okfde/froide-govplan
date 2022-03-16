@@ -113,14 +113,15 @@
 
               {% if object.responsible_publicbody %}
                 {% if not object.has_recent_foirequest %}
-                  <a href="{{ object.make_request_url }}" target="_blank" class="btn btn-outline-primary btn-sm">
-                    Anfrage zum Vorhaben stellen
-                  </a>
+                  <p>
+                    <a href="{{ object.make_request_url }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                      Anfrage zum Vorhaben stellen
+                    </a>
+                  </p>
                 {% else %}
                   {% with foirequest=object.get_recent_foirequest %}
                   <dt>Anfrage</dt>
                   <dd>
-                    
                     {% include "foirequest/snippets/request_item_mini.html" with object=foirequest %}
                   </dd>
                   {% endwith %}
