@@ -17,11 +17,10 @@ from taggit.models import TaggedItemBase
 
 from froide.foirequest.models import FoiRequest
 from froide.follow.models import Follower
-from froide.helper.forms import TAG_NAME_MAX_CHARS
 from froide.organization.models import Organization
 from froide.publicbody.models import Category, Jurisdiction, PublicBody
 
-from .utils import PLAN_TAG_PREFIX, TAG_NAME, make_request_url
+from .utils import TAG_NAME, make_request_url
 
 try:
     from cms.models.fields import PlaceholderField
@@ -249,9 +248,8 @@ class GovernmentPlan(models.Model):
     def get_recent_foirequest(self):
         return self.get_related_foirequests()[0]
 
-    def get_plan_tag(self):
-        plan_tag = "{}{}".format(PLAN_TAG_PREFIX, self.slug)
-        return plan_tag[:TAG_NAME_MAX_CHARS]
+    def get_foirequest_reference(self):
+        return "govplan:plan@{}".format(self.pk)
 
     def get_related_foirequests(self):
         if not self.responsible_publicbody:
@@ -265,7 +263,7 @@ class GovernmentPlan(models.Model):
                 public_body=self.responsible_publicbody,
             )
             .filter(tags__name=TAG_NAME)
-            .filter(tags__name=self.get_plan_tag())
+            .filter(reference=self.get_foirequest_reference())
             .order_by("-first_message")
         )
         return self._related_foirequests

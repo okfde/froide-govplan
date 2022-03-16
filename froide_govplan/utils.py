@@ -4,7 +4,6 @@ from django.conf import settings
 from django.urls import reverse
 
 TAG_NAME = "Koalitionstracker"
-PLAN_TAG_PREFIX = "Vorhaben-"
 
 
 def make_request_url(plan, publicbody):
@@ -19,7 +18,8 @@ def make_request_url(plan, publicbody):
     query = {
         "subject": subject.encode("utf-8"),
         "body": body,
-        "tags": "{},{}".format(TAG_NAME, plan.get_plan_tag()),
+        "ref": plan.get_foirequest_reference(),
+        "tags": TAG_NAME,
     }
 
     hide_features = ["hide_public", "hide_similar", "hide_draft"]
