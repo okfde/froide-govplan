@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-16 12:14+0100\n"
-"PO-Revision-Date: 2022-03-16 12:17+0100\n"
+"POT-Creation-Date: 2022-03-16 14:14+0100\n"
+"PO-Revision-Date: 2022-03-16 14:14+0100\n"
 "Last-Translator: Stefan Wehrmeyer <stefan.wehrmeyer@okfn.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -51,15 +51,15 @@ msgstr "Regierungsvorhaben"
 msgid "Government plan sections"
 msgstr "Regierungsvorhaben-Themenbereiche"
 
-#: froide_govplan/cms_toolbars.py:13
-msgid "GovPlan"
-msgstr "Regierungsvorhaben"
+#: froide_govplan/cms_toolbars.py:22
+msgid "Edit plans and updates"
+msgstr "Übersicht öffnen"
 
-#: froide_govplan/cms_toolbars.py:20
+#: froide_govplan/cms_toolbars.py:31
 msgid "Edit government plan"
 msgstr "Bearbeite Regierungsvorhaben"
 
-#: froide_govplan/cms_toolbars.py:25
+#: froide_govplan/cms_toolbars.py:36
 msgid "Add update"
 msgstr "Neue Entwicklung hinzufügen"
 
@@ -456,10 +456,13 @@ msgctxt "url part"
 msgid "<slug:gov>/<slug:section>/"
 msgstr "<slug:gov>/<slug:section>/"
 
-#: froide_govplan/views.py:89
+#: froide_govplan/views.py:92
 msgid ""
 "Thank you for your proposal. We will send you an email when it has been "
 "approved."
 msgstr ""
 "Danke für Deinen Vorschlag. Wir senden Dir eine E-Mail, sobald dein Eintrag "
 "veröffentlicht wird."
+
+#~ msgid "GovPlan"
+#~ msgstr "Regierungsvorhaben"
