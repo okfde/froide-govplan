@@ -6,6 +6,8 @@
 {% load follow_tags %}
 {% load govplan %}
 {% load fds_ogimage %}
+{% load form_helper %}
+{% load content_helper %}
 
 {% block title %}{{ object.title }}{% endblock %}
 
@@ -190,6 +192,51 @@
           </div>
       </div>
     {% endfor %}
+    <div class="col col-12 col-lg-6 d-flex" id="update-{{ update.pk }}">
+      <div class="box-card border-blue shadow-blue">
+        <div>
+          <div class="box-card-header bg-blue-100 d-flex justify-content-center p-3 p-md-4 tight-margin flex-column">
+            <h3 class="h4">Neue Entwicklung melden</h3>
+          </div>
+          <div class="p-3 p-md-4">
+            {% if request.user.is_authenticated %}
+              <button type="button" class="btn btn-light" data-toggle="modal" data-target="#govplanupdate-proposal">
+                Entwicklung melden
+              </button>
+              <div class="modal" data-teleport="body" tabindex="-1" role="dialog" id="govplanupdate-proposal">
+                <div class="modal-dialog modal-lg" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">
+                        Neue Entwicklung melden
+                      </h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <form method="post" action="{% url 'govplan:propose_planupdate' gov=object.government.slug plan=object.slug %}">
+                        {% csrf_token %}
+                        {% render_form update_proposal_form %}
+                        <button type="submit" class="btn btn-primary">
+                          Neue Entwicklung melden
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% else %}
+              <a class="btn btn-light" href="{{ object.get_absolute_url|make_login_redirect_url }}">
+                Bitte einloggen, um eine Entwicklung zu melden
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+
+
 </div>
 {% endblock %}

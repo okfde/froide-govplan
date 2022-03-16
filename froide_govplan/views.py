@@ -1,13 +1,17 @@
-from django.shortcuts import get_object_or_404, render
-from django.views.generic import DetailView
+from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404, redirect, render
+from django.utils.translation import gettext_lazy as _
+from django.views.generic import DetailView, UpdateView
 
+from .forms import GovernmentPlanUpdateProposalForm
 from .models import Government, GovernmentPlan, GovernmentPlanSection
 
 
 class GovernmentMixin:
-    def get(self, *args, **kwargs):
+    def dispatch(self, *args, **kwargs):
         self.get_government()
-        return super().get(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)
 
     def get_government(self):
         filter_kwarg = {}
@@ -54,6 +58,8 @@ class GovPlanDetailView(GovernmentMixin, DetailView):
             "-timestamp"
         )
         context["section"] = self.get_section()
+        if self.request.user.is_authenticated:
+            context["update_proposal_form"] = GovernmentPlanUpdateProposalForm()
         # For CMS toolbar
         self.request.govplan = self.object
         return context
@@ -61,6 +67,32 @@ class GovPlanDetailView(GovernmentMixin, DetailView):
 
 class GovPlanDetailOGView(GovPlanDetailView):
     template_name = "froide_govplan/plan_og.html"
+
+
+class GovPlanProposeUpdateView(GovernmentMixin, LoginRequiredMixin, UpdateView):
+    template_name = "publicbody/add_proposal.html"
+    slug_url_kwarg = "plan"
+    form_class = GovernmentPlanUpdateProposalForm
+
+    def get_queryset(self):
+        qs = GovernmentPlan.objects.filter(government=self.government)
+        if self.request.user.is_authenticated and self.request.user.is_staff:
+            return qs
+        return qs.filter(public=True)
+
+    def get_success_url(self):
+        return self.object.get_absolute_url()
+
+    def form_valid(self, form):
+        form.save(self.object, self.request.user)
+        messages.add_message(
+            self.request,
+            messages.INFO,
+            _(
+                "Thank you for your proposal. We will send you an email when it has been approved."
+            ),
+        )
+        return redirect(self.object)
 
 
 def search(request):
