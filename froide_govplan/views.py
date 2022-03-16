@@ -59,6 +59,10 @@ class GovPlanDetailView(GovernmentMixin, DetailView):
         return context
 
 
+class GovPlanDetailOGView(GovPlanDetailView):
+    template_name = "froide_govplan/plan_og.html"
+
+
 def search(request):
     plans = GovernmentPlan.objects.search(request.GET.get("q", ""))
 

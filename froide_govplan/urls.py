@@ -2,7 +2,12 @@ from django.urls import path
 from django.utils.translation import pgettext_lazy
 
 from .admin import govplan_admin_site
-from .views import GovPlanDetailView, GovPlanSectionDetailView, search
+from .views import (
+    GovPlanDetailOGView,
+    GovPlanDetailView,
+    GovPlanSectionDetailView,
+    search,
+)
 
 app_name = "govplan"
 
@@ -13,6 +18,11 @@ urlpatterns = [
         pgettext_lazy("url part", "<slug:gov>/plan/<slug:plan>/"),
         GovPlanDetailView.as_view(),
         name="plan",
+    ),
+    path(
+        pgettext_lazy("url part", "<slug:gov>/plan/<slug:plan>/_og/"),
+        GovPlanDetailOGView.as_view(),
+        name="plan_og",
     ),
     path(
         pgettext_lazy("url part", "<slug:gov>/<slug:section>/"),

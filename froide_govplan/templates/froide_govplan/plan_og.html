@@ -1,0 +1,65 @@
+{% extends "fds_ogimage/base.html" %}
+
+{% load humanize %}
+
+{% block title %}{{ object.title }}{% endblock %}
+
+{% block extra_style %}
+<style>
+.og-container-image {
+  background-image: url('https://media.frag-den-staat.de/files/media/thumbnails/d5/0b/d50be174-0cd1-4a35-97e4-2d7747db8404/temp-lineart.jpg__1920x0_q85_subsampling-2.jpg');
+}
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="og-container d-flex flex-column">
+  <div class="px-5 pt-5 hero-image og-container-image" style="min-height: 40vh;">
+    <div class="row">
+      <img class="img-fluid col-md-6 col-lg-4 my-5 mx-auto d-block cms-plugin cms-plugin-116103" src="https://media.frag-den-staat.de/files/media/main/98/91/98919aa3-9200-4f99-a7c7-de25cda8675a/logo-koalitionstracker-w.svg" alt="Koalitionstracker">
+    </div>
+  </div>
+  <div class="d-flex flex-column flex-grow-1">
+    <div class="px-5 pb-5 pt-3">
+      <div class="row">
+        <div class="col-12">
+          <h3>
+            {{ object.title|truncatechars:120 }}
+          </h3>
+        </div>
+      </div>
+    </div>
+    <div class="pb-5 px-5 mt-auto">
+      <div class="row justify-content-between">
+        <div class="col-4">
+          <div class="media">
+            <span class="fa fa-info-circle mr-3"></span>
+            <div class="media-body">
+              <h2 class="mt-0">
+                {{ object.get_status_display }}
+              </h2>
+            </div>
+          </div>
+        </div>
+        <div class="col-4">
+          {% if object.due_date %}
+            <div class="media {% if object.is_overdue %}text-danger{% endif %}">
+              <span class="fa fa-calendar mr-3"></span>
+              <div class="media-body">
+                <h2 class="mt-0">
+                  {{ object.due_date | date }}
+                </h2>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+        <div class="col-auto ml-auto">
+          <div class="mt-n4">
+            <img height="80" src="https://static.frag-den-staat.de/static/img/header_logo.580ed694906e.svg" alt="FragDenStaat.de"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
