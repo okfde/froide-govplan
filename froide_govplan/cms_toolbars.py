@@ -7,7 +7,10 @@ from cms.toolbar_pool import toolbar_pool
 
 class GovPlanToolbar(CMSToolbar):
     def populate(self):
-        if self.request.current_page.application_namespace != "govplan":
+        if (
+            self.request.current_page
+            and self.request.current_page.application_namespace != "govplan"
+        ):
             return
         menu = self.toolbar.get_or_create_menu("govplan-menu", "Koalitionstracker")
 
