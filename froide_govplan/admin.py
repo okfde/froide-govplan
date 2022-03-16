@@ -22,6 +22,7 @@ User = auth.get_user_model()
 
 class GovPlanAdminSite(admin.AdminSite):
     site_header = "Regierungsvorhaben"
+    site_url = "/koalitionstracker/"
 
 
 class GovernmentPlanAdminForm(GovernmentPlanForm):
@@ -280,6 +281,6 @@ admin.site.register(GovernmentPlan, GovernmentPlanAdmin)
 admin.site.register(GovernmentPlanUpdate, GovernmentPlanUpdateAdmin)
 admin.site.register(GovernmentPlanSection, GovernmentPlanSectionAdmin)
 
-govplan_admin_site = GovPlanAdminSite(name="govplan")
+govplan_admin_site = GovPlanAdminSite(name="govplanadmin")
 govplan_admin_site.register(GovernmentPlan, GovernmentPlanAdmin)
 govplan_admin_site.register(GovernmentPlanUpdate, GovernmentPlanUpdateAdmin)
