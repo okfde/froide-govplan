@@ -459,6 +459,7 @@ if CMSPlugin:
             choices=PLUGIN_TEMPLATES,
             help_text=_("template used to display the plugin"),
         )
+        extra_classes = models.CharField(max_length=255, blank=True)
 
         @property
         def render_template(self):
