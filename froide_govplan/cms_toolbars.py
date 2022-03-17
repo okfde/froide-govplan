@@ -33,6 +33,7 @@ class GovPlanToolbar(CMSToolbar):
                 "admin:froide_govplan_governmentplanupdate_add",
                 current_app="govplanadmin",
             )
+            url = "{}?plan={}".format(url, govplan.id)
             menu.add_modal_item(_("Add update"), url=url)
 
 

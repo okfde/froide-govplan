@@ -1,0 +1,11 @@
+{% extends "admin/change_form.html" %}
+
+{% block after_field_sets %}
+  {% if not original.pk %}
+    <script>
+    (function(){
+      document.getElementById('id_plan').value = new URLSearchParams(window.location.search).get("plan") || ""
+    }())
+    </script>
+  {% endif %}
+{% endblock %}
