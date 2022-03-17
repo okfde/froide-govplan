@@ -5,22 +5,19 @@
 <div class="box-card border-blue shadow-blue bg-white" id="update-{{ update.pk }}">
   <a href="{{ update.get_absolute_url }}" class="text-body text-decoration-none">
     <div class="box-card-header bg-blue-20 d-flex justify-content-center p-3 p-md-4 tight-margin flex-column">
-      <div class="d-md-flex">
-        {% if show_context %}
-        <div class="order-2 ml-auto">
-          <span class="badge badge-blue-100 badge-pill mb-2 ml-md-2">
-            {{ update.plan.get_section }}
-          </span>
-        </div>
+      {% if show_context %}
+      <div>
+        <span class="badge badge-blue-100 badge-pill float-md-right mb-2 mb-md-0 ml-md-2 mt-md-1">
+          {{ update.plan.get_section }}
+        </span>
         {% endif %}
-        <h3 class="h4 mt-0">
-          {% if show_context %}
-            {{ update.plan }}
-          {% else %}
-            {{ update.title }}
-          {% endif %}
-        </h3>
-        </div>
+        
+        {% if show_context %}
+          <h3 class="h5 mt-0">{{ update.plan }}</h3>
+        {% else %}
+          <h3 class="h4 mt-0">{{ update.title }}</h3>
+        {% endif %}
+      </div>
       <div class="small">
         <time datetime="{{ update.timestamp|date:'c' }}">{{ update.timestamp|date:"DATE_FORMAT" }}</time>
         <span>{% if update.user %}von {{ update.user.get_full_name }}{% endif %}{% if update.organization %}, {{ update.organization.name }}{% endif %}</span>
