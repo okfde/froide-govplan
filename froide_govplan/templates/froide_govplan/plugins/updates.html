@@ -16,21 +16,22 @@
           <h3 class="h5 mt-0">{{ update.plan }}</h3>
         {% else %}
           <h3 class="h4 mt-0">{{ update.title }}</h3>
-        {% endif %}
       </div>
+      {% endif %}
       <div class="small">
         <time datetime="{{ update.timestamp|date:'c' }}">{{ update.timestamp|date:"DATE_FORMAT" }}</time>
         <span>{% if update.user %}von {{ update.user.get_full_name }}{% endif %}{% if update.organization %}, {{ update.organization.name }}{% endif %}</span>
       </div>
     </div>
   </a>
+
   {% if update.content %}
-    <div class="p-3 p-md-4 tight-margin">
-      {% if show_context %}
-        <h4 class="h5">{{ update.title }}</h4>
-      {% endif %}
-      {{ update.content|markdown }}
-    </div>
+  <div class="p-3 p-md-4 tight-margin">
+    {% if show_context %}
+      <h4 class="h5">{{ update.title }}</h4>
+    {% endif %}
+    {{ update.content|markdown }}
+  </div>
   {% endif %}
 
   {% if update.url or update.foirequest %}
