@@ -102,7 +102,10 @@ class GovPlanProposeUpdateView(GovernmentMixin, LoginRequiredMixin, UpdateView):
 
 
 def search(request):
-    plans = GovernmentPlan.objects.search(request.GET.get("q", ""))
+    q = request.GET.get("q", "")
+    plans = GovernmentPlan.objects.filter(public=True)
+    if q:
+        plans = GovernmentPlan.objects.search(q, qs=plans)
 
     if request.GET.get("government"):
         try:
@@ -110,8 +113,16 @@ def search(request):
             plans = plans.filter(government_id=gov_id)
         except ValueError:
             pass
+    if request.GET.get("status"):
+        try:
+            status = request.GET["status"]
+            plans = plans.filter(status=status)
+        except ValueError:
+            pass
 
-    plans = plans[:20]
+    if q:
+        # limit when there's a search
+        plans = plans[:20]
     return render(
         request, "froide_govplan/plugins/card_cols.html", {"object_list": plans}
     )
