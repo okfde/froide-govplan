@@ -192,19 +192,21 @@
           </div>
       </div>
     {% endfor %}
-    <div class="col col-12 col-lg-6 d-flex" id="update-{{ update.pk }}">
-      <div class="box-card border-blue shadow-blue">
+
+    <div class="col col-12 col-lg-6 d-flex mb-3">
+      <div class="box-card border-gray shadow-gray">
         <div>
-          <div class="box-card-header bg-blue-100 d-flex justify-content-center p-3 p-md-4 tight-margin flex-column">
+          <div class="box-card-header bg-gray-200 d-flex justify-content-center p-3 p-md-4 tight-margin flex-column">
             <h3 class="h4">Neue Entwicklung melden</h3>
           </div>
           <div class="p-3 p-md-4">
             {% if request.user.is_authenticated %}
-              <button type="button" class="btn btn-light" data-toggle="modal" data-target="#govplanupdate-proposal">
+              <p>Gibt es Neuigkeiten zu diesem Vorhaben, die wir noch nicht erfasst haben?</p>
+              <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#govplanupdate-proposal">
                 Entwicklung melden
               </button>
               <div class="modal" data-teleport="body" tabindex="-1" role="dialog" id="govplanupdate-proposal">
-                <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
                       <h5 class="modal-title">
@@ -227,9 +229,7 @@
                 </div>
               </div>
             {% else %}
-              <a class="btn btn-light" href="{{ object.get_absolute_url|make_login_redirect_url }}">
-                Bitte einloggen, um eine Entwicklung zu melden
-              </a>
+              Bitte <a href="{{ object.get_absolute_url|make_login_redirect_url }}">melden Sie sich an</a>, um einen Änderungsvorschlag einzureichen.
             {% endif %}
           </div>
         </div>
