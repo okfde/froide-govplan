@@ -220,6 +220,11 @@ class GovernmentPlan(models.Model):
             "{}#p-{}".format(self.government.planning_document, ref) for ref in refs
         ]
 
+    def get_section(self):
+        return GovernmentPlanSection.objects.filter(
+            categories__in=self.categories.all()
+        ).first()
+
     def update_from_updates(self):
         last_status_update = (
             self.updates.all().filter(public=True).exclude(status="").first()
@@ -507,3 +512,58 @@ if CMSPlugin:
         government = models.ForeignKey(
             Government, null=True, blank=True, on_delete=models.SET_NULL
         )
+
+    class GovernmentPlanUpdatesCMSPlugin(CMSPlugin):
+        """
+        CMS Plugin for displaying plan updates
+        """
+
+        government = models.ForeignKey(
+            Government, null=True, blank=True, on_delete=models.SET_NULL
+        )
+        categories = models.ManyToManyField(
+            Category, verbose_name=_("categories"), blank=True
+        )
+
+        count = models.PositiveIntegerField(
+            _("number of updates"), default=1, help_text=_("0 means all the updates")
+        )
+        offset = models.PositiveIntegerField(
+            _("offset"),
+            default=0,
+            help_text=_("number of updates to skip from top of list"),
+        )
+
+        def get_updates(self, request, published_only=True):
+            # TODO: remove duplication with GovernmentPlansCMSPlugin.get_plans
+            if (
+                published_only
+                or not request
+                or not getattr(request, "toolbar", False)
+                or not request.toolbar.edit_mode_active
+            ):
+                updates = GovernmentPlanUpdate.objects.filter(public=True)
+            else:
+                updates = GovernmentPlanUpdate.objects.all()
+
+            updates = updates.order_by("-timestamp").prefetch_related(
+                "plan", "plan__categories"
+            )
+
+            filters = {}
+            if self.government_id:
+                filters["plan__government_id"] = self.government_id
+
+            cat_list = self.categories.all().values_list("id", flat=True)
+            if cat_list:
+                filters["plan__categories__in"] = cat_list
+
+            updates = updates.filter(**filters).distinct()
+            if self.count == 0:
+                return updates[self.offset :]
+            return updates[self.offset : self.offset + self.count]
+
+        def __str__(self):
+            if self.count == 0:
+                return str(_("All matching updates"))
+            return _("%s matching updates") % self.count

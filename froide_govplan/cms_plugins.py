@@ -8,6 +8,7 @@ from .models import (
     GovernmentPlansCMSPlugin,
     GovernmentPlanSection,
     GovernmentPlanSectionsCMSPlugin,
+    GovernmentPlanUpdatesCMSPlugin,
 )
 
 
@@ -50,4 +51,19 @@ class GovernmentPlanSectionsPlugin(CMSPluginBase):
 
         context["sections"] = sections
 
+        return context
+
+
+@plugin_pool.register_plugin
+class GovernmentPlanUpdatesPlugin(CMSPluginBase):
+    name = _("Government plan updates")
+    model = GovernmentPlanUpdatesCMSPlugin
+    render_template = "froide_govplan/plugins/updates.html"
+
+    def render(self, context, instance, placeholder):
+        context = super().render(context, instance, placeholder)
+        context["updates"] = instance.get_updates(
+            context["request"], published_only=False
+        )
+        context["show_context"] = True
         return context

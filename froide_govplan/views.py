@@ -53,17 +53,12 @@ class GovPlanDetailView(GovernmentMixin, DetailView):
             "responsible_publicbody", "organization"
         )
 
-    def get_section(self):
-        return GovernmentPlanSection.objects.filter(
-            categories__in=self.object.categories.all()
-        ).first()
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["updates"] = self.object.updates.filter(public=True).order_by(
             "-timestamp"
         )
-        context["section"] = self.get_section()
+        context["section"] = self.object.get_section()
         if self.request.user.is_authenticated:
             context["update_proposal_form"] = GovernmentPlanUpdateProposalForm()
         # For CMS toolbar

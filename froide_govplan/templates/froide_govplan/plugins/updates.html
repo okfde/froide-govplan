@@ -1,0 +1,53 @@
+{% load markup %}
+
+{% for update in updates %}
+<div class="{{ wrapper_classes }}">
+  <div class="box-card border-blue shadow-blue" id="update-{{ update.pk }}">
+    <div>
+      <a href="{{ update.get_absolute_url }}" class="text-body text-decoration-none">
+        <div class="box-card-header bg-blue-20 d-flex justify-content-center p-3 p-md-4 tight-margin flex-column">
+          <div class="d-md-flex">
+            {% if show_context %}
+            <div class="order-2 ml-auto">
+              <span class="badge badge-blue-100 badge-pill mb-2">
+                {{ update.plan.get_section }}
+              </span>
+            </div>
+            {% endif %}
+            <h3 class="h4 mt-0">
+              {% if show_context %}
+                {{ update.plan }}
+              {% else %}
+                {{ update.title }}
+              {% endif %}
+            </h3>
+           </div>
+          <div class="small">
+            <time datetime="{{ update.timestamp|date:'c' }}">{{ update.timestamp|date:"DATE_FORMAT" }}</time>
+            <span>{% if update.user %}von {{ update.user.get_full_name }}{% endif %}{% if update.organization %}, {{ update.organization.name }}{% endif %}</span>
+          </div>
+        </div>
+      </a>
+      {% if update.content %}
+        <div class="p-3 p-md-4 tight-margin">
+          {% if show_context %}
+            <h4 class="h5">{{ update.title }}</h4>
+          {% endif %}
+          {{ update.content|markdown }}
+        </div>
+      {% endif %}
+      </div>
+      {% if update.url or update.foirequest %}
+      <div class="p-3 p-md-4 {% if update.content %}box-card-links{% else %}d-flex mt-auto{% endif %}">
+        {% if update.url %}
+          <a href="{{ update.url }}" class="action-link mr-3" target="_blank" rel="noopener">→ Mehr auf {{ update.get_url_domain }} lesen…</a>
+        {% endif %}
+
+        {% if update.foirequest %}
+          <a href="{{ update.foirequest.get_absolute_url }}" class="action-link">→ zur Anfrage</a>
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+</div>
+{% endfor %}
