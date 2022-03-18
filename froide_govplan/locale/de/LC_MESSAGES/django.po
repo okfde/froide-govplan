@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-18 14:23+0100\n"
-"PO-Revision-Date: 2022-03-18 14:25+0100\n"
+"POT-Creation-Date: 2022-03-18 19:30+0100\n"
+"PO-Revision-Date: 2022-03-18 19:33+0100\n"
 "Last-Translator: Stefan Wehrmeyer <stefan.wehrmeyer@okfn.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -18,21 +18,33 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.0.1\n"
 
-#: froide_govplan/admin.py:70
+#: froide_govplan/admin.py:75
 msgid "Assign organization..."
 msgstr "Organisation zuweisen..."
 
-#: froide_govplan/admin.py:73
+#: froide_govplan/admin.py:78
 msgid "Assign permission group..."
 msgstr "Berechtigungsgruppe zuweisen..."
 
-#: froide_govplan/admin.py:169
+#: froide_govplan/admin.py:155
+msgid "Has change proposals"
+msgstr "Hat Update-Vorschläge"
+
+#: froide_govplan/admin.py:188
 msgid "category(s)"
 msgstr "Kategorie(n)"
 
-#: froide_govplan/admin.py:174
+#: froide_govplan/admin.py:193
 msgid "Make public"
 msgstr "Veröffentlichen"
+
+#: froide_govplan/admin.py:217
+msgid "The proposal has been deleted."
+msgstr "Der Vorschlag wurde gelöscht."
+
+#: froide_govplan/admin.py:223
+msgid "An unpublished update has been created."
+msgstr "Eine unveröffentlichtes Update wurde erstellt."
 
 #: froide_govplan/apps.py:7
 msgid "GovPlan App"
@@ -125,46 +137,46 @@ msgstr "Regierungsvorhaben"
 msgid "An update was posted for the government plan “{title}”."
 msgstr "Es gibt Neuigkeiten zum Regierungsvorhaben „{title}”."
 
-#: froide_govplan/forms.py:73 froide_govplan/models.py:141
+#: froide_govplan/forms.py:74 froide_govplan/models.py:141
 #: froide_govplan/models.py:301 froide_govplan/models.py:368
 msgid "title"
 msgstr "Titel"
 
-#: froide_govplan/forms.py:74
+#: froide_govplan/forms.py:75
 msgid "Summarize the update in a title."
 msgstr "Fasse die Entwicklung in einem Titel zusammen."
 
-#: froide_govplan/forms.py:83
+#: froide_govplan/forms.py:84
 msgid "details"
 msgstr "Details"
 
-#: froide_govplan/forms.py:84
+#: froide_govplan/forms.py:85
 msgid "Optionally give more details."
 msgstr "Optional kannst du noch mehr Details angeben."
 
-#: froide_govplan/forms.py:88
+#: froide_govplan/forms.py:89
 msgid "source URL"
 msgstr "Beleg-URL"
 
-#: froide_govplan/forms.py:89
+#: froide_govplan/forms.py:90
 msgid "Please give provide a link."
 msgstr "Bitte gib einen Link an."
 
-#: froide_govplan/forms.py:95 froide_govplan/models.py:162
+#: froide_govplan/forms.py:96 froide_govplan/models.py:162
 #: froide_govplan/models.py:310
 msgid "status"
 msgstr "Status"
 
-#: froide_govplan/forms.py:96
+#: froide_govplan/forms.py:97
 msgid "Has the status of the plan changed?"
 msgstr "Hat sich der Status des Vorhabens geändert?"
 
-#: froide_govplan/forms.py:101 froide_govplan/models.py:165
+#: froide_govplan/forms.py:102 froide_govplan/models.py:165
 #: froide_govplan/models.py:313
 msgid "rating"
 msgstr "Bewertung"
 
-#: froide_govplan/forms.py:102
+#: froide_govplan/forms.py:103
 msgid "What's your rating of the current implementation?"
 msgstr "Wie würdest du die aktuelle Umsetzung bewerten?"
 
@@ -430,6 +442,51 @@ msgstr "Alle zutreffenden Entwicklungen"
 #, python-format
 msgid "%s matching updates"
 msgstr "%s zutreffende Entwicklungen"
+
+#: froide_govplan/templates/admin/froide_govplan/governmentplan/change_form.html:8
+msgid "See update proposals"
+msgstr "Update-Vorschläge ansehen"
+
+#: froide_govplan/templates/froide_govplan/admin/_proposal.html:9
+msgid "Field"
+msgstr "Feld"
+
+#: froide_govplan/templates/froide_govplan/admin/_proposal.html:27
+msgid "Proposal"
+msgstr "Vorschlag"
+
+#: froide_govplan/templates/froide_govplan/admin/_proposal.html:33
+msgid "Turn into update draft"
+msgstr "In Update-Entwurf umwandeln"
+
+#: froide_govplan/templates/froide_govplan/admin/_proposal.html:62
+#: froide_govplan/templates/froide_govplan/admin/accept_proposal.html:21
+msgid "Delete proposal"
+msgstr "Vorschlag löschen"
+
+#: froide_govplan/templates/froide_govplan/admin/_proposal.html:68
+msgid "Delete"
+msgstr "Löschen"
+
+#: froide_govplan/templates/froide_govplan/admin/accept_proposal.html:16
+msgid "Create update draft"
+msgstr "Update-Entwurf anlegen"
+
+#: froide_govplan/templates/froide_govplan/admin/accept_proposal.html:23
+msgid ""
+"Please give a reason for not accepting this proposal. It will be send to the "
+"user who made the proposal."
+msgstr ""
+"Bitte geben Sie einen Grund an, warum Sie diese Einreichung nicht angenommen "
+"haben. Der/die Einreicher/in wird darüber informiert."
+
+#: froide_govplan/templates/froide_govplan/admin/accept_proposal.html:26
+msgid "We could not accept this update because..."
+msgstr "Wir konnten diese Einreichung nicht annehmen, weil..."
+
+#: froide_govplan/templates/froide_govplan/admin/accept_proposal.html:28
+msgid "Delete proposed update"
+msgstr "Vorgeschlagene Entwicklung löschen"
 
 #: froide_govplan/templates/froide_govplan/plugins/card_cols.html:7
 msgid ""
