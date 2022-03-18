@@ -44,12 +44,12 @@
 
         <div class="mt-5">
           {% include "froide_govplan/plugins/progress.html" with object_list=plans %}
-          <p class="small text-gray-700 mt-3">
-            <i class="fa fa-circle text-success"></i> umgesetzt
-            <i class="fa fa-circle text-warning ml-1"></i> teilweise umgesetzt
-            <i class="fa fa-circle text-danger ml-1"></i> verschoben
-            <i class="fa fa-circle text-primary ml-1"></i> begonnen
-            <i class="fa fa-circle text-light ml-1"></i> nicht begonnen
+          <p class="small text-gray-700 mt-3 no-hyphens">
+            <span class="text-nowrap mr-1"><i class="fa fa-circle text-light"></i>&nbsp;nicht begonnen</span>
+            <span class="text-nowrap mr-1"><i class="fa fa-circle text-primary"></i>&nbsp;begonnen</span>
+            <span class="text-nowrap mr-1"><i class="fa fa-circle text-warning"></i>&nbsp;teilweise umgesetzt</span>
+            <span class="text-nowrap mr-1"><i class="fa fa-circle text-success"></i>&nbsp;umgesetzt</span>
+            <span class="text-nowrap mr-1"><i class="fa fa-circle text-danger"></i>&nbsp;verschoben</span>
           </p>          
         </div>
       </div>
