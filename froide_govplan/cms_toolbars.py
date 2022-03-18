@@ -19,7 +19,7 @@ class GovPlanToolbar(CMSToolbar):
             kwargs={"app_label": "froide_govplan"},
             current_app="govplanadmin",
         )
-        menu.add_modal_item(_("Edit plans and updates"), url=url)
+        menu.add_link_item(_("Edit plans and updates"), url=url)
 
         if hasattr(self.request, "govplan"):
             govplan = self.request.govplan
@@ -28,13 +28,13 @@ class GovPlanToolbar(CMSToolbar):
                 args=(govplan.pk,),
                 current_app="govplanadmin",
             )
-            menu.add_modal_item(_("Edit government plan"), url=url)
+            menu.add_link_item(_("Edit government plan"), url=url)
             url = reverse(
                 "admin:froide_govplan_governmentplanupdate_add",
                 current_app="govplanadmin",
             )
             url = "{}?plan={}".format(url, govplan.id)
-            menu.add_modal_item(_("Add update"), url=url)
+            menu.add_link_item(_("Add update"), url=url)
 
 
 toolbar_pool.register(GovPlanToolbar)
