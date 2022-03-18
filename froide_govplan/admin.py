@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 from adminsortable2.admin import SortableAdminMixin
 
+from froide.follow.admin import FollowerAdmin
 from froide.helper.admin_utils import make_choose_object_action
 from froide.helper.widgets import TagAutocompleteWidget
 from froide.organization.models import Organization
@@ -13,6 +14,7 @@ from .forms import GovernmentPlanForm, GovernmentPlanUpdateForm
 from .models import (
     Government,
     GovernmentPlan,
+    GovernmentPlanFollower,
     GovernmentPlanSection,
     GovernmentPlanUpdate,
 )
@@ -280,6 +282,7 @@ admin.site.register(Government, GovernmentAdmin)
 admin.site.register(GovernmentPlan, GovernmentPlanAdmin)
 admin.site.register(GovernmentPlanUpdate, GovernmentPlanUpdateAdmin)
 admin.site.register(GovernmentPlanSection, GovernmentPlanSectionAdmin)
+admin.site.register(GovernmentPlanFollower, FollowerAdmin)
 
 govplan_admin_site = GovPlanAdminSite(name="govplanadmin")
 govplan_admin_site.register(GovernmentPlan, GovernmentPlanAdmin)
