@@ -71,9 +71,12 @@ class GovPlanDetailOGView(GovPlanDetailView):
 
 
 class GovPlanProposeUpdateView(GovernmentMixin, LoginRequiredMixin, UpdateView):
-    template_name = "publicbody/add_proposal.html"
     slug_url_kwarg = "plan"
     form_class = GovernmentPlanUpdateProposalForm
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return redirect(self.object)
 
     def get_queryset(self):
         qs = GovernmentPlan.objects.filter(government=self.government)
@@ -92,6 +95,14 @@ class GovPlanProposeUpdateView(GovernmentMixin, LoginRequiredMixin, UpdateView):
             _(
                 "Thank you for your proposal. We will send you an email when it has been approved."
             ),
+        )
+        return redirect(self.object)
+
+    def form_invalid(self, form):
+        messages.add_message(
+            self.request,
+            messages.ERROR,
+            _("There's been an error with your form submission."),
         )
         return redirect(self.object)
 
