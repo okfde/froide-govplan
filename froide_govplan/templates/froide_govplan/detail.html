@@ -8,6 +8,7 @@
 {% load fds_ogimage %}
 {% load form_helper %}
 {% load content_helper %}
+{% load thumbnail %}
 
 {% block title %}{{ object.title }}{% endblock %}
 
@@ -96,7 +97,7 @@
               {% endif %}
             </dl>
           </div>
-          <div class="col col-12 col-md-5 col-lg-3 mt-3 mt-md-5 mt-md-0">
+          <div class="col col-12 col-md-5 col-lg-3 mt-3 mt-md-0">
             <dl>
               {% if object.rating %}
                 <dt>Bewertung</dt>
@@ -144,7 +145,11 @@
                 <dd>
                   <a href="{{ object.organization.website }}">
                     {% if object.organization.logo %}
-                    <img src="{{ object.organization.logo.url }}" class="w-100 h-auto" alt="{{ object.organization.name }}">
+                      {% if object.organization.logo.url.lower|slice:"-4:" == ".svg" %}
+                      <img src="{{ object.organization.logo.url }}" class="col-8 col-md-12 px-0" alt="{{ object.organization.name }}">
+                      {% else %}
+                      <img src="{% thumbnail object.organization.logo 300x0 %}" class="col-8 col-md-12 px-0" alt="{{ object.organization.name }}">
+                      {% endif %}
                     {% else %}
                     {{ object.organization.name }}
                     {% endif %}
