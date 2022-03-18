@@ -7,7 +7,7 @@
   <div class="flex-grow-1 ml-2">
     <div class="progress" {% if "progress-lg" in instance.extra_classes %}style="height: 1.5rem;"{% endif %}>
       {% for section in progress.sections %}
-        <div class="progress-bar bg-{{ section.css_class }}" role="progressbar" style="width: {{ section.css_percentage }}%;" aria-valuenow="{{ section.css_percentage }}" aria-valuemin="0" aria-valuemax="100" title="{{ section.percentage }}% {{ section.label }}" data-toggle="tooltip" data-placement="top">
+        <div class="progress-bar bg-{{ section.css_class }}" role="progressbar" style="width: {{ section.css_percentage }}%;" aria-valuenow="{{ section.css_percentage }}" aria-valuemin="0" aria-valuemax="100" aria-label="{{ section.percentage }}% {{ section.label }}" title="{{ section.percentage }}% {{ section.label }}" data-toggle="tooltip" data-placement="top">
         </div>
       {% endfor %}
     </div>
