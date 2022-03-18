@@ -97,10 +97,12 @@ class GovernmentPlanUpdateProposalForm(forms.ModelForm):
         choices=[("", "---")] + PlanStatus.choices,
         required=False,
     )
-    rating = forms.ChoiceField(
+    rating = forms.TypedChoiceField(
         label=_("rating"),
         help_text=_("What's your rating of the current implementation?"),
         choices=[("", "---")] + PlanRating.choices,
+        coerce=int,
+        empty_value="",
         required=False,
     )
 
@@ -128,5 +130,5 @@ class GovernmentPlanUpdateProposalForm(forms.ModelForm):
             "data": data,
             "timestamp": timezone.now().isoformat(),
         }
-        plan.save()
+        plan.save(update_fields=["proposals"])
         return plan
