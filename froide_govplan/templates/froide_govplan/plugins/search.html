@@ -1,7 +1,13 @@
 {% load i18n %}
 <form method="get" action="{% url 'govplan:search' %}" class="ajaxified" data-container="#govplan-searchresult-{{ instance.id }}" data-modalcontainer="#govplan-searchmodal-{{ instance.id }}">
-  <div class="input-group mb-3">
-    <input type="text" name="q" class="form-control" aria-label="{% translate 'Search all government plans…' %}" placeholder="{% translate 'Search all government plans…' %}">
+  <div class="input-group">
+    <input type="text" name="q" class="form-control" aria-label="{% translate 'Search query' %}" placeholder="{% translate 'Search query' %}">
+    <select name="status" class="custom-select">
+      <option value="">{% translate "Filter status" %}</option>
+      {% for status, label in status_list %}
+        <option value="{{ status }}">{{ label }}</option>
+      {% endfor %}
+    </select>
     <div class="input-group-append">
       <button class="btn btn-outline-secondary" type="submit">
         {% translate "Search" %}

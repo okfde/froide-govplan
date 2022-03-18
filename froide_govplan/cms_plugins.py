@@ -9,6 +9,7 @@ from .models import (
     GovernmentPlanSection,
     GovernmentPlanSectionsCMSPlugin,
     GovernmentPlanUpdatesCMSPlugin,
+    PlanStatus,
 )
 
 
@@ -25,6 +26,7 @@ class GovernmentPlansPlugin(CMSPluginBase):
     def render(self, context, instance, placeholder):
         context = super().render(context, instance, placeholder)
         context["plugin"] = instance
+        context["status_list"] = PlanStatus.choices
         context["object_list"] = instance.get_plans(
             context["request"], published_only=False
         )
