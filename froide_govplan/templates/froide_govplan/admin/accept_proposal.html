@@ -1,0 +1,33 @@
+{% extends "admin/change_form.html" %}
+{% load i18n %}
+
+{% block title %}{{ object.title }} - {{ block.super }}{% endblock %}
+
+
+{% block content %}<div id="content-main">
+  <h3>{{ object.title }}</h3>
+
+  <form action="" method="post">
+    {% csrf_token %}
+    <fieldset>
+      {% include "froide_govplan/admin/_proposal.html" %}
+    </fieldset>
+    <div class="submit-row">
+      <input type="submit" value="{% trans 'Create update draft' %}" style="float:left"/>
+    </div>
+
+    <div class="card border-danger mt-3">
+      <div class="card-body">
+        <h3>{% trans "Delete proposal" %}</h3>
+        <p><label for="delete_reason">
+          {% trans "Please give a reason for not accepting this proposal. It will be send to the user who made the proposal." %}
+        </label>
+        <p>
+        <p><textarea id="delete_reason" class="form-control" name="delete_reason" placeholder="{% trans 'We could not accept this update because...' %}"></textarea></p>
+        <p><button class="mt-2 btn btn-danger float-right" type="submit" name="delete" value="1">
+          {% trans "Delete proposed update" %}
+        </button></p>
+      </div>
+    </div>
+  </form>
+  {% endblock %}

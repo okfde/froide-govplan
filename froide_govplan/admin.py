@@ -1,16 +1,21 @@
 from django.contrib import admin, auth
 from django.contrib.auth.models import Group
-from django.urls import reverse_lazy
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import path, reverse, reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 from adminsortable2.admin import SortableAdminMixin
 
 from froide.follow.admin import FollowerAdmin
-from froide.helper.admin_utils import make_choose_object_action
+from froide.helper.admin_utils import make_choose_object_action, make_emptyfilter
 from froide.helper.widgets import TagAutocompleteWidget
 from froide.organization.models import Organization
 
-from .forms import GovernmentPlanForm, GovernmentPlanUpdateForm
+from .forms import (
+    GovernmentPlanForm,
+    GovernmentPlanUpdateAcceptProposalForm,
+    GovernmentPlanUpdateForm,
+)
 from .models import (
     Government,
     GovernmentPlan,
@@ -113,6 +118,17 @@ class GovernmentPlanAdmin(admin.ModelAdmin):
             actions.update(admin_actions)
         return actions
 
+    def get_urls(self):
+        urls = super().get_urls()
+        my_urls = [
+            path(
+                "<int:pk>/accept-proposal/",
+                self.admin_site.admin_view(self.accept_proposal),
+                name="froide_govplan-plan_accept_proposal",
+            ),
+        ]
+        return my_urls + urls
+
     def get_list_display(self, request):
         list_display = [
             "title",
@@ -135,6 +151,9 @@ class GovernmentPlanAdmin(admin.ModelAdmin):
         if not has_limited_access(request.user):
             list_filter.extend(
                 [
+                    make_emptyfilter(
+                        "proposals", _("Has change proposals"), empty_value=None
+                    ),
                     "organization",
                     "group",
                     "government",
@@ -172,6 +191,59 @@ class GovernmentPlanAdmin(admin.ModelAdmin):
         queryset.update(public=True)
 
     make_public.short_description = _("Make public")
+
+    def accept_proposal(self, request, pk):
+        obj = get_object_or_404(self.get_queryset(request), pk=pk)
+        plan_url = reverse(
+            "admin:froide_govplan_governmentplan_change",
+            args=(obj.pk,),
+            current_app=self.admin_site.name,
+        )
+        if not obj.proposals:
+            return redirect(plan_url)
+        if request.method == "POST":
+            proposals = obj.proposals or {}
+            proposal_id = request.POST.get("proposal_id")
+            data = proposals[proposal_id]["data"]
+            form = GovernmentPlanUpdateAcceptProposalForm(data=data, plan=obj)
+            if form.is_valid():
+                update = form.save(
+                    delete_unconfirmed=request.POST.get("delete", "0") == "1",
+                    delete_reason=request.POST.get("delete_reason", ""),
+                    proposal_id=proposal_id,
+                    delete_proposals=request.POST.getlist("proposal_delete"),
+                )
+                if update is None:
+                    self.message_user(request, _("The proposal has been deleted."))
+
+                    return redirect(plan_url)
+
+                self.message_user(
+                    request,
+                    _("An unpublished update has been created."),
+                )
+                update_url = reverse(
+                    "admin:froide_govplan_governmentplanupdate_change",
+                    args=(update.pk,),
+                    current_app=self.admin_site.name,
+                )
+                return redirect(update_url)
+        else:
+            form = GovernmentPlanUpdateAcceptProposalForm(plan=obj)
+
+        opts = self.model._meta
+        context = {
+            "form": form,
+            "proposals": form.get_proposals(),
+            "object": obj,
+            "app_label": opts.app_label,
+            "opts": opts,
+        }
+        return render(
+            request,
+            "froide_govplan/admin/accept_proposal.html",
+            context,
+        )
 
 
 class GovernmentPlanUpdateAdmin(admin.ModelAdmin):

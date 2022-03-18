@@ -1,0 +1,13 @@
+{% extends "admin/change_form.html" %}
+{% load i18n %}
+
+{% block object-tools-items %}
+  {% if original.pk and original.proposals %}
+    <li>
+      <a href="{% url 'admin:froide_govplan-plan_accept_proposal' pk=original.pk %}">
+        {% trans "See update proposals" %}
+      </a>
+    </li>
+  {% endif %}
+  {{ block.super }}
+{% endblock %}
