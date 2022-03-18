@@ -30,18 +30,29 @@
     {% if show_context %}
       <h4 class="h5">{{ update.title }}</h4>
     {% endif %}
-    {{ update.content|markdown }}
+
+    {% with update.content|markdown as content %}
+      {% if show_context %}
+        {{ content|truncatewords_html:75 }}
+      {% else %}
+        {{ content }}
+      {% endif %}
+    {% endwith %}
   </div>
   {% endif %}
 
-  {% if update.url or update.foirequest %}
+  {% if update.url or update.foirequest or show_context %}
   <div class="p-3 p-md-4 {% if update.content %}box-card-links{% else %}d-flex mt-auto{% endif %}">
-    {% if update.url %}
-      <a href="{{ update.url }}" class="action-link mr-3" target="_blank" rel="noopener">→ Mehr auf {{ update.get_url_domain }} lesen…</a>
-    {% endif %}
+    {% if show_context %}
+      <a href="{{ update.get_absolute_url }}" class="action-link">→ zum Vorhaben</a>
+    {% else %}
+      {% if update.url %}
+        <a href="{{ update.url }}" class="action-link mr-3" target="_blank" rel="noopener">→ mehr auf {{ update.get_url_domain }} lesen…</a>
+      {% endif %}
 
-    {% if update.foirequest %}
-      <a href="{{ update.foirequest.get_absolute_url }}" class="action-link">→ zur Anfrage</a>
+      {% if update.foirequest %}
+        <a href="{{ update.foirequest.get_absolute_url }}" class="action-link">→ zur Anfrage</a>
+      {% endif %}
     {% endif %}
   </div>
   {% endif %}
