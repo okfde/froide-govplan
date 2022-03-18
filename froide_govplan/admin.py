@@ -94,6 +94,11 @@ class GovernmentPlanAdmin(admin.ModelAdmin):
         )
         return qs
 
+    def view_on_site(self, obj):
+        # Avoid Django's redirect through normal admin
+        # TODO: remove on https://github.com/django/django/pull/15526
+        return obj.get_absolute_url()
+
     def get_actions(self, request):
         actions = super().get_actions(request)
         if not has_limited_access(request.user):
@@ -204,6 +209,11 @@ class GovernmentPlanUpdateAdmin(admin.ModelAdmin):
         if has_limited_access(request.user):
             qs = qs.filter(plan__in=get_allowed_plans(request))
         return qs
+
+    def view_on_site(self, obj):
+        # Avoid Django's redirect through normal admin
+        # TODO: remove on https://github.com/django/django/pull/15526
+        return obj.get_absolute_url()
 
     def save_model(self, request, obj, form, change):
         limited = has_limited_access(request.user)
