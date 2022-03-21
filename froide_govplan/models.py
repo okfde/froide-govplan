@@ -112,10 +112,14 @@ class GovernmentPlanManager(models.Manager):
     def search(self, query, qs=None):
         if not qs:
             qs = self.get_queryset()
+        query = query.strip()
         if not query:
             return qs
         search_queries = []
         for q in query.split():
+            q = q.strip()
+            if not q:
+                continue
             if WORD_RE.match(q):
                 sq = SearchQuery(
                     "{}:*".format(q), search_type="raw", config=self.SEARCH_LANG
@@ -124,7 +128,10 @@ class GovernmentPlanManager(models.Manager):
                 sq = SearchQuery(q, search_type="plain", config=self.SEARCH_LANG)
             search_queries.append(sq)
 
+        if not search_queries:
+            return qs
         search_query = functools.reduce(lambda a, b: a & b, search_queries)
+
         search_vector = self.get_search_vector()
         qs = (
             qs.annotate(rank=SearchRank(search_vector, search_query))
