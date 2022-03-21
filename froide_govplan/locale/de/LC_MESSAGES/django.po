@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-03-18 19:30+0100\n"
-"PO-Revision-Date: 2022-03-18 19:33+0100\n"
+"PO-Revision-Date: 2022-03-21 18:26+0100\n"
 "Last-Translator: Stefan Wehrmeyer <stefan.wehrmeyer@okfn.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -395,7 +395,7 @@ msgstr "Anzahl der Vorhaben"
 
 #: froide_govplan/models.py:448
 msgid "0 means all the plans"
-msgstr "0 heißt all Vorhaben"
+msgstr "0 bedeutet alle Vorhaben"
 
 #: froide_govplan/models.py:451 froide_govplan/models.py:533
 msgid "offset"
@@ -428,7 +428,7 @@ msgstr "Anzahl der Entwicklungen"
 
 #: froide_govplan/models.py:530
 msgid "0 means all the updates"
-msgstr "0 heißt all Entwicklungen"
+msgstr "0 bedeutet alle Entwicklungen"
 
 #: froide_govplan/models.py:535
 msgid "number of updates to skip from top of list"
