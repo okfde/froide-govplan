@@ -208,8 +208,6 @@ class GovernmentPlanAdmin(admin.ModelAdmin):
             form = GovernmentPlanUpdateAcceptProposalForm(data=data, plan=obj)
             if form.is_valid():
                 update = form.save(
-                    delete_unconfirmed=request.POST.get("delete", "0") == "1",
-                    delete_reason=request.POST.get("delete_reason", ""),
                     proposal_id=proposal_id,
                     delete_proposals=request.POST.getlist("proposal_delete"),
                 )

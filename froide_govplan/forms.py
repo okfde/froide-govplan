@@ -162,12 +162,7 @@ class GovernmentPlanUpdateAcceptProposalForm(GovernmentPlanUpdateProposalForm):
         self,
         proposal_id=None,
         delete_proposals=None,
-        delete_unconfirmed=False,
-        delete_reason="",
     ):
-        import ipdb
-
-        ipdb.set_trace()
         update = super(forms.ModelForm, self).save(commit=False)
         update.plan = self.plan
 
@@ -177,17 +172,6 @@ class GovernmentPlanUpdateAcceptProposalForm(GovernmentPlanUpdateProposalForm):
             proposals = self.get_proposals()
             proposal_user = proposals[proposal_id]["user"]
             update.user = proposal_user
-            # if proposal_user != user:
-            # proposal_user.send_mail(
-            #     _("Changes to public body “{}” have been applied").format(pb.name),
-            #     _(
-            #         "Hello,\n\nYou can find the changed public body here:"
-            #         "\n\n{url}\n\nAll the Best,\n{site_name}"
-            #     ).format(
-            #         url=pb.get_absolute_domain_url(), site_name=settings.SITE_NAME
-            #     ),
-            #     priority=False,
-            # )
             delete_proposals.append(proposal_id)
         for pid in delete_proposals:
             if pid in self.plan.proposals:
@@ -196,32 +180,5 @@ class GovernmentPlanUpdateAcceptProposalForm(GovernmentPlanUpdateProposalForm):
             self.plan.proposals = None
         self.plan.save(update_fields=["proposals"])
 
-        # if delete_unconfirmed:
-        #     self.delete_proposal(pb, user, delete_reason)
-        #     return None
-
         update.save()
-        # PublicBody.change_proposal_accepted.send(sender=pb, user=user)
         return update
-
-    # def delete_proposal(self, pb, user, delete_reason=""):
-    #     LogEntry.objects.log_action(
-    #         user_id=user.id,
-    #         content_type_id=ContentType.objects.get_for_model(pb).pk,
-    #         object_id=pb.pk,
-    #         object_repr=str(pb),
-    #         action_flag=DELETION,
-    #     )
-
-    #     creator = pb.created_by
-    #     if creator:
-    #         creator.send_mail(
-    #             _("Your public body proposal “%s” was rejected") % pb.name,
-    #             _(
-    #                 "Hello,\n\nA moderator has rejected your proposal for a new "
-    #                 "public body.\n\n{delete_reason}\n\nAll the Best,\n{site_name}"
-    #             ).format(delete_reason=delete_reason, site_name=settings.SITE_NAME),
-    #             priority=False,
-    #         )
-    #     PublicBody.proposal_rejected.send(sender=pb, user=user)
-    #     pb.delete()
