@@ -105,7 +105,7 @@ class GovernmentPlanUpdateProposalForm(forms.ModelForm):
         help_text=_("What's your rating of the current implementation?"),
         choices=[("", "---")] + PlanRating.choices,
         coerce=int,
-        empty_value="",
+        empty_value=None,
         required=False,
     )
 
