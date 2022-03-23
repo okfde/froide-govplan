@@ -204,28 +204,35 @@ class GovernmentPlanAdmin(admin.ModelAdmin):
         if request.method == "POST":
             proposals = obj.proposals or {}
             proposal_id = request.POST.get("proposal_id")
-            data = proposals[proposal_id]["data"]
-            form = GovernmentPlanUpdateAcceptProposalForm(data=data, plan=obj)
-            if form.is_valid():
-                update = form.save(
-                    proposal_id=proposal_id,
-                    delete_proposals=request.POST.getlist("proposal_delete"),
-                )
-                if update is None:
-                    self.message_user(request, _("The proposal has been deleted."))
+            delete_proposals = request.POST.getlist("proposal_delete")
+            update = None
+            if proposal_id:
+                data = proposals[proposal_id]["data"]
+                form = GovernmentPlanUpdateAcceptProposalForm(data=data, plan=obj)
+                if form.is_valid():
+                    update = form.save(
+                        proposal_id=proposal_id,
+                        delete_proposals=delete_proposals,
+                    )
+            else:
+                form = GovernmentPlanUpdateAcceptProposalForm(data={}, plan=obj)
+                form.delete_proposals(delete_proposals)
 
-                    return redirect(plan_url)
+            if update is None:
+                self.message_user(request, _("The proposal has been deleted."))
 
-                self.message_user(
-                    request,
-                    _("An unpublished update has been created."),
-                )
-                update_url = reverse(
-                    "admin:froide_govplan_governmentplanupdate_change",
-                    args=(update.pk,),
-                    current_app=self.admin_site.name,
-                )
-                return redirect(update_url)
+                return redirect(plan_url)
+
+            self.message_user(
+                request,
+                _("An unpublished update has been created."),
+            )
+            update_url = reverse(
+                "admin:froide_govplan_governmentplanupdate_change",
+                args=(update.pk,),
+                current_app=self.admin_site.name,
+            )
+            return redirect(update_url)
         else:
             form = GovernmentPlanUpdateAcceptProposalForm(plan=obj)
 

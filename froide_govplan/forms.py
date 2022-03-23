@@ -1,3 +1,5 @@
+import copy
+
 from django import forms
 from django.contrib.auth import get_user_model
 from django.utils import timezone
@@ -141,7 +143,7 @@ class GovernmentPlanUpdateAcceptProposalForm(GovernmentPlanUpdateProposalForm):
         super().__init__(*args, **kwargs)
 
     def get_proposals(self):
-        data = dict(self.plan.proposals)
+        data = copy.deepcopy(self.plan.proposals)
         user_ids = self.plan.proposals.keys()
         user_map = {
             str(u.id): u for u in get_user_model().objects.filter(id__in=user_ids)
@@ -173,12 +175,15 @@ class GovernmentPlanUpdateAcceptProposalForm(GovernmentPlanUpdateProposalForm):
             proposal_user = proposals[proposal_id]["user"]
             update.user = proposal_user
             delete_proposals.append(proposal_id)
+
+        self.delete_proposals(delete_proposals)
+        update.save()
+        return update
+
+    def delete_proposals(self, delete_proposals):
         for pid in delete_proposals:
             if pid in self.plan.proposals:
                 del self.plan.proposals[pid]
         if not self.plan.proposals:
             self.plan.proposals = None
         self.plan.save(update_fields=["proposals"])
-
-        update.save()
-        return update
