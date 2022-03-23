@@ -173,7 +173,9 @@ class GovernmentPlanUpdateAcceptProposalForm(GovernmentPlanUpdateProposalForm):
         if proposal_id:
             proposals = self.get_proposals()
             proposal_user = proposals[proposal_id]["user"]
-            update.user = proposal_user
+            user_org = proposal_user.organizations.all().first()
+            if user_org:
+                update.organization = user_org
             delete_proposals.append(proposal_id)
 
         self.delete_proposals(delete_proposals)
