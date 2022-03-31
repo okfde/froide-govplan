@@ -1,6 +1,7 @@
 import copy
 
 from django import forms
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from django.utils.safestring import mark_safe
@@ -173,19 +174,37 @@ class GovernmentPlanUpdateAcceptProposalForm(GovernmentPlanUpdateProposalForm):
         if proposal_id:
             proposals = self.get_proposals()
             proposal_user = proposals[proposal_id]["user"]
+            proposal_user.send_mail(
+                _("Your proposal for the plan “%s” was accepted") % self.plan.title,
+                _(
+                    "Hello,\n\nA moderator has accepted your proposal for an update to the plan "
+                    "“{title}”. An update will be published soon.\n\nAll the Best,\n{site_name}"
+                ).format(title=self.plan.title, site_name=settings.SITE_NAME),
+                priority=False,
+            )
             user_org = proposal_user.organization_set.all().first()
             if user_org:
                 update.organization = user_org
             delete_proposals.append(proposal_id)
 
-        self.delete_proposals(delete_proposals)
+        self.delete_proposals(delete_proposals, proposals, proposal_id=proposal_id)
         update.save()
         return update
 
-    def delete_proposals(self, delete_proposals):
+    def delete_proposals(self, delete_proposals, proposals, proposal_id=None):
         for pid in delete_proposals:
             if pid in self.plan.proposals:
                 del self.plan.proposals[pid]
+            # if pid != proposal_id:
+            #     proposal_user = proposals[pid]["user"]
+            #     proposal_user.send_mail(
+            #         _("Your proposal for the plan “%s” was rejected") % self.plan.title,
+            #         _(
+            #             "Hello,\n\nA moderator has rejected your proposal for an update "
+            #             "to the plan “{title}”.\n\nAll the Best,\n{site_name}"
+            #         ).format(title=self.plan.title, site_name=settings.SITE_NAME),
+            #         priority=False,
+            #     )
         if not self.plan.proposals:
             self.plan.proposals = None
         self.plan.save(update_fields=["proposals"])
