@@ -219,6 +219,12 @@ class GovernmentPlan(models.Model):
     def get_absolute_domain_url(self):
         return settings.SITE_URL + self.get_absolute_url()
 
+    def get_absolute_short_url(self):  # Return long url as short url for update emails
+        return self.get_absolute_url()
+
+    def get_absolute_domain_short_url(self):
+        return settings.SITE_URL + self.get_absolute_short_url()
+
     def get_reference_links(self):
         if self.reference.startswith("https://"):
             return [self.reference]
