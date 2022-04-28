@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-03-31 13:59+0200\n"
-"PO-Revision-Date: 2022-03-31 14:22+0200\n"
+"PO-Revision-Date: 2022-04-28 16:23+0200\n"
 "Last-Translator: Stefan Wehrmeyer <stefan.wehrmeyer@okfn.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -109,7 +109,7 @@ msgstr "Vorhaben entfolgen"
 
 #: froide_govplan/configuration.py:26
 msgid "Following plan"
-msgstr "Vorhaben folgen"
+msgstr "Vorhaben folgend"
 
 #: froide_govplan/configuration.py:28
 msgid ""
@@ -347,7 +347,7 @@ msgstr "Vorhaben"
 
 #: froide_govplan/models.py:298
 msgid "user"
-msgstr "Nutzer/in"
+msgstr "Nutzer:in"
 
 #: froide_govplan/models.py:307
 msgid "timestamp"
@@ -375,11 +375,11 @@ msgstr "Entwicklungen bei Vorhaben"
 
 #: froide_govplan/models.py:366
 msgid "Government plan follower"
-msgstr "Regierungsvorhaben-Follower"
+msgstr "Regierungsvorhaben-Follower:in"
 
 #: froide_govplan/models.py:367
 msgid "Government plan followers"
-msgstr "Regierungsvorhaben-Follower"
+msgstr "Regierungsvorhaben-Follower:innen"
 
 #: froide_govplan/models.py:390
 msgid "Icon"
