@@ -350,6 +350,15 @@ class GovernmentPlanUpdate(models.Model):
     def get_absolute_domain_url(self):
         return settings.SITE_URL + self.get_absolute_url()
 
+    def get_absolute_short_url(self):
+        return reverse(
+            "govplan:planupdate_shortlink",
+            kwargs={"gov": self.plan.government.slug, "obj_id": self.pk},
+        )
+
+    def get_absolute_domain_short_url(self):
+        return settings.SITE_URL + self.get_absolute_short_url()
+
     def get_url_domain(self):
         return urlparse(self.url).netloc or None
 

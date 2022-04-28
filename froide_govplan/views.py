@@ -5,7 +5,12 @@ from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, UpdateView
 
 from .forms import GovernmentPlanUpdateProposalForm
-from .models import Government, GovernmentPlan, GovernmentPlanSection
+from .models import (
+    Government,
+    GovernmentPlan,
+    GovernmentPlanSection,
+    GovernmentPlanUpdate,
+)
 
 
 class GovernmentMixin:
@@ -132,3 +137,8 @@ def search(request):
     return render(
         request, "froide_govplan/plugins/card_cols.html", {"object_list": plans}
     )
+
+
+def update_shortlink(request, gov, obj_id):
+    obj = get_object_or_404(GovernmentPlanUpdate, plan__government__slug=gov, pk=obj_id)
+    return redirect(obj)

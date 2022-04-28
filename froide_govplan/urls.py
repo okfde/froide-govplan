@@ -8,6 +8,7 @@ from .views import (
     GovPlanSectionDetailOGView,
     GovPlanSectionDetailView,
     search,
+    update_shortlink,
 )
 
 app_name = "govplan"
@@ -38,5 +39,10 @@ urlpatterns = [
         pgettext_lazy("url part", "<slug:gov>/<slug:section>/_og/"),
         GovPlanSectionDetailOGView.as_view(),
         name="section_og",
+    ),
+    path(
+        pgettext_lazy("url part", "<slug:gov>/u/<int:obj_id>/"),
+        update_shortlink,
+        name="planupdate_shortlink",
     ),
 ]
