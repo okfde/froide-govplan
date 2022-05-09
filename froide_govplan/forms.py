@@ -187,24 +187,14 @@ class GovernmentPlanUpdateAcceptProposalForm(GovernmentPlanUpdateProposalForm):
                 update.organization = user_org
             delete_proposals.append(proposal_id)
 
-        self.delete_proposals(delete_proposals, proposals, proposal_id=proposal_id)
+        self.delete_proposals(delete_proposals)
         update.save()
         return update
 
-    def delete_proposals(self, delete_proposals, proposals, proposal_id=None):
+    def delete_proposals(self, delete_proposals):
         for pid in delete_proposals:
             if pid in self.plan.proposals:
                 del self.plan.proposals[pid]
-            # if pid != proposal_id:
-            #     proposal_user = proposals[pid]["user"]
-            #     proposal_user.send_mail(
-            #         _("Your proposal for the plan “%s” was rejected") % self.plan.title,
-            #         _(
-            #             "Hello,\n\nA moderator has rejected your proposal for an update "
-            #             "to the plan “{title}”.\n\nAll the Best,\n{site_name}"
-            #         ).format(title=self.plan.title, site_name=settings.SITE_NAME),
-            #         priority=False,
-            #     )
         if not self.plan.proposals:
             self.plan.proposals = None
         self.plan.save(update_fields=["proposals"])
