@@ -200,6 +200,7 @@ class GovernmentPlan(models.Model):
     )
 
     proposals = models.JSONField(blank=True, null=True)
+    properties = models.JSONField(blank=True, default=dict)
 
     objects = GovernmentPlanManager()
 
