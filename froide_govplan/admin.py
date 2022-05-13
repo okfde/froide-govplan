@@ -6,11 +6,13 @@ from django.utils.translation import gettext_lazy as _
 
 from adminsortable2.admin import SortableAdminMixin
 
+from froide.api import api_router
 from froide.follow.admin import FollowerAdmin
 from froide.helper.admin_utils import make_choose_object_action, make_emptyfilter
 from froide.helper.widgets import TagAutocompleteWidget
 from froide.organization.models import Organization
 
+from .api_views import GovernmentPlanViewSet
 from .forms import (
     GovernmentPlanForm,
     GovernmentPlanUpdateAcceptProposalForm,
@@ -25,6 +27,8 @@ from .models import (
 )
 
 User = auth.get_user_model()
+
+api_router.register(r"governmentplan", GovernmentPlanViewSet, basename="governmentplan")
 
 
 class GovPlanAdminSite(admin.AdminSite):
