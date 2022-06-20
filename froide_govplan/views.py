@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, UpdateView
 
-from .auth import get_allowed_plans
+from .auth import get_visible_plans
 from .forms import GovernmentPlanUpdateProposalForm
 from .models import Government, GovernmentPlan, GovernmentPlanSection
 
@@ -34,7 +34,7 @@ class GovPlanSectionDetailView(GovernmentMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        queryset = get_allowed_plans(self.request)
+        queryset = get_visible_plans(self.request)
         context["plans"] = context["object"].get_plans(queryset=queryset)
         return context
 
