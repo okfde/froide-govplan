@@ -13,6 +13,7 @@ from froide.helper.widgets import TagAutocompleteWidget
 from froide.organization.models import Organization
 
 from .api_views import GovernmentPlanViewSet
+from .auth import get_allowed_plans, has_limited_access
 from .forms import (
     GovernmentPlanForm,
     GovernmentPlanUpdateAcceptProposalForm,
@@ -51,19 +52,6 @@ class GovernmentAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
     list_display = ("name", "public", "start_date", "end_date")
     list_filter = ("public",)
-
-
-def has_limited_access(user):
-    if not user.is_authenticated:
-        return True
-    return not user.has_perm("froide_govplan.add_governmentplan")
-
-
-def get_allowed_plans(request):
-    if not has_limited_access(request.user):
-        return GovernmentPlan.objects.all()
-    groups = request.user.groups.all()
-    return GovernmentPlan.objects.filter(group__in=groups).distinct()
 
 
 def execute_assign_organization(admin, request, queryset, action_obj):

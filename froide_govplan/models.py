@@ -427,14 +427,14 @@ class GovernmentPlanSection(models.Model):
     def get_absolute_domain_url(self):
         return settings.SITE_URL + self.get_absolute_url()
 
-    def get_plans(self):
-        return (
-            GovernmentPlan.objects.filter(
-                categories__in=self.categories.all(), government_id=self.government_id
-            )
-            .distinct()
-            .order_by("title")
+    def get_plans(self, queryset=None):
+        if queryset is None:
+            queryset = GovernmentPlan.objects.filter(public=True)
+
+        queryset = queryset.filter(
+            categories__in=self.categories.all(), government_id=self.government_id
         )
+        return queryset.distinct().order_by("title")
 
 
 if CMSPlugin:
