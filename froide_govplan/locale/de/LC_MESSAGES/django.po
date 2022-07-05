@@ -223,7 +223,7 @@ msgstr "umgesetzt"
 
 #: froide_govplan/models.py:38
 msgid "deferred"
-msgstr "verschoben"
+msgstr "zurückgestellt"
 
 #: froide_govplan/models.py:51
 msgid "terrible"
