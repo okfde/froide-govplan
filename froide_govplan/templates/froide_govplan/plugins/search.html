@@ -8,11 +8,9 @@
         <option value="{{ status }}">{{ label }}</option>
       {% endfor %}
     </select>
-    <div class="input-group-append">
-      <button class="btn btn-outline-secondary" type="submit">
-        {% translate "Search" %}
-      </button>
-    </div>
+    <button class="btn btn-outline-secondary" type="submit">
+      {% translate "Search" %}
+    </button>
   </div>
   {% if instance.government_id %}
     <input type="hidden" name="government" value="{{ instance.government_id }}"/>
@@ -24,8 +22,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">{% trans "Search results" %}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% translate 'Close' %}">
         </button>
       </div>
       <div class="modal-body">

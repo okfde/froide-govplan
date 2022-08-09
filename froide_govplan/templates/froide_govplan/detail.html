@@ -41,20 +41,20 @@
         <div class="d-md-flex my-4 align-items-center">
           <ul class="list-unstyled d-flex m-0">
             <li>
-              <span class="badge badge-{{ object.get_status_css }} mr-2">
+              <span class="badge text-bg-{{ object.get_status_css }} me-2">
                 {{ object.get_status_display }}
               </span>
             </li>
             {% for cat in object.categories.all %}
             <li>
-              <a href="{{ section.get_absolute_url }}" class="badge badge-light mr-2">
+              <a href="{{ section.get_absolute_url }}" class="badge text-bg-light me-2">
                 {{ cat.name }}
               </a>
             </li>
             {% endfor %}
           </ul>
 
-          <div class="ml-auto mt-2 mt-md-0">
+          <div class="ms-auto mt-2 mt-md-0">
             {% show_follow "govplan" object %}
           </div>
         </div>
@@ -79,7 +79,7 @@
                       {% endif %}
                       </span>
                       {% for ref in refs %}
-                        <a href="{{ ref }}" class="badge badge-light mr-2" target="_blank">
+                        <a href="{{ ref }}" class="badge text-bg-light me-2" target="_blank">
                           {{ forloop.counter }}
                         </a>
                       {% endfor %}
@@ -175,7 +175,7 @@
           <div class="p-3 p-md-4">
             {% if request.user.is_authenticated %}
               <p>Gibt es Neuigkeiten zu diesem Vorhaben, die wir noch nicht erfasst haben?</p>
-              <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#govplanupdate-proposal">
+              <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#govplanupdate-proposal">
                 Entwicklung melden
               </button>
               <div class="modal" data-teleport="body" tabindex="-1" role="dialog" id="govplanupdate-proposal">
@@ -185,8 +185,7 @@
                       <h5 class="modal-title">
                         Neue Entwicklung melden
                       </h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% translate 'Close' %}">
                       </button>
                     </div>
                     <div class="modal-body">
