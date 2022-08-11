@@ -2,7 +2,7 @@
 <form method="get" action="{% url 'govplan:search' %}" class="ajaxified" data-container="#govplan-searchresult-{{ instance.id }}" data-modalcontainer="#govplan-searchmodal-{{ instance.id }}">
   <div class="input-group">
     <input type="text" name="q" class="form-control" aria-label="{% translate 'Search query' %}" placeholder="{% translate 'Search query' %}">
-    <select name="status" class="custom-select">
+    <select name="status" class="form-select">
       <option value="">{% translate "Filter status" %}</option>
       {% for status, label in status_list %}
         <option value="{{ status }}">{{ label }}</option>
