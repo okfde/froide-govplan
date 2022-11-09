@@ -264,7 +264,7 @@ class GovernmentPlan(models.Model):
     def has_recent_foirequest(self):
         frs = self.get_related_foirequests()
         ago = timezone.now() - timedelta(days=90)
-        return any(fr.first_message > ago for fr in frs)
+        return any(fr.created_at > ago for fr in frs)
 
     def get_recent_foirequest(self):
         return self.get_related_foirequests()[0]
@@ -285,7 +285,7 @@ class GovernmentPlan(models.Model):
             )
             .filter(tags__name=TAG_NAME)
             .filter(reference=self.get_foirequest_reference())
-            .order_by("-first_message")
+            .order_by("-created_at")
         )
         return self._related_foirequests
 
