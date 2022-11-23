@@ -1,9 +1,13 @@
 {% load govplan %}
 
+{% load i18n %}
+
 <div class="row">
   {% with gov=instance.government %}
     <div class="col-sm-3">
-      <span class="text-gray-700">{{ gov.days_left }} Tage übrig</span>
+      <span class="text-gray-700">
+        {% blocktranslate count days=gov.days_left %}One day left{% plural %}{{ days }} days left{% endblocktranslate %}
+      </span>
     </div>
     <div class="col-sm-9">
       <div class="progress" style="height: 1.5rem;">
