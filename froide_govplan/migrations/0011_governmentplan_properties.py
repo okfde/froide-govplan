@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('froide_govplan', '0010_governmentplanscmsplugin_extra_classes'),
+        ("froide_govplan", "0010_governmentplanscmsplugin_extra_classes"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='governmentplan',
-            name='properties',
+            model_name="governmentplan",
+            name="properties",
             field=models.JSONField(blank=True, default=dict),
         ),
     ]

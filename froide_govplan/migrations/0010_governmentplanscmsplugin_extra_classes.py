@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('froide_govplan', '0009_governmentplanupdatescmsplugin'),
+        ("froide_govplan", "0009_governmentplanupdatescmsplugin"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='governmentplanscmsplugin',
-            name='extra_classes',
+            model_name="governmentplanscmsplugin",
+            name="extra_classes",
             field=models.CharField(blank=True, max_length=255),
         ),
     ]
