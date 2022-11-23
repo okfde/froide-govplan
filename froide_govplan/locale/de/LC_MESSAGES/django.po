@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-23 13:20+0100\n"
-"PO-Revision-Date: 2022-11-23 13:22+0100\n"
+"POT-Creation-Date: 2022-11-23 13:50+0100\n"
+"PO-Revision-Date: 2022-11-23 13:51+0100\n"
 "Last-Translator: Stefan Wehrmeyer <stefan.wehrmeyer@okfn.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -521,11 +521,18 @@ msgstr "Status filtern"
 msgid "Search results"
 msgstr "Suchergebnisse"
 
+#: froide_govplan/templates/froide_govplan/plugins/time_used.html
+#, python-format
+msgid "One day left"
+msgid_plural "%(days)s days left"
+msgstr[0] "Ein Tag übrig"
+msgstr[1] "%(days)s Tage übrig"
+
 #: froide_govplan/templates/froide_govplan/section.html
 #, python-format
 msgid ""
 "\n"
-"              Here you can find all plans of the section \"%(section)s\", "
+"              Here you can find all plans of the section “%(section)s”, "
 "which the coalition constituted in their agreement. On the curresponding "
 "detail pages, you'll get more information, stay up to date with news or "
 "submit changes.\n"
