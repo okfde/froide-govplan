@@ -80,6 +80,31 @@ class Government(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def days_available(self):
+        if self.start_date is None:
+            return 0
+        if self.end_date is None:
+            return 0
+        return (self.end_date - self.start_date).days
+
+    @property
+    def days_left(self):
+        if not self.end_date:
+            return 0
+        now = timezone.now().date()
+        if now > self.end_date:
+            return 0
+        return (self.end_date - now).days
+
+    def days_used_percentage(self) -> int:
+        total_days = self.days_available
+        if not total_days:
+            return 0
+        now = timezone.now().date()
+        days_used = (now - self.start_date).days
+        return int(days_used / total_days * 100)
+
 
 class CategorizedGovernmentPlan(TaggedItemBase):
     tag = models.ForeignKey(
@@ -442,6 +467,8 @@ if CMSPlugin:
     PLUGIN_TEMPLATES = [
         ("froide_govplan/plugins/default.html", _("Normal")),
         ("froide_govplan/plugins/progress.html", _("Progress")),
+        ("froide_govplan/plugins/progress_row.html", _("Progress Row")),
+        ("froide_govplan/plugins/time_used.html", _("Time used")),
         ("froide_govplan/plugins/card_cols.html", _("Card columns")),
         ("froide_govplan/plugins/search.html", _("Search")),
     ]

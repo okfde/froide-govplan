@@ -1,0 +1,18 @@
+{% load govplan %}
+
+{% get_plan_progress object_list as progress %}
+
+<div class="row">
+  <div class="col-sm-3">
+    <span class="text-gray-700{% if not instance.extra_classes or "progress-lg" not in instance.extra_classes %} small{% endif %}">{{ progress.count }} Vorhaben</span>
+  </div>
+  <div class="col-sm-9">
+    <div class="progress" {% if "progress-lg" in instance.extra_classes %}style="height: 1.5rem;"{% endif %}>
+      {% for section in progress.sections %}
+        <div class="progress-bar bg-{{ section.css_class }}" role="progressbar" style="width: {{ section.css_percentage }}%;" aria-valuenow="{{ section.css_percentage }}" aria-valuemin="0" aria-valuemax="100" aria-label="{{ section.percentage }}% {{ section.label }}" title="{{ section.percentage }}% {{ section.label }}" data-bs-toggle="tooltip" data-placement="top">
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+

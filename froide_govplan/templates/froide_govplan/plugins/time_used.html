@@ -1,0 +1,15 @@
+{% load govplan %}
+
+<div class="row">
+  {% with gov=instance.government %}
+    <div class="col-sm-3">
+      <span class="text-gray-700">{{ gov.days_left }} Tage übrig</span>
+    </div>
+    <div class="col-sm-9">
+      <div class="progress" style="height: 1.5rem;">
+          <div class="progress-bar bg-secondary"  role="progressbar" style="width: {{ gov.days_used_percentage }}%;" aria-valuenow="{{ gov.days_used_percentage }}" aria-valuemin="0" aria-valuemax="100" aria-label="{{ gov.days_used_percentage }}%" title="{{ gov.days_used_percentage }}%" data-bs-toggle="tooltip" data-placement="top">
+          </div>
+      </div>
+    </div>
+  {% endwith %}
+</div>
