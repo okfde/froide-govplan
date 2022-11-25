@@ -8,9 +8,9 @@ register = template.Library()
 PROGRESS_ORDER = [
     PlanStatus.IMPLEMENTED,
     PlanStatus.PARTIALLY_IMPLEMENTED,
-    PlanStatus.DEFERRED,
     PlanStatus.STARTED,
     PlanStatus.NOT_STARTED,
+    PlanStatus.DEFERRED,
 ]
 
 
