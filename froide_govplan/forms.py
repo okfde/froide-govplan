@@ -11,6 +11,8 @@ import bleach
 from bleach.linkifier import Linker
 from tinymce.widgets import TinyMCE
 
+from froide.helper.widgets import BootstrapSelect
+
 from .models import GovernmentPlan, GovernmentPlanUpdate, PlanRating, PlanStatus
 
 BLEACH_OPTIONS = {
@@ -100,6 +102,7 @@ class GovernmentPlanUpdateProposalForm(forms.ModelForm):
         help_text=_("Has the status of the plan changed?"),
         choices=[("", "---")] + PlanStatus.choices,
         required=False,
+        widget=BootstrapSelect,
     )
     rating = forms.TypedChoiceField(
         label=_("rating"),
@@ -108,6 +111,7 @@ class GovernmentPlanUpdateProposalForm(forms.ModelForm):
         coerce=int,
         empty_value=None,
         required=False,
+        widget=BootstrapSelect,
     )
 
     class Meta:
