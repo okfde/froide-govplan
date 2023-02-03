@@ -242,7 +242,9 @@ class GovernmentPlanAdmin(admin.ModelAdmin):
 class GovernmentPlanUpdateAdmin(admin.ModelAdmin):
     form = GovernmentPlanUpdateForm
     save_on_top = True
-    raw_id_fields = ("user", "foirequest")
+    raw_id_fields = ["user"] + (
+        ["foirequest"] if conf.GOVPLAN_ENABLE_FOIREQUEST else []
+    )
     date_hierarchy = "timestamp"
     search_fields = ("title", "content")
     list_display = (

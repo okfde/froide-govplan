@@ -8,19 +8,31 @@ from django.db import migrations, models
 import filer.fields.image
 import taggit.managers
 
+from .. import conf
+
 
 class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-        ("publicbody", "0039_publicbody_alternative_emails"),
-        ("auth", "0012_alter_user_first_name_max_length"),
-        ("foirequest", "0054_alter_foirequest_options"),
-        migrations.swappable_dependency(settings.FILER_IMAGE_MODEL),
-        ("organization", "0001_initial"),
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-    ]
+    dependencies = (
+        [
+            ("publicbody", "0039_publicbody_alternative_emails"),
+            ("auth", "0012_alter_user_first_name_max_length"),
+        ]
+        + (
+            [
+                ("foirequest", "0054_alter_foirequest_options"),
+            ]
+            if conf.GOVPLAN_ENABLE_FOIREQUEST
+            else []
+        )
+        + [
+            migrations.swappable_dependency(settings.FILER_IMAGE_MODEL),
+            ("organization", "0001_initial"),
+            migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+        ]
+    )
 
     operations = [
         migrations.CreateModel(
@@ -217,15 +229,23 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 ("public", models.BooleanField(default=False)),
-                (
-                    "foirequest",
-                    models.ForeignKey(
-                        blank=True,
-                        null=True,
-                        on_delete=django.db.models.deletion.SET_NULL,
-                        to="foirequest.foirequest",
-                    ),
-                ),
+            ]
+            + (
+                [
+                    (
+                        "foirequest",
+                        models.ForeignKey(
+                            blank=True,
+                            null=True,
+                            on_delete=django.db.models.deletion.SET_NULL,
+                            to="foirequest.foirequest",
+                        ),
+                    )
+                ]
+                if conf.GOVPLAN_ENABLE_FOIREQUEST
+                else []
+            )
+            + [
                 (
                     "organization",
                     models.ForeignKey(

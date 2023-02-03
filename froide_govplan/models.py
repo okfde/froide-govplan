@@ -15,7 +15,6 @@ from filer.fields.image import FilerImageField
 from taggit.managers import TaggableManager
 from taggit.models import TaggedItemBase
 
-from froide.foirequest.models import FoiRequest
 from froide.follow.models import Follower
 from froide.georegion.models import GeoRegion
 from froide.organization.models import Organization
@@ -30,6 +29,12 @@ try:
 except ImportError:
     CMSPlugin = None
     PlaceholderField = None
+
+
+if conf.GOVPLAN_ENABLE_FOIREQUEST:
+    from froide.foirequest.models import FoiRequest
+else:
+    FoiRequest = None
 
 
 class PlanStatus(models.TextChoices):
@@ -308,6 +313,8 @@ class GovernmentPlan(models.Model):
         return "govplan:plan@{}".format(self.pk)
 
     def get_related_foirequests(self):
+        if FoiRequest is None:
+            return []
         if not self.responsible_publicbody:
             return []
         if hasattr(self, "_related_foirequests"):
@@ -363,13 +370,14 @@ class GovernmentPlanUpdate(models.Model):
     )
     public = models.BooleanField(default=False, verbose_name=_("is public?"))
 
-    foirequest = models.ForeignKey(
-        FoiRequest,
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        verbose_name=_("FOI request"),
-    )
+    if FoiRequest:
+        foirequest = models.ForeignKey(
+            FoiRequest,
+            null=True,
+            blank=True,
+            on_delete=models.SET_NULL,
+            verbose_name=_("FOI request"),
+        )
 
     class Meta:
         ordering = ("-timestamp",)
