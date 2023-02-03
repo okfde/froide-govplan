@@ -3,7 +3,7 @@ from urllib.parse import quote, urlencode
 from django.conf import settings
 from django.urls import reverse
 
-TAG_NAME = "Koalitionstracker"
+from . import conf
 
 
 def make_request_url(plan, publicbody):
@@ -19,7 +19,7 @@ def make_request_url(plan, publicbody):
         "subject": subject.encode("utf-8"),
         "body": body,
         "ref": plan.get_foirequest_reference(),
-        "tags": TAG_NAME,
+        "tags": conf.GOVPLAN_NAME,
     }
 
     hide_features = ["hide_public", "hide_similar", "hide_draft"]

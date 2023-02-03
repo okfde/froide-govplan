@@ -12,6 +12,7 @@ from froide.helper.admin_utils import make_choose_object_action, make_emptyfilte
 from froide.helper.widgets import TagAutocompleteWidget
 from froide.organization.models import Organization
 
+from . import conf
 from .api_views import GovernmentPlanViewSet
 from .auth import get_allowed_plans, has_limited_access
 from .forms import (
@@ -33,8 +34,8 @@ api_router.register(r"governmentplan", GovernmentPlanViewSet, basename="governme
 
 
 class GovPlanAdminSite(admin.AdminSite):
-    site_header = "Regierungsvorhaben"
-    site_url = "/koalitionstracker/"
+    site_header = conf.GOVPLAN_NAME
+    site_url = None
 
 
 class GovernmentPlanAdminForm(GovernmentPlanForm):

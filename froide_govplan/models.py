@@ -21,7 +21,8 @@ from froide.georegion.models import GeoRegion
 from froide.organization.models import Organization
 from froide.publicbody.models import Category, Jurisdiction, PublicBody
 
-from .utils import TAG_NAME, make_request_url
+from . import conf
+from .utils import make_request_url
 
 try:
     from cms.models.fields import PlaceholderField
@@ -317,7 +318,7 @@ class GovernmentPlan(models.Model):
                 visibility=FoiRequest.VISIBILITY.VISIBLE_TO_PUBLIC,
                 public_body=self.responsible_publicbody,
             )
-            .filter(tags__name=TAG_NAME)
+            .filter(tags__name=conf.GOVPLAN_NAME)
             .filter(reference=self.get_foirequest_reference())
             .order_by("-created_at")
         )

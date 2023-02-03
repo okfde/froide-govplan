@@ -4,6 +4,8 @@ from django.utils.translation import gettext_lazy as _
 from cms.toolbar_base import CMSToolbar
 from cms.toolbar_pool import toolbar_pool
 
+from . import conf
+
 
 class GovPlanToolbar(CMSToolbar):
     def populate(self):
@@ -12,7 +14,7 @@ class GovPlanToolbar(CMSToolbar):
             and self.request.current_page.application_namespace != "govplan"
         ):
             return
-        menu = self.toolbar.get_or_create_menu("govplan-menu", "Koalitionstracker")
+        menu = self.toolbar.get_or_create_menu("govplan-menu", conf.GOVPLAN_NAME)
 
         url = reverse(
             "admin:app_list",
