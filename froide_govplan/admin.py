@@ -53,6 +53,7 @@ class GovernmentAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
     list_display = ("name", "public", "start_date", "end_date")
     list_filter = ("public",)
+    raw_id_fields = ("georegion",)
 
 
 def execute_assign_organization(admin, request, queryset, action_obj):
