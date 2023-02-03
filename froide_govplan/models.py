@@ -17,6 +17,7 @@ from taggit.models import TaggedItemBase
 
 from froide.foirequest.models import FoiRequest
 from froide.follow.models import Follower
+from froide.georegion.models import GeoRegion
 from froide.organization.models import Organization
 from froide.publicbody.models import Category, Jurisdiction, PublicBody
 
@@ -62,9 +63,17 @@ class Government(models.Model):
     public = models.BooleanField(default=False, verbose_name=_("is public?"))
     jurisdiction = models.ForeignKey(
         Jurisdiction,
+        blank=True,
         null=True,
         on_delete=models.SET_NULL,
         verbose_name=_("jurisdiction"),
+    )
+    georegion = models.ForeignKey(
+        GeoRegion,
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        verbose_name=_("georegion"),
     )
     description = models.TextField(blank=True, verbose_name=_("description"))
 
