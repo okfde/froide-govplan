@@ -96,6 +96,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "sekizai.context_processors.sekizai",
                 "cms.context_processors.cms_settings",
+                "froide.helper.context_processors.site_settings",
             ],
         },
     },
@@ -169,7 +170,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 TAGGIT_CASE_INSENSITIVE = True
 TAGGIT_STRIP_UNICODE_WHEN_SLUGIFYING = True
 
-LOGIN_URL = "account-login"
+LOGIN_URL = "admin:login"
 X_FRAME_OPTIONS = "SAMEORIGIN"
 
 # Django CMS
@@ -183,6 +184,8 @@ CMS_TEMPLATES = [
 SITE_ID = 1
 SITE_NAME = "GovPlan"
 SITE_URL = "http://localhost:8000"
+SITE_EMAIL = "info@example.com"
+SITE_LOGO = ""
 
 FROIDE_CONFIG = {
     "bounce_enabled": False,
