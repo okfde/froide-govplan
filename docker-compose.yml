@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  db:
+    image: postgis/postgis:14-3.3-alpine
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "127.0.0.1:5432:5432"
+    environment:
+      POSTGRES_USER: govplan
+      POSTGRES_DB: govplan
+      POSTGRES_PASSWORD: govplan
+
+volumes:
+  postgres_data: {}
