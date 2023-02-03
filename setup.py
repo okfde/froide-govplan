@@ -34,7 +34,7 @@ setup(
     author_email="mail@stefanwehrmeyer.com",
     packages=find_packages(),
     install_requires=[
-        "froide @ git+https://github.com/okfde/froide.git@main#egg=froide",
+        "froide",
         "django-cms",
         "django-filer",
         "psycopg2",

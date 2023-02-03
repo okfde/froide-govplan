@@ -14,6 +14,7 @@ docker compose up -d
 python3 -m venv .venv
 source .venv/bin/activate
 # Install dependencies
+pip install -e git+https://github.com/okfde/froide.git@main#egg=froide
 pip install -e .
 # Setup initial database
 ./manage.py migrate
