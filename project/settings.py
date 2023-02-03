@@ -60,9 +60,8 @@ INSTALLED_APPS = [
     "cms",
     "menus",
     "treebeard",
-    # "oauth2_provider",
-    # "mfa",
     "taggit",
+    "tinymce",
 ]
 
 MIDDLEWARE = [
