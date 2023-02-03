@@ -34,7 +34,15 @@ setup(
     author_email="mail@stefanwehrmeyer.com",
     packages=find_packages(),
     install_requires=[
-        "froide",
+        "froide @ git+https://github.com/okfde/froide.git@main#egg=froide",
+        "django-cms",
+        "django-filer",
+        "psycopg2",
+        "django-admin-sortable2",
+        "bleach",
+        "django-tinymce",
+        "django-oauth-toolkit",
+        "django-mfa3",
     ],
     include_package_data=True,
     classifiers=[
