@@ -37,7 +37,7 @@ setup(
         "froide",
         "django-cms",
         "django-filer",
-        "psycopg2-binary",
+        "psycopg[binary]",
         "django-admin-sortable2",
         "bleach",
         "django-tinymce",
