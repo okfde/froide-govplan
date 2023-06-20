@@ -481,7 +481,6 @@ class GovernmentPlanSection(models.Model):
 
 
 if CMSPlugin:
-
     PLUGIN_TEMPLATES = [
         ("froide_govplan/plugins/default.html", _("Normal")),
         ("froide_govplan/plugins/progress.html", _("Progress")),
@@ -593,6 +592,12 @@ if CMSPlugin:
             default=0,
             help_text=_("number of updates to skip from top of list"),
         )
+
+        def copy_relations(self, old_instance):
+            """
+            Duplicate ManyToMany relations on plugin copy
+            """
+            self.categories.set(old_instance.categories.all())
 
         def get_updates(self, request, published_only=True):
             # TODO: remove duplication with GovernmentPlansCMSPlugin.get_plans
