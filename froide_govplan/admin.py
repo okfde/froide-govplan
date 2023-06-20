@@ -5,6 +5,7 @@ from django.urls import path, reverse, reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 from adminsortable2.admin import SortableAdminMixin
+from cms.admin.placeholderadmin import PlaceholderAdminMixin
 
 from froide.api import api_router
 from froide.follow.admin import FollowerAdmin
@@ -335,7 +336,9 @@ class GovernmentPlanUpdateAdmin(admin.ModelAdmin):
         return super().has_change_permission(request, obj=obj)
 
 
-class GovernmentPlanSectionAdmin(SortableAdminMixin, admin.ModelAdmin):
+class GovernmentPlanSectionAdmin(
+    SortableAdminMixin, PlaceholderAdminMixin, admin.ModelAdmin
+):
     save_on_top = True
     prepopulated_fields = {"slug": ("title",)}
     search_fields = ("title",)
