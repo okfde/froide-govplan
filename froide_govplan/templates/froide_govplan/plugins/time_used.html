@@ -5,7 +5,7 @@
 <div class="row">
   {% with gov=instance.government %}
     <div class="col-sm-3">
-      <span class="text-gray-700">
+      <span class="text-body-secondary">
         {% blocktranslate count days=gov.days_left %}One day left{% plural %}{{ days }} days left{% endblocktranslate %}
       </span>
     </div>

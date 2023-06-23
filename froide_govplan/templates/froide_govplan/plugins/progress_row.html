@@ -4,7 +4,7 @@
 
 <div class="row">
   <div class="col-sm-3">
-    <span class="text-gray-700{% if not instance.extra_classes or "progress-lg" not in instance.extra_classes %} small{% endif %}">{{ progress.count }} Vorhaben</span>
+    <span class="text-body-secondary{% if not instance.extra_classes or "progress-lg" not in instance.extra_classes %} small{% endif %}">{{ progress.count }} Vorhaben</span>
   </div>
   <div class="col-sm-9">
     <div class="progress" {% if "progress-lg" in instance.extra_classes %}style="height: 1.5rem;"{% endif %}>

@@ -2,9 +2,9 @@
 
 {% for update in updates %}
 {% if wrapper_classes %}<div class="{{ wrapper_classes }}">{% endif %}
-<div class="box-card border-blue shadow-blue bg-white" id="update-{{ update.pk }}">
+<div class="box-card border-blue shadow-blue bg-body" id="update-{{ update.pk }}">
   <a href="{{ update.get_absolute_url }}" class="text-body text-decoration-none">
-    <div class="box-card-header bg-blue-20 d-flex justify-content-center p-3 p-md-4 tight-margin flex-column">
+    <div class="box-card-header text-bg-callout d-flex justify-content-center p-3 p-md-4 tight-margin flex-column">
       <div>
         {% if show_context %}
           <span class="badge text-bg-blue-100 rounded-pill float-md-right mb-2 mb-md-0">
