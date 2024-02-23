@@ -12,12 +12,6 @@
   {% include "snippets/meta.html" %}
 {% endblock %}
 
-{% block govplan_breadcrumbs %}
-<li class="breadcrumb-item active" aria-current="page">
-  <a href="{{ object.get_absolute_url }}">{{ object.title }}</a>
-</li>
-{% endblock %}
-
 {% block app_body %}
 <div class="container">
   <div class="row justify-content-center mb-5">  
@@ -54,4 +48,4 @@
     
   {% include "froide_govplan/plugins/card_cols.html" with object_list=plans %}
 </div>
-{% endblock %}
+{% endblock app_body %}
