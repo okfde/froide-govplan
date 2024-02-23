@@ -22,6 +22,16 @@ class GovernmentMixin:
             Government, slug=self.kwargs["gov"], **filter_kwarg
         )
 
+    def get_breadcrumbs(self, context):
+        if "request" in context:
+            request = context["request"]
+
+            title = request.current_page.get_title()
+            url = request.current_page.get_absolute_url()
+            return [(title, url)]
+
+        return []
+
 
 class GovPlanSectionDetailView(GovernmentMixin, DetailView):
     slug_url_kwarg = "section"
@@ -37,6 +47,11 @@ class GovPlanSectionDetailView(GovernmentMixin, DetailView):
         queryset = get_visible_plans(self.request)
         context["plans"] = context["object"].get_plans(queryset=queryset)
         return context
+
+    def get_breadcrumbs(self, context):
+        return super().get_breadcrumbs(context) + [
+            (self.object.title, self.object.get_absolute_url())
+        ]
 
 
 class GovPlanDetailView(GovernmentMixin, DetailView):
@@ -62,6 +77,14 @@ class GovPlanDetailView(GovernmentMixin, DetailView):
         # For CMS toolbar
         self.request.govplan = self.object
         return context
+
+    def get_breadcrumbs(self, context):
+        obj = context["object"]
+        section = context["section"]
+        return super().get_breadcrumbs(context) + [
+            (section.title, section.get_absolute_url()),
+            (obj.title, obj.get_absolute_url()),
+        ]
 
 
 class GovPlanProposeUpdateView(GovernmentMixin, LoginRequiredMixin, UpdateView):
