@@ -81,8 +81,13 @@ class GovPlanDetailView(GovernmentMixin, DetailView):
     def get_breadcrumbs(self, context):
         obj = context["object"]
         section = context["section"]
-        return super().get_breadcrumbs(context) + [
-            (section.title, section.get_absolute_url()),
+
+        breadcrumbs = super().get_breadcrumbs(context)
+
+        if section:
+            breadcrumbs.append((section.title, section.get_absolute_url()))
+
+        return breadcrumbs + [
             (obj.title, obj.get_absolute_url()),
         ]
 
