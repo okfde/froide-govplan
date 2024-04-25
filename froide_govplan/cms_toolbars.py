@@ -9,10 +9,7 @@ from . import conf
 
 class GovPlanToolbar(CMSToolbar):
     def populate(self):
-        if (
-            self.request.current_page
-            and self.request.current_page.application_namespace != "govplan"
-        ):
+        if not self.is_current_app:
             return
         menu = self.toolbar.get_or_create_menu("govplan-menu", conf.GOVPLAN_NAME)
 
