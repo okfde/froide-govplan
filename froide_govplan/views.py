@@ -4,12 +4,14 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, UpdateView
 
+from froide.helper.breadcrumbs import BreadcrumbView
+
 from .auth import get_visible_plans
 from .forms import GovernmentPlanUpdateProposalForm
 from .models import Government, GovernmentPlan, GovernmentPlanSection
 
 
-class GovernmentMixin:
+class GovernmentMixin(BreadcrumbView):
     def dispatch(self, *args, **kwargs):
         self.get_government()
         return super().dispatch(*args, **kwargs)
