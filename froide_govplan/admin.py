@@ -1,20 +1,16 @@
+from adminsortable2.admin import SortableAdminMixin
+from cms.admin.placeholderadmin import PlaceholderAdminMixin
 from django.contrib import admin, auth
 from django.contrib.auth.models import Group
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import path, reverse, reverse_lazy
 from django.utils.translation import gettext_lazy as _
-
-from adminsortable2.admin import SortableAdminMixin
-from cms.admin.placeholderadmin import PlaceholderAdminMixin
-
-from froide.api import api_router
 from froide.follow.admin import FollowerAdmin
 from froide.helper.admin_utils import make_choose_object_action, make_emptyfilter
 from froide.helper.widgets import TagAutocompleteWidget
 from froide.organization.models import Organization
 
 from . import conf
-from .api_views import GovernmentPlanViewSet
 from .auth import get_allowed_plans, has_limited_access
 from .forms import (
     GovernmentPlanForm,
@@ -30,8 +26,6 @@ from .models import (
 )
 
 User = auth.get_user_model()
-
-api_router.register(r"governmentplan", GovernmentPlanViewSet, basename="governmentplan")
 
 
 class GovPlanAdminSite(admin.AdminSite):

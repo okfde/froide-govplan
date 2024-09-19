@@ -7,8 +7,14 @@ class FroideGovPlanConfig(AppConfig):
     verbose_name = _("GovPlan App")
 
     def ready(self):
+        from froide.api import api_router
         from froide.follow.configuration import follow_registry
 
+        from .api_views import GovernmentPlanViewSet
         from .configuration import GovernmentPlanFollowConfiguration
 
         follow_registry.register(GovernmentPlanFollowConfiguration())
+
+        api_router.register(
+            r"governmentplan", GovernmentPlanViewSet, basename="governmentplan"
+        )
