@@ -2,10 +2,6 @@
 {% load cms_tags %}
 {% load djangocms_alias_tags %}
 {% load menu_tags %}
-{% block navbar %}
-    {{ block.super }}
-    {% include "snippets/breadcrumbs.html" with breadcrumbs_background="blue-10" overlay=True %}
-{% endblock navbar %}
 {% block body %}
     {% static_alias "govplan_header" %}
     {% block app_body %}
