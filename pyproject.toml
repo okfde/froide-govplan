@@ -18,6 +18,7 @@ classifiers = [
 version = "0.0.1"
 dependencies = [
   "django-cms",
+  "djangocms-alias",
   "django-filer",
   "psycopg[binary]",
   "django-admin-sortable2",
