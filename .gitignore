@@ -5,3 +5,4 @@ __pycache__
 .vscode/
 .venv/
 postgres_data/
+.ruff_cache/
