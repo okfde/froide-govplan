@@ -55,9 +55,9 @@ INSTALLED_APPS = [
     # Third party apps
     "easy_thumbnails",
     "filer",
-    "mptt",
     "sekizai",
     "cms",
+    "djangocms_alias",
     "menus",
     "treebeard",
     "taggit",
@@ -191,10 +191,12 @@ FROIDE_CONFIG = {
     "bounce_enabled": False,
     "bounce_format": "bounce+{token}@example.com",
     "bounce_max_age": 60 * 60 * 24 * 14,  # 14 days
-    "bounce_format": "bounce+{token}@example.com",
     "unsubscribe_enabled": False,
     "unsubscribe_format": "unsub+{token}@example.com",
 }
+
+ELASTICSEARCH_INDEX_PREFIX = "govplan"
+CMS_CONFIRM_VERSION4 = True
 
 # Govplan settings
 
