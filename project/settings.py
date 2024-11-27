@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     "treebeard",
     "taggit",
     "tinymce",
+    'oauth2_provider',
 ]
 
 MIDDLEWARE = [
