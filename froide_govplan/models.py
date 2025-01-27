@@ -85,6 +85,7 @@ class Government(models.Model):
 
     start_date = models.DateField(null=True, blank=True, verbose_name=_("start date"))
     end_date = models.DateField(null=True, blank=True, verbose_name=_("end date"))
+    active = models.BooleanField(default=True, verbose_name=_("active"))
 
     planning_document = models.URLField(blank=True, verbose_name=_("planning document"))
 
