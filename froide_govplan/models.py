@@ -10,15 +10,13 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-
 from filer.fields.image import FilerImageField
-from taggit.managers import TaggableManager
-from taggit.models import TaggedItemBase
-
 from froide.follow.models import Follower
 from froide.georegion.models import GeoRegion
 from froide.organization.models import Organization
 from froide.publicbody.models import Category, Jurisdiction, PublicBody
+from taggit.managers import TaggableManager
+from taggit.models import TaggedItemBase
 
 from . import conf
 from .utils import make_request_url
@@ -95,6 +93,13 @@ class Government(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        if self.planning_document:
+            return self.planning_document
+        # No planning document? Just return the base URL
+        url = reverse("govplan:search")
+        return url.rsplit("/", 2)[0]
 
     @property
     def days_available(self):

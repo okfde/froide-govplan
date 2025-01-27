@@ -3,7 +3,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, UpdateView
-
 from froide.helper.breadcrumbs import BreadcrumbView
 
 from .auth import get_visible_plans
@@ -24,15 +23,22 @@ class GovernmentMixin(BreadcrumbView):
             Government, slug=self.kwargs["gov"], **filter_kwarg
         )
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["government"] = self.government
+        return context
+
     def get_breadcrumbs(self, context):
+        breadcrumbs = []
         if "request" in context:
             request = context["request"]
 
             title = request.current_page.get_title()
             url = request.current_page.get_absolute_url()
-            return [(title, url)]
+            breadcrumbs.append((title, url))
 
-        return []
+        breadcrumbs.append((self.government.name, self.government.get_absolute_url()))
+        return breadcrumbs
 
 
 class GovPlanSectionDetailView(GovernmentMixin, DetailView):
