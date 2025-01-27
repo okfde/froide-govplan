@@ -109,7 +109,9 @@ class GovPlanProposeUpdateView(GovernmentMixin, LoginRequiredMixin, UpdateView):
         return redirect(self.object)
 
     def get_queryset(self):
-        qs = GovernmentPlan.objects.filter(government=self.government)
+        qs = GovernmentPlan.objects.filter(
+            government=self.government, government__active=True
+        )
         if self.request.user.is_authenticated and self.request.user.is_staff:
             return qs
         return qs.filter(public=True)

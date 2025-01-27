@@ -2,7 +2,6 @@ from datetime import datetime
 from typing import Iterator
 
 from django.utils.translation import gettext_lazy as _
-
 from froide.follow.configuration import FollowConfiguration
 from froide.helper.notifications import Notification, TemplatedEvent
 
@@ -35,7 +34,11 @@ class GovernmentPlanFollowConfiguration(FollowConfiguration):
         return GovernmentPlan.objects.all()
 
     def can_follow(self, content_object, user, request=None):
-        return content_object.public or not has_limited_access(user)
+        return (
+            content_object.government.active
+            and content_object.public
+            or not has_limited_access(user)
+        )
 
     def get_batch_updates(
         self, start: datetime, end: datetime

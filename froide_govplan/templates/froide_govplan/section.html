@@ -1,51 +1,49 @@
 {% extends "froide_govplan/base.html" %}
-
 {% load i18n %}
 {% load markup %}
 {% load cms_tags %}
 {% load follow_tags %}
 {% load thumbnail %}
-
-{% block title %}{{ object.title }}{% endblock %}
-
+{% block title %}
+    {{ object.title }}
+{% endblock title %}
 {% block meta %}
-  {% include "snippets/meta.html" %}
-{% endblock %}
-
+    {% include "snippets/meta.html" %}
+{% endblock meta %}
 {% block app_body %}
-<div class="container">
-  <div class="row justify-content-center mb-5">  
-    <div class="col col-lg-12">
-      <div class="box-card border-yellow md:shadow-yellow bg-body p-3 p-md-4 p-lg-5 tight-margin">
-        <div class="row mx-0">
-          <div class="col col-12 col-md-12 ps-0 tight-margin">
-            <h1 class="mt-0 h2">
-              {{ object.title }}
-            </h1>
-
-            <p>
-              {% blocktranslate with section=object.title %}
+    <div class="container">
+        <div class="row justify-content-center mb-5">
+            <div class="col col-lg-12">
+                <div class="box-card border-yellow md:shadow-yellow bg-body p-3 p-md-4 p-lg-5 tight-margin">
+                    <div class="row mx-0">
+                        <div class="col col-12 col-md-12 ps-0 tight-margin">
+                            {% if not government.active %}
+                                <div class="alert alert-info">
+                                    Dieser Themenbereich gehörte zur {{ government.name }} und wird nicht mehr aktualisiert.
+                                </div>
+                            {% endif %}
+                            <h1 class="mt-0 h2">{{ object.title }}</h1>
+                            <p>
+                                {% blocktranslate with section=object.title %}
               Here you can find all plans of the section “{{ section }}”, which the coalition constituted in their agreement. On the curresponding detail pages, you'll get more information, stay up to date with news or submit changes.
               {% endblocktranslate %}
-            </p>
-          </div>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="mt-5">
+                        {% include "froide_govplan/plugins/progress_row.html" with object_list=plans %}
+                        <p class="small text-body-secondary mt-3 no-hyphens">
+                            <span class="text-nowrap me-1"><i class="fa fa-circle text-light"></i>&nbsp;nicht begonnen</span>
+                            <span class="text-nowrap me-1"><i class="fa fa-circle text-primary"></i>&nbsp;begonnen</span>
+                            <span class="text-nowrap me-1"><i class="fa fa-circle text-warning"></i>&nbsp;teilweise umgesetzt</span>
+                            <span class="text-nowrap me-1"><i class="fa fa-circle text-success"></i>&nbsp;umgesetzt</span>
+                            <span class="text-nowrap me-1"><i class="fa fa-circle text-danger"></i>&nbsp;verschoben</span>
+                        </p>
+                        {% include "froide_govplan/plugins/time_used.html" with instance=object %}
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div class="mt-5">
-          {% include "froide_govplan/plugins/progress_row.html" with object_list=plans %}
-          <p class="small text-body-secondary mt-3 no-hyphens">
-            <span class="text-nowrap me-1"><i class="fa fa-circle text-light"></i>&nbsp;nicht begonnen</span>
-            <span class="text-nowrap me-1"><i class="fa fa-circle text-primary"></i>&nbsp;begonnen</span>
-            <span class="text-nowrap me-1"><i class="fa fa-circle text-warning"></i>&nbsp;teilweise umgesetzt</span>
-            <span class="text-nowrap me-1"><i class="fa fa-circle text-success"></i>&nbsp;umgesetzt</span>
-            <span class="text-nowrap me-1"><i class="fa fa-circle text-danger"></i>&nbsp;verschoben</span>
-          </p>          
-          {% include "froide_govplan/plugins/time_used.html" with instance=object %}
-        </div>
-      </div>
+        {% include "froide_govplan/plugins/card_cols.html" with object_list=plans %}
     </div>
-  </div>
-    
-  {% include "froide_govplan/plugins/card_cols.html" with object_list=plans %}
-</div>
 {% endblock app_body %}

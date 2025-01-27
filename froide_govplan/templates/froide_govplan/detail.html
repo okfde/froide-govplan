@@ -1,6 +1,6 @@
 {% extends "froide_govplan/base.html" %}
-
-{% load i18n %} {# TODO: i18n for all strings #}
+{% load i18n %}
+{# TODO: i18n for all strings #}
 {% load markup %}
 {% load cms_tags %}
 {% load follow_tags %}
@@ -8,191 +8,192 @@
 {% load form_helper %}
 {% load content_helper %}
 {% load thumbnail %}
-
-{% block title %}{{ object.title }}{% endblock title %}
-
+{% block title %}
+    {{ object.title }}
+{% endblock title %}
 {% block meta %}
-  {% include "snippets/meta.html" %}
+    {% include "snippets/meta.html" %}
 {% endblock meta %}
-
 {% block app_body %}
-<div class="container mb-3">
-  <div class="box-card border-yellow md:shadow-yellow bg-body mb-5">
-    <div>
-      <div class="flex-grow-1 tight-margin p-3 p-md-4 p-lg-5">
-        <h1 class="mt-0 h3">
-          {{ object.title }}
-        </h1>
-
-        <div class="d-md-flex my-4 align-items-center">
-          <ul class="list-unstyled d-flex m-0">
-            <li>
-              <span class="badge text-bg-{{ object.get_status_css }} me-2">
-                {{ object.get_status_display }}
-              </span>
-            </li>
-            {% for cat in object.categories.all %}
-            <li>
-              <a href="{{ section.get_absolute_url }}" class="badge text-bg-light-subtle me-2">
-                {{ cat.name }}
-              </a>
-            </li>
-            {% endfor %}
-          </ul>
-
-          <div class="ms-auto mt-2 mt-md-0">
-            {% show_follow "govplan" object %}
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col col-12 col-md-7 col-lg-8 order-md-2 offset-lg-1">
-            <dl>
-              {% if object.quote %}
-                <dt>Ausschnitt aus dem Koalitionsvertrag</dt>
-                <dd>
-                  <blockquote>
-                    {{ object.quote | addquotes | markdown }}
-                  </blockquote>
-                {% with refs=object.get_reference_links %}
-                  {% if refs %}
-                    <p>
-                      <span class="small">
-                      {% if refs|length > 1 %}
-                        Quellen:
-                      {% else %}
-                        Quelle:
-                      {% endif %}
-                      </span>
-                      {% for ref in refs %}
-                        <a href="{{ ref }}" class="badge text-bg-light me-2" target="_blank">
-                          {{ forloop.counter }}
-                        </a>
-                      {% endfor %}
-                    </p>
-                  {% endif %}
-                {% endwith %}
-                {% endif %}
-              </dd>
-
-              {% if object.description %}
-                <div class="mt-3 mt-md-5">
-                  <dt>Unsere Einschätzung</dt>
-                  <dd>{{ object.description | safe }}</dd>
-                </div>
-              {% endif %}
-            </dl>
-          </div>
-          <div class="col col-12 col-md-5 col-lg-3 mt-3 mt-md-0">
-            <dl>
-              {% if object.rating %}
-                <dt>Bewertung</dt>
-                <dd>{{ object.get_rating_display }}</dd>
-              {% endif %}
-
-              {% if object.measure %}
-                <dt>Art der Umsetzung</dt>
-                <dd>{{ object.measure }}</dd>
-              {% endif %}
-
-              {% if object.due_date %}
-                <dt>Frist</dt>
-                <dd>{{ object.due_date|date:"SHORT_DATE_FORMAT" }}</dd>
-              {% endif %}
-
-              {% if object.responsible_publicbody %}
-                <dt>Federführung</dt>
-                <dd>
-                  <a href="{{ object.responsible_publicbody.get_absolute_url }}">
-                    {{ object.responsible_publicbody.name }}
-                  </a>
-                </dd>
-              {% endif %}
-
-              {% if object.responsible_publicbody %}
-                {% if not object.has_recent_foirequest %}
-                  <p>
-                    <a href="{{ object.make_request_url }}" target="_blank" class="btn btn-outline-primary btn-sm">
-                      Anfrage zum Vorhaben stellen
-                    </a>
-                  </p>
-                {% else %}
-                  {% with foirequest=object.get_recent_foirequest %}
-                  <dt>Anfrage</dt>
-                  <dd>
-                    {% include "foirequest/snippets/request_item_mini.html" with object=foirequest %}
-                  </dd>
-                  {% endwith %}
-                {% endif %}
-              {% endif %}
-
-              {% if object.organization %}
-                <dt>Beobachtet von</dt>
-                <dd>
-                  <a href="{{ object.organization.website }}">
-                    {% if object.organization.logo %}
-                      {% if object.organization.logo.url.lower|slice:"-4:" == ".svg" %}
-                      <img src="{{ object.organization.logo.url }}" class="col-8 col-md-12 px-0" alt="{{ object.organization.name }}">
-                      {% else %}
-                      <img src="{% thumbnail object.organization.logo 300x0 %}" class="col-8 col-md-12 px-0" alt="{{ object.organization.name }}">
-                      {% endif %}
-                    {% else %}
-                    {{ object.organization.name }}
+    <div class="container mb-3">
+        <div class="box-card border-yellow md:shadow-yellow bg-body mb-5">
+            <div>
+                <div class="flex-grow-1 tight-margin p-3 p-md-4 p-lg-5">
+                    {% if not government.active %}
+                        <div class="alert alert-info">Dieses Vorhaben gehörte zur {{ government.name }} und wird nicht mehr aktualisiert.</div>
                     {% endif %}
-                  </a>
-                </dd>
-              {% endif %}
-            </dl>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    {% include "froide_govplan/plugins/updates.html" with wrapper_classes="col col-12 col-lg-6 d-flex mb-4" %}
-
-    <div class="col col-12 col-lg-6 d-flex mb-4">
-      <div class="box-card border-gray shadow-gray">
-        <div>
-          <div class="box-card-header text-bg-body-tertiary d-flex justify-content-center p-3 p-md-4 tight-margin flex-column">
-            <h3 class="h4">Neue Entwicklung melden</h3>
-          </div>
-          <div class="p-3 p-md-4">
-            {% if request.user.is_authenticated %}
-              <p>Gibt es Neuigkeiten zu diesem Vorhaben, die wir noch nicht erfasst haben?</p>
-              <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#govplanupdate-proposal">
-                Entwicklung melden
-              </button>
-              <div class="modal" data-teleport="body" tabindex="-1" role="dialog" id="govplanupdate-proposal">
-                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title">
-                        Neue Entwicklung melden
-                      </h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% translate 'Close' %}">
-                      </button>
+                    <h1 class="mt-0 h3">{{ object.title }}</h1>
+                    <div class="d-md-flex my-4 align-items-center">
+                        <ul class="list-unstyled d-flex m-0">
+                            <li>
+                                <span class="badge text-bg-{{ object.get_status_css }} me-2">{{ object.get_status_display }}</span>
+                            </li>
+                            {% for cat in object.categories.all %}
+                                <li>
+                                    <a href="{{ section.get_absolute_url }}"
+                                       class="badge text-bg-light-subtle me-2">{{ cat.name }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        {% if government.active %}
+                            <div class="ms-auto mt-2 mt-md-0">{% show_follow "govplan" object %}</div>
+                        {% endif %}
                     </div>
-                    <div class="modal-body">
-                      <form method="post" action="{% url 'govplan:propose_planupdate' gov=object.government.slug plan=object.slug %}">
-                        {% csrf_token %}
-                        {% render_form update_proposal_form %}
-                        <button type="submit" class="btn btn-primary">
-                          Neue Entwicklung melden
-                        </button>
-                      </form>
+                    <div class="row">
+                        <div class="col col-12 col-md-7 col-lg-8 order-md-2 offset-lg-1">
+                            <dl>
+                                {% if object.quote %}
+                                    <dt>Ausschnitt aus dem Koalitionsvertrag</dt>
+                                    <dd>
+                                        <blockquote>
+                                            {{ object.quote | addquotes | markdown }}
+                                        </blockquote>
+                                        {% with refs=object.get_reference_links %}
+                                            {% if refs %}
+                                                <p>
+                                                    <span class="small">
+                                                        {% if refs|length > 1 %}
+                                                            Quellen:
+                                                        {% else %}
+                                                            Quelle:
+                                                        {% endif %}
+                                                    </span>
+                                                    {% for ref in refs %}
+                                                        <a href="{{ ref }}" class="badge text-bg-light me-2" target="_blank">{{ forloop.counter }}</a>
+                                                    {% endfor %}
+                                                </p>
+                                            {% endif %}
+                                        {% endwith %}
+                                    {% endif %}
+                                </dd>
+                                {% if object.description %}
+                                    <div class="mt-3 mt-md-5">
+                                        <dt>Unsere Einschätzung</dt>
+                                        <dd>
+                                            {{ object.description | safe }}
+                                        </dd>
+                                    </div>
+                                {% endif %}
+                            </dl>
+                        </div>
+                        <div class="col col-12 col-md-5 col-lg-3 mt-3 mt-md-0">
+                            <dl>
+                                {% if object.rating %}
+                                    <dt>Bewertung</dt>
+                                    <dd>
+                                        {{ object.get_rating_display }}
+                                    </dd>
+                                {% endif %}
+                                {% if object.measure %}
+                                    <dt>Art der Umsetzung</dt>
+                                    <dd>
+                                        {{ object.measure }}
+                                    </dd>
+                                {% endif %}
+                                {% if object.due_date %}
+                                    <dt>Frist</dt>
+                                    <dd>
+                                        {{ object.due_date|date:"SHORT_DATE_FORMAT" }}
+                                    </dd>
+                                {% endif %}
+                                {% if object.responsible_publicbody %}
+                                    <dt>Federführung</dt>
+                                    <dd>
+                                        <a href="{{ object.responsible_publicbody.get_absolute_url }}">{{ object.responsible_publicbody.name }}</a>
+                                    </dd>
+                                {% endif %}
+                                {% if object.responsible_publicbody %}
+                                    {% if not object.has_recent_foirequest and government.active %}
+                                        <p>
+                                            <a href="{{ object.make_request_url }}"
+                                               target="_blank"
+                                               class="btn btn-outline-primary btn-sm">Anfrage zum Vorhaben stellen</a>
+                                        </p>
+                                    {% elif object.has_recent_foirequest %}
+                                        {% with foirequest=object.get_recent_foirequest %}
+                                            <dt>Anfrage</dt>
+                                            <dd>
+                                                {% include "foirequest/snippets/request_item_mini.html" with object=foirequest %}
+                                            </dd>
+                                        {% endwith %}
+                                    {% endif %}
+                                {% endif %}
+                                {% if object.organization %}
+                                    <dt>Beobachtet von</dt>
+                                    <dd>
+                                        <a href="{{ object.organization.website }}">
+                                            {% if object.organization.logo %}
+                                                {% if object.organization.logo.url.lower|slice:"-4:" == ".svg" %}
+                                                    {# djlint:off H006 #}
+                                                    <img src="{{ object.organization.logo.url }}"
+                                                         class="col-8 col-md-12 px-0"
+                                                         alt="{{ object.organization.name }}">
+                                                {% else %}
+                                                    <img src="{% thumbnail object.organization.logo 300x0 %}"
+                                                         class="col-8 col-md-12 px-0"
+                                                         alt="{{ object.organization.name }}">
+                                                {% endif %}
+                                            {% else %}
+                                                {{ object.organization.name }}
+                                            {% endif %}
+                                        </a>
+                                    </dd>
+                                {% endif %}
+                            </dl>
+                        </div>
                     </div>
-                  </div>
                 </div>
-              </div>
-            {% else %}
-              Bitte <a href="{{ object.get_absolute_url|make_login_redirect_url }}">melden Sie sich an</a>, um einen Änderungsvorschlag einzureichen.
-            {% endif %}
-          </div>
+            </div>
         </div>
-      </div>
+        <div class="row">
+            {% include "froide_govplan/plugins/updates.html" with wrapper_classes="col col-12 col-lg-6 d-flex mb-4" %}
+            {% if government.active %}
+                <div class="col col-12 col-lg-6 d-flex mb-4">
+                    <div class="box-card border-gray shadow-gray">
+                        <div>
+                            <div class="box-card-header text-bg-body-tertiary d-flex justify-content-center p-3 p-md-4 tight-margin flex-column">
+                                <h3 class="h4">Neue Entwicklung melden</h3>
+                            </div>
+                            <div class="p-3 p-md-4">
+                                {% if request.user.is_authenticated %}
+                                    <p>Gibt es Neuigkeiten zu diesem Vorhaben, die wir noch nicht erfasst haben?</p>
+                                    <button type="button"
+                                            class="btn btn-outline-secondary"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#govplanupdate-proposal">Entwicklung melden</button>
+                                    <div class="modal"
+                                         data-teleport="body"
+                                         tabindex="-1"
+                                         role="dialog"
+                                         id="govplanupdate-proposal">
+                                        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Neue Entwicklung melden</h5>
+                                                    <button type="button"
+                                                            class="btn-close"
+                                                            data-bs-dismiss="modal"
+                                                            aria-label="{% translate "Close" %}"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form method="post"
+                                                          action="{% url 'govplan:propose_planupdate' gov=object.government.slug plan=object.slug %}">
+                                                        {% csrf_token %}
+                                                        {% render_form update_proposal_form %}
+                                                        <button type="submit" class="btn btn-primary">Neue Entwicklung melden</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    Bitte <a href="{{ object.get_absolute_url|make_login_redirect_url }}">melden Sie sich an</a>, um einen Änderungsvorschlag einzureichen.
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
     </div>
-  </div>
-</div>
 {% endblock app_body %}
