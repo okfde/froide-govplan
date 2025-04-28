@@ -23,7 +23,19 @@ PROJECT_DIR = Path(__file__).resolve().parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-8qh(ha_fw#3mc#y+rtd^se+e$-+n5%1o*d3%3p0d379q1zxypu"
+SECRET_KEY_FILE = os.getenv('SECRET_KEY_FILE')
+
+if SECRET_KEY_FILE:
+    try:
+        with open(SECRET_KEY_FILE) as f:
+            SECRET_KEY = f.read().strip()
+    except FileNotFoundError:
+        raise Exception(f"Secret key file not found at: {SECRET_KEY_FILE}")
+    except Exception as e:
+        raise Exception(f"An error occurred while reading the secret key file: {e}")
+else:
+    # Fallback SECRET_KEY
+    SECRET_KEY = "django-insecure-8qh(ha_fw#3mc#y+rtd^se+e$-+n5%1o*d3%3p0d379q1zxypu"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
