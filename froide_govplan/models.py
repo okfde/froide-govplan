@@ -9,6 +9,7 @@ from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from filer.fields.image import FilerImageField
 from froide.follow.models import Follower
@@ -22,11 +23,12 @@ from . import conf
 from .utils import make_request_url
 
 try:
-    from cms.models.fields import PlaceholderField
+    from cms.models.fields import PlaceholderRelationField
+    from cms.utils.placeholder import get_placeholder_from_slot
     from cms.models.pluginmodel import CMSPlugin
 except ImportError:
     CMSPlugin = None
-    PlaceholderField = None
+    PlaceholderRelationField = None
 
 
 if conf.GOVPLAN_ENABLE_FOIREQUEST:
@@ -453,8 +455,8 @@ class GovernmentPlanSection(models.Model):
     order = models.PositiveIntegerField(default=0)
     featured = models.DateTimeField(null=True, blank=True)
 
-    if PlaceholderField:
-        content_placeholder = PlaceholderField("content")
+    if PlaceholderRelationField:
+        placeholders = PlaceholderRelationField()
 
     class Meta:
         verbose_name = _("Government plan section")
@@ -475,6 +477,10 @@ class GovernmentPlanSection(models.Model):
 
     def get_absolute_domain_url(self):
         return settings.SITE_URL + self.get_absolute_url()
+
+    @cached_property
+    def content_placeholder(self):
+        return get_placeholder_from_slot(self.placeholders, "content")
 
     def get_plans(self, queryset=None):
         if queryset is None:

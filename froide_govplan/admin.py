@@ -1,5 +1,4 @@
 from adminsortable2.admin import SortableAdminMixin
-from cms.admin.placeholderadmin import PlaceholderAdminMixin
 from django.contrib import admin, auth
 from django.contrib.auth.models import Group
 from django.shortcuts import get_object_or_404, redirect, render
@@ -330,9 +329,7 @@ class GovernmentPlanUpdateAdmin(admin.ModelAdmin):
         return super().has_change_permission(request, obj=obj)
 
 
-class GovernmentPlanSectionAdmin(
-    SortableAdminMixin, PlaceholderAdminMixin, admin.ModelAdmin
-):
+class GovernmentPlanSectionAdmin(SortableAdminMixin, admin.ModelAdmin):
     save_on_top = True
     prepopulated_fields = {"slug": ("title",)}
     search_fields = ("title",)
