@@ -22,7 +22,7 @@ dependencies = [
   "django-filer",
   "psycopg[binary]",
   "django-admin-sortable2",
-  "bleach",
+  "nh3",
   "django-tinymce",
   "django-oauth-toolkit",
   "django-mfa3",

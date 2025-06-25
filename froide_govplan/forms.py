@@ -1,42 +1,32 @@
 import copy
 
+import nh3
 from django import forms
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
-
-import bleach
-from bleach.linkifier import Linker
-from tinymce.widgets import TinyMCE
-
 from froide.helper.widgets import BootstrapSelect
+from tinymce.widgets import TinyMCE
 
 from .models import GovernmentPlan, GovernmentPlanUpdate, PlanRating, PlanStatus
 
-BLEACH_OPTIONS = {
-    "tags": [
-        "a",
-        "strong",
-        "b",
-        "i",
-        "em",
-        "ul",
-        "ol",
-        "li",
-        "p",
-        "h3",
-        "h4",
-        "h5",
-        "blockquote",
-    ]
-}
-
-
-def set_link_attrs(attrs, new=False):
-    attrs[(None, "rel")] = "noopener"
-    return attrs
+ALLOWED_TAGS = [
+    "a",
+    "strong",
+    "b",
+    "i",
+    "em",
+    "ul",
+    "ol",
+    "li",
+    "p",
+    "h3",
+    "h4",
+    "h5",
+    "blockquote",
+]
 
 
 class BleachField(forms.CharField):
@@ -49,9 +39,8 @@ class BleachField(forms.CharField):
         """
         if value in self.empty_values:
             return self.empty_value
-        cleaned = bleach.clean(value, **BLEACH_OPTIONS)
-        linker = Linker(callbacks=[set_link_attrs])
-        return mark_safe(linker.linkify(cleaned))
+        cleaned_html = nh3.clean(value, tags=ALLOWED_TAGS, link_rel="noopener")
+        return mark_safe(cleaned_html)
 
 
 class GovernmentPlanForm(forms.ModelForm):
