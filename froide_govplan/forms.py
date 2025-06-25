@@ -12,7 +12,7 @@ from tinymce.widgets import TinyMCE
 
 from .models import GovernmentPlan, GovernmentPlanUpdate, PlanRating, PlanStatus
 
-ALLOWED_TAGS = [
+ALLOWED_TAGS = {
     "a",
     "strong",
     "b",
@@ -26,7 +26,7 @@ ALLOWED_TAGS = [
     "h4",
     "h5",
     "blockquote",
-]
+}
 
 
 class BleachField(forms.CharField):
