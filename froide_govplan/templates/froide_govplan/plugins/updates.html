@@ -1,67 +1,62 @@
 {% load markup %}
-
 {% for update in updates %}
-{% if wrapper_classes %}<div class="{{ wrapper_classes }}">{% endif %}
-<div class="box-card border-blue shadow-blue bg-body" id="update-{{ update.pk }}">
-  <a href="{{ update.get_absolute_url }}" class="text-body text-decoration-none">
-    <div class="box-card-header text-bg-callout d-flex justify-content-center p-3 p-md-4 tight-margin flex-column">
-      <div>
-        {% if show_context %}
-          <span class="badge text-bg-blue-100 rounded-pill float-md-right mb-2 mb-md-0">
-            {{ update.plan.get_section }}
-          </span>
-        {% endif %}
-        
-        {% if show_context %}
-          <h3 class="h5 mt-0">{{ update.plan }}</h3>
-        {% else %}
-          <h3 class="h4 mt-0">{{ update.title }}</h3>
-        {% endif %}
-      </div>
-      <div class="small">
-        <time datetime="{{ update.timestamp|date:'c' }}">{{ update.timestamp|date:"DATE_FORMAT" }}</time>
-
-        {% if update.user or update.organization %}
-        <span>
-          von {{ update.user.get_full_name }}{% if update.user and update.organization %},{% endif %}
-          {{ update.organization.name }}
-        </span>
-        {% endif %}
-      </div>
-    </div>
-  </a>
-
-  {% if update.content or show_context %}
-  <div class="p-3 p-md-4 tight-margin">
-    {% if show_context %}
-      <h4 class="h5">{{ update.title }}</h4>
-    {% endif %}
-
-    {% with update.content|markdown as content %}
-      {% if show_context %}
-        {{ content|truncatewords_html:50 }}
-      {% else %}
-        {{ content }}
-      {% endif %}
-    {% endwith %}
-  </div>
-  {% endif %}
-
-  {% if update.url or update.foirequest or show_context %}
-  <div class="p-3 p-md-4 {% if update.content %}box-card-links{% else %}d-flex mt-auto{% endif %}">
-    {% if show_context %}
-      <a href="{{ update.get_absolute_url }}" class="action-link">→ zum Vorhaben</a>
-    {% else %}
-      {% if update.url %}
-        <a href="{{ update.url }}" class="action-link me-3" target="_blank" rel="noopener">→ mehr auf {{ update.get_url_domain }} lesen…</a>
-      {% endif %}
-
-      {% if update.foirequest %}
-        <a href="{{ update.foirequest.get_absolute_url }}" class="action-link">→ zur Anfrage</a>
-      {% endif %}
-    {% endif %}
-  </div>
-  {% endif %}
-</div>
-{% if wrapper_classes %}</div>{% endif %}
+    {% if wrapper_classes %}<div class="{{ wrapper_classes }}">{% endif %}
+        <div class="box-card border border-2 border-blue-20 shadow-blue bg-body"
+             id="update-{{ update.pk }}">
+            <a href="{{ update.get_absolute_url }}"
+               class="text-body text-decoration-none">
+                <div class="box-card-header text-bg-callout d-flex justify-content-center p-3 p-md-4 tight-margin flex-column">
+                    <div>
+                        {% if show_context %}
+                            <span class="badge text-bg-blue-100 rounded-pill float-md-right mb-2 mb-md-0">{{ update.plan.get_section }}</span>
+                        {% endif %}
+                        {% if show_context %}
+                            <h3 class="h5 mt-0">{{ update.plan }}</h3>
+                        {% else %}
+                            <h3 class="h4 mt-0">{{ update.title }}</h3>
+                        {% endif %}
+                    </div>
+                    <div class="small">
+                        <time datetime="{{ update.timestamp|date:'c' }}">{{ update.timestamp|date:"DATE_FORMAT" }}</time>
+                        {% if update.user or update.organization %}
+                            <span>
+                                von {{ update.user.get_full_name }}
+                                {% if update.user and update.organization %},{% endif %}
+                                {{ update.organization.name }}
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+            </a>
+            {% if update.content or show_context %}
+                <div class="p-3 p-md-4 tight-margin">
+                    {% if show_context %}<h4 class="h5">{{ update.title }}</h4>{% endif %}
+                    {% with update.content|markdown as content %}
+                        {% if show_context %}
+                            {{ content|truncatewords_html:50 }}
+                        {% else %}
+                            {{ content }}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+            {% endif %}
+            {% if update.url or update.foirequest or show_context %}
+                <div class="p-3 p-md-4 {% if update.content %}box-card-links{% else %}d-flex mt-auto{% endif %}">
+                    {% if show_context %}
+                        <a href="{{ update.get_absolute_url }}" class="action-link">→ zum Vorhaben</a>
+                    {% else %}
+                        {% if update.url %}
+                            <a href="{{ update.url }}"
+                               class="action-link me-3"
+                               target="_blank"
+                               rel="noopener">→ mehr auf {{ update.get_url_domain }} lesen…</a>
+                        {% endif %}
+                        {% if update.foirequest %}
+                            <a href="{{ update.foirequest.get_absolute_url }}" class="action-link">→ zur Anfrage</a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+        {% if wrapper_classes %}</div>{% endif %}
 {% endfor %}

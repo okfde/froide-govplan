@@ -1,42 +1,35 @@
 {% load thumbnail %}
 {% load i18n %}
 {% load govplan %}
-
 {% if object_list|length == 0 %}
-  <p>
-    {% trans "Could not find any results. Try different keywords or browse the categories." %}
-  </p>
+    <p>{% trans "Could not find any results. Try different keywords or browse the categories." %}</p>
 {% else %}
-<div class="row">
-  {% for object in object_list %}
-    <div class="col col-12 col-md-6 col-lg-4 d-flex mb-3">
-      <a href="{{ object.get_absolute_url }}" class="d-flex w-100 text-body text-decoration-none">
-        <div class="box-card border-blue w-100 bg-body shadow-blue">
-          <div class="box-card-header p-3 text-bg-callout">
-            <h3 class="h6 m-0">
-              {{ object.title }}
-            </h3>
-          </div>
-          <div class="p-3 tight-margin d-flex flex-column flex-1 h-100">
-            {% if object.quote %}
-            <blockquote>
-              {{ object.quote|striptags|truncatewords:20|addquotes }}
-            </blockquote>
-            {% endif %}
-            <div class="d-flex mt-auto">
-              <span href="{{ object.get_absolute_url }}" class="action-link text-blue-600">
-                → mehr lesen
-              </span>
-              <div class="ms-auto">
-                <span class="badge text-bg-{{ object.get_status_css }}">
-                  {{ object.get_status_display }}
-                </span>
-              </div>
+    <div class="row">
+        {% for object in object_list %}
+            <div class="col col-12 col-md-6 col-lg-4 d-flex mb-3">
+                <a href="{{ object.get_absolute_url }}"
+                   class="d-flex w-100 text-body text-decoration-none">
+                    <div class="box-card border border-2 border-blue-20 w-100 bg-body shadow-blue">
+                        <div class="box-card-header p-3 text-bg-callout">
+                            <h3 class="h6 m-0">{{ object.title }}</h3>
+                        </div>
+                        <div class="p-3 tight-margin d-flex flex-column flex-1 h-100">
+                            {% if object.quote %}
+                                <blockquote>
+                                    {{ object.quote|striptags|truncatewords:20|addquotes }}
+                                </blockquote>
+                            {% endif %}
+                            <div class="d-flex mt-auto">
+                                <span href="{{ object.get_absolute_url }}"
+                                      class="action-link text-blue-600">→ mehr lesen</span>
+                                <div class="ms-auto">
+                                    <span class="badge text-bg-{{ object.get_status_css }}">{{ object.get_status_display }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
             </div>
-          </div>
-        </div>
-      </a>
+        {% endfor %}
     </div>
-  {% endfor %}
-</div>
 {% endif %}
