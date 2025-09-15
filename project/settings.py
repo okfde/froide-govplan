@@ -44,7 +44,9 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.humanize",
     "django.contrib.gis",
+    "mfa",
     # Froide apps
+    "froide.account",
     "froide_govplan.apps.FroideGovPlanConfig",
     "froide.georegion",
     "froide.publicbody",
@@ -52,6 +54,7 @@ INSTALLED_APPS = [
     "froide.organization",
     "froide.team",
     "froide.helper",
+    "froide.accesstoken",
     # Third party apps
     "easy_thumbnails",
     "filer",
@@ -84,6 +87,7 @@ ROOT_URLCONF = "project.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "NAME": "django",
         "DIRS": [
             PROJECT_DIR / "templates",
         ],
@@ -165,7 +169,7 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-# AUTH_USER_MODEL = "account.User"
+AUTH_USER_MODEL = "account.User"
 
 TAGGIT_CASE_INSENSITIVE = True
 TAGGIT_STRIP_UNICODE_WHEN_SLUGIFYING = True
@@ -202,3 +206,11 @@ CMS_CONFIRM_VERSION4 = True
 
 GOVPLAN_NAME = "GovPlan"
 GOVPLAN_ENABLE_FOIREQUEST = False
+
+# MFA (django-mfa3) settings
+MFA_DOMAIN = "localhost"
+MFA_VERIFY_SSL = False
+MFA_REMEMBER_BROWSER = True
+MFA_SITE_TITLE = "GovPlan"
+
+MIN_PASSWORD_LENGTH = 8
