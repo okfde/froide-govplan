@@ -240,6 +240,7 @@ class GovernmentPlanUpdateAdmin(admin.ModelAdmin):
     raw_id_fields = ["user"] + (
         ["foirequest"] if conf.GOVPLAN_ENABLE_FOIREQUEST else []
     )
+    autocomplete_fields = ["plan"]
     date_hierarchy = "timestamp"
     search_fields = ("title", "content")
     list_display = (
